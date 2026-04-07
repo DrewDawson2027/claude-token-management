@@ -1,0 +1,10 @@
+{
+  "name": "claude-token-management",
+  "private": true,
+  "scripts": {
+    "cert:schemas": "python3 tests/validate_schemas.py",
+    "cert:a-plus:fresh": "python3 tests/run_token_system_regression.py",
+    "cert:coordinator": "npm --prefix src/coordinator test",
+    "cert:all": "npm run cert:schemas && npm run cert:a-plus:fresh && npm run cert:coordinator"
+  }
+}

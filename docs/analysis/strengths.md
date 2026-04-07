@@ -31,3 +31,4 @@ The ops stack does more than check a threshold. It tracks dedup state, active al
 ## 8. The Historical Spine Exists
 
 Per-session JSONL summaries, weekly snapshots, and the `token_snapshots.py` generator mean this system can support retrospectives instead of only live reaction. That is necessary if the goal is to understand structural waste, not just today’s spike (`src/hooks/tracking/session-summary.py:2-10`, `src/scripts/analytics/token_snapshots.py:2-14`, `data/sessions`, `data/weekly`).
+> Historical note: this document was written against the earlier extracted snapshot. Use it as historical context, not as the current certification summary.

@@ -119,8 +119,10 @@ def main():
         sys.exit(2)
 
     if is_invalid_session_key(session_id):
-        print("Invalid session_id", file=sys.stderr)
-        sys.exit(2)
+        print(
+            f"WARN: Non-standard session_id format, normalizing: {str(session_id)[:32]!r}",
+            file=sys.stderr,
+        )
     normalized_file_path = normalize_file_path(file_path)
     session_key = normalize_session_key(session_id)
 
@@ -289,7 +291,7 @@ def get_explore_dirs(session_key: str) -> List[str]:
 
     dirs = []
     for agent in guard_state.get("agents", []):
-        if agent.get("type") == "Explore":
+        if str(agent.get("type", "")).strip().lower() == "explore":
             for known_dir in agent.get("target_dirs", []):
                 if known_dir not in dirs:
                     dirs.append(normalize_file_path(known_dir) or known_dir)

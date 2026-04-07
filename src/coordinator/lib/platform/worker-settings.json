@@ -1,0 +1,38 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash",
+      "Read",
+      "Write",
+      "Edit",
+      "Glob",
+      "Grep",
+      "Agent",
+      "Task",
+      "mcp__coordinator__coord_check_inbox",
+      "mcp__coordinator__coord_send_message",
+      "mcp__coordinator__coord_broadcast",
+      "mcp__coordinator__coord_send_directive",
+      "mcp__coordinator__coord_get_result",
+      "mcp__coordinator__coord_watch_output",
+      "mcp__coordinator__coord_worker_report",
+      "mcp__coordinator__coord_update_task",
+      "mcp__coordinator__coord_list_tasks",
+      "mcp__coordinator__coord_get_task",
+      "mcp__coordinator__coord_create_task",
+      "mcp__coordinator__coord_approve_plan",
+      "mcp__coordinator__coord_reject_plan",
+      "mcp__coordinator__coord_shutdown_response",
+      "mcp__coordinator__coord_detect_conflicts",
+      "mcp__coordinator__coord_write_context",
+      "mcp__coordinator__coord_read_context"
+    ],
+    "deny": []
+  },
+  "mcpServers": {
+    "coordinator": {
+      "command": "/opt/homebrew/bin/node",
+      "args": ["/Users/drewdawson/.claude/mcp-coordinator/index.js"]
+    }
+  }
+}

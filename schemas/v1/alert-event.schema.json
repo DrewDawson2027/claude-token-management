@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://claude-token-management.local/schemas/v1/alert-event.schema.json",
+  "title": "Alert Event Record",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "record_type",
+    "ts",
+    "alert_id",
+    "severity",
+    "category",
+    "dedup_key",
+    "trigger_source",
+    "message",
+    "session_key",
+    "cost_context",
+    "budget_context",
+    "delivered_local",
+    "delivered_inbox",
+    "suppressed"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "record_type": {
+      "const": "alert_event"
+    },
+    "ts": {
+      "type": "string",
+      "minLength": 1
+    },
+    "alert_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "info",
+        "warn",
+        "crit"
+      ]
+    },
+    "category": {
+      "type": "string",
+      "minLength": 1
+    },
+    "dedup_key": {
+      "type": "string",
+      "minLength": 1
+    },
+    "trigger_source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "message": {
+      "type": "string",
+      "minLength": 1
+    },
+    "session_key": {
+      "type": "string"
+    },
+    "cost_context": {
+      "type": "object"
+    },
+    "budget_context": {
+      "type": "object"
+    },
+    "delivered_local": {
+      "type": "boolean"
+    },
+    "delivered_inbox": {
+      "type": "boolean"
+    },
+    "suppressed": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": true
+}

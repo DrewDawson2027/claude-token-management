@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://claude-token-management.local/schemas/v1/agent-metrics.schema.json",
+  "title": "Agent Metrics Record",
+  "oneOf": [
+    {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "record_type",
+        "ts",
+        "event",
+        "agent_type",
+        "agent_id",
+        "session_key",
+        "session",
+        "decision_id"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": 2
+        },
+        "record_type": {
+          "const": "lifecycle"
+        },
+        "ts": {
+          "type": "string",
+          "minLength": 1
+        },
+        "event": {
+          "type": "string",
+          "minLength": 1
+        },
+        "agent_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "agent_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "session_key": {
+          "type": "string"
+        },
+        "session": {
+          "type": "string"
+        },
+        "decision_id": {
+          "type": "string"
+        },
+        "duration_seconds": {
+          "type": [
+            "number",
+            "integer"
+          ]
+        },
+        "duration_known": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "record_type",
+        "ts",
+        "event",
+        "agent_type",
+        "agent_id",
+        "session_key",
+        "session",
+        "decision_id",
+        "input_tokens",
+        "output_tokens",
+        "cache_read_tokens",
+        "cache_creation_tokens",
+        "api_calls",
+        "total_tokens",
+        "cost_usd",
+        "pricing_model"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": 2
+        },
+        "record_type": {
+          "const": "usage"
+        },
+        "ts": {
+          "type": "string",
+          "minLength": 1
+        },
+        "event": {
+          "const": "agent_completed"
+        },
+        "agent_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "agent_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "session_key": {
+          "type": "string"
+        },
+        "session": {
+          "type": "string"
+        },
+        "decision_id": {
+          "type": "string"
+        },
+        "input_tokens": {
+          "type": "integer"
+        },
+        "output_tokens": {
+          "type": "integer"
+        },
+        "cache_read_tokens": {
+          "type": "integer"
+        },
+        "cache_creation_tokens": {
+          "type": "integer"
+        },
+        "api_calls": {
+          "type": "integer"
+        },
+        "total_tokens": {
+          "type": "integer"
+        },
+        "cost_usd": {
+          "type": "number"
+        },
+        "pricing_model": {
+          "type": "string",
+          "minLength": 1
+        },
+        "correlated": {
+          "type": "boolean"
+        },
+        "transcript_found": {
+          "type": "boolean"
+        },
+        "usage_records_parsed": {
+          "type": "integer"
+        },
+        "usage_records_skipped": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": true
+    }
+  ]
+}

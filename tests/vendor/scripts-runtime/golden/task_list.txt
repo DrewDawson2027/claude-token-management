@@ -1,0 +1,5 @@
+| Task | Pri | Status | Claimed By | Labels | Depends | Title |
+|---|---|---|---|---|---|---|
+| GT-1 | high | completed | — | backend | — | Build auth module |
+| GT-2 | normal | in_progress | — | test | GT-1 | Write tests |
+| GT-3 | low | blocked | — | ops | GT-2 | Deploy to staging |

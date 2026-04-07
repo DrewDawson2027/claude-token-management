@@ -1,0 +1,4 @@
+## Task Dependency Graph
+GT-1 (completed) [high] Build auth module
+  └─ GT-2 (in_progress)  Write tests
+    └─ GT-3 (blocked) [low] Deploy to staging

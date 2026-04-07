@@ -1,0 +1,28 @@
+{
+  "schema_version": 2,
+  "max_agents": 5,
+  "parallel_window_seconds": 30,
+  "global_cooldown_seconds": 5,
+  "max_per_subagent_type": 1,
+  "state_ttl_hours": 24,
+  "audit_log": true,
+  "failure_mode": "fail_open",
+  "sanitize_session_ids": true,
+  "normalize_paths": true,
+  "fault_audit": true,
+  "max_string_field_length": 512,
+  "metrics_correlation_window_seconds": 15,
+  "one_per_session": [
+    "Explore",
+    "master-coder",
+    "master-researcher",
+    "master-architect",
+    "master-workflow",
+    "Plan"
+  ],
+  "always_allowed": [
+    "claude-code-guide",
+    "statusline-setup",
+    "haiku"
+  ]
+}

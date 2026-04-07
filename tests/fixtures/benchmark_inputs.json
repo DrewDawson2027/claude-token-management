@@ -1,0 +1,48 @@
+[
+  {
+    "name": "task_passthrough_non_dispatch",
+    "description": "Non-Task tool call should pass through token-guard fast.",
+    "input": {
+      "tool_name": "Read",
+      "tool_input": {
+        "file_path": "/tmp/example.txt"
+      },
+      "session_id": "bench-read-pass"
+    },
+    "expected_exit": 0
+  },
+  {
+    "name": "task_explore_allow",
+    "description": "Allowed Explore dispatch on a clean session.",
+    "input": {
+      "tool_name": "Task",
+      "tool_input": {
+        "subagent_type": "Explore",
+        "description": "Trace duplicate read hotspots in hooks runtime"
+      },
+      "session_id": "bench-explore-allow"
+    },
+    "expected_exit": 0
+  },
+  {
+    "name": "task_explore_rate_limited",
+    "description": "Second Explore dispatch in the same session should hit duplicate controls.",
+    "pre_seed": {
+      "tool_name": "Task",
+      "tool_input": {
+        "subagent_type": "Explore",
+        "description": "Initial explore seed for benchmark state"
+      },
+      "session_id": "bench-explore-block"
+    },
+    "input": {
+      "tool_name": "Task",
+      "tool_input": {
+        "subagent_type": "Explore",
+        "description": "Initial explore seed for benchmark state"
+      },
+      "session_id": "bench-explore-block"
+    },
+    "expected_exit": 2
+  }
+]

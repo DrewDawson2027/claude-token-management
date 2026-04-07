@@ -4,6 +4,13 @@ import os
 import sys
 
 ALLOWED_MODELS = {"sonnet", "haiku"}
+HAIKU_REQUIRED_TYPES = {
+    "explore",
+    "scout",
+    "lean-explorer",
+    "quick-reviewer",
+    "fp-checker",
+}
 
 
 def normalize_model(value):
@@ -47,12 +54,15 @@ def main():
     except Exception:
         sys.exit(0)
 
+    if not isinstance(payload, dict):
+        sys.exit(0)
+
     if str(payload.get("tool_name") or "") != "Task":
         sys.exit(0)
 
     tool_input = payload.get("tool_input")
     if not isinstance(tool_input, dict):
-        tool_input = {}
+        sys.exit(0)
 
     explicit_model = str(tool_input.get("model") or "").strip()
     normalized = normalize_model(explicit_model)
@@ -61,13 +71,16 @@ def main():
             f"BLOCKED: unsupported model '{explicit_model}'. Only sonnet and haiku workers are allowed."
         )
 
-    # Hard rule: Explore agents must always use Haiku
+    # Hard rule: exploration/review lookup agents must always use Haiku
     agent_type = str(tool_input.get("subagent_type") or "").strip().lower()
-    if agent_type == "explore" and normalized != "haiku":
+    if not agent_type and not explicit_model:
+        sys.exit(0)
+
+    if agent_type in HAIKU_REQUIRED_TYPES and normalized != "haiku":
         block(
-            f"BLOCKED: Explore agents must use model='haiku'. "
+            f"BLOCKED: {agent_type or 'This agent'} MUST use model: 'haiku'. "
             f"Got: '{explicit_model or '(none)'}'. "
-            "Set model='haiku' explicitly — Explore agents are always Haiku per hard rule."
+            "Set model='haiku' explicitly for lookup/review agents."
         )
 
     if normalized:

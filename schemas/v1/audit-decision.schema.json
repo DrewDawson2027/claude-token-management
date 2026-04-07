@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://claude-token-management.local/schemas/v1/audit-decision.schema.json",
+  "title": "Audit Decision Record",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "record_type",
+    "ts",
+    "event",
+    "rule_id",
+    "reason_code",
+    "session_key",
+    "subagent_type",
+    "decision_id",
+    "desc_present",
+    "desc_hash",
+    "type",
+    "desc",
+    "session"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 2
+    },
+    "record_type": {
+      "const": "audit_decision"
+    },
+    "ts": {
+      "type": "string",
+      "minLength": 1
+    },
+    "event": {
+      "type": "string",
+      "minLength": 1
+    },
+    "rule_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reason_code": {
+      "type": "string",
+      "minLength": 1
+    },
+    "session_key": {
+      "type": "string"
+    },
+    "subagent_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "decision_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "desc_present": {
+      "type": "boolean"
+    },
+    "desc_hash": {
+      "type": "string"
+    },
+    "message": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "desc": {
+      "type": "string"
+    },
+    "session": {
+      "type": "string"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "pattern": {
+      "type": "string"
+    },
+    "latency_ms": {
+      "type": "integer"
+    },
+    "fault_class": {
+      "type": "string"
+    },
+    "evaluation_mode": {
+      "type": "string"
+    },
+    "would_block": {
+      "type": "boolean"
+    },
+    "enforced": {
+      "type": "boolean"
+    },
+    "shadow_reason_code": {
+      "type": "string"
+    },
+    "shadow_diff": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

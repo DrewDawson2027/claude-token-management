@@ -1,0 +1,402 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash",
+      "Read",
+      "Write",
+      "Edit",
+      "Task",
+      "mcp__coordinator__coord_list_sessions",
+      "mcp__coordinator__coord_get_session",
+      "mcp__coordinator__coord_check_inbox",
+      "mcp__coordinator__coord_detect_conflicts",
+      "mcp__coordinator__coord_get_result",
+      "mcp__coordinator__coord_send_message",
+      "WebSearch",
+      "WebFetch(domain:www.macstories.net)",
+      "WebFetch(domain:www.nxcode.io)",
+      "WebFetch(domain:ollama.com)",
+      "WebFetch(domain:howborisusesclaudecode.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:www.threads.com)",
+      "WebFetch(domain:claudefa.st)",
+      "WebFetch(domain:karozieminski.substack.com)",
+      "Skill(keybindings-help)",
+      "WebFetch(domain:posit.co)",
+      "WebFetch(domain:docs.cursor.com)",
+      "WebFetch(domain:www.cursor.com)",
+      "WebFetch(domain:claude.com)",
+      "WebFetch(domain:docs.windsurf.com)",
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_take_screenshot",
+      "mcp__playwright__browser_click",
+      "mcp__playwright__browser_type",
+      "mcp__playwright__browser_fill_form",
+      "mcp__playwright__browser_snapshot",
+      "mcp__playwright__browser_close",
+      "mcp__playwright__browser_evaluate",
+      "mcp__playwright__browser_wait_for",
+      "mcp__playwright__browser_run_code",
+      "mcp__playwright__browser_network_requests",
+      "mcp__scrapling__fetch",
+      "WebFetch(domain:www.firecrawl.dev)",
+      "WebFetch(domain:medium.com)",
+      "WebFetch(domain:anthropic.skilljar.com)",
+      "WebFetch(domain:www.tryexponent.com)",
+      "WebFetch(domain:www.crackpminterview.com)",
+      "WebFetch(domain:denigma.app)",
+      "WebFetch(domain:www.keckmedicine.org)",
+      "WebFetch(domain:studenthealth.usc.edu)",
+      "WebFetch(domain:health.usnews.com)",
+      "WebFetch(domain:hscnews.usc.edu)",
+      "WebFetch(domain:www.zocdoc.com)",
+      "WebFetch(domain:brainhealthusa.com)",
+      "WebFetch(domain:keck.usc.edu)",
+      "WebFetch(domain:www.chla.org)",
+      "WebFetch(domain:providers.keckmedicine.org)",
+      "WebFetch(domain:doctor.webmd.com)",
+      "mcp__filesystem__directory_tree",
+      "mcp__filesystem__list_directory",
+      "mcp__filesystem__read_text_file",
+      "mcp__fetch__fetch",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__query-docs",
+      "Skill(review)",
+      "Skill(deep-research)",
+      "mcp__filesystem__read_file",
+      "mcp__filesystem__search_files",
+      "mcp__playwright__browser_tabs",
+      "mcp__plugin_playwright_playwright__browser_navigate",
+      "mcp__playwright__browser_select_option",
+      "mcp__playwright__browser_handle_dialog",
+      "mcp__playwright__browser_resize",
+      "mcp__playwright__browser_press_key",
+      "mcp__plugin_claude-mem_mcp-search__get_observations",
+      "Skill(claude-init)",
+      "Skill(commit)",
+      "mcp__plugin_playwright_playwright__browser_evaluate",
+      "mcp__plugin_playwright_playwright__browser_snapshot",
+      "mcp__plugin_playwright_playwright__browser_click",
+      "mcp__plugin_playwright_playwright__browser_type",
+      "mcp__plugin_playwright_playwright__browser_press_key",
+      "mcp__plugin_playwright_playwright__browser_run_code",
+      "mcp__scrapling__stealthy_fetch",
+      "WebFetch(domain:www.irs.gov)",
+      "WebFetch(domain:www.tax.ny.gov)",
+      "WebFetch(domain:www.apple.com)",
+      "WebFetch(domain:macly.io)",
+      "WebFetch(domain:www.bhphotovideo.com)",
+      "WebFetch(domain:rentamac.io)",
+      "WebFetch(domain:nishtahir.com)",
+      "WebFetch(domain:the-decoder.com)",
+      "WebFetch(domain:support.claude.com)",
+      "mcp__plugin_claude-mem_mcp-search__search",
+      "TeamCreate",
+      "TeamStatus",
+      "SendMessage",
+      "mcp__coordinator__coord_create_team",
+      "mcp__coordinator__coord_get_team",
+      "mcp__coordinator__coord_list_teams",
+      "mcp__coordinator__coord_team_dispatch",
+      "mcp__coordinator__coord_team_status_compact",
+      "mcp__coordinator__coord_team_queue_task",
+      "mcp__coordinator__coord_team_assign_next",
+      "mcp__coordinator__coord_team_rebalance",
+      "mcp__coordinator__coord_sidecar_status",
+      "mcp__coordinator__coord_send_directive",
+      "mcp__coordinator__coord_approve_plan",
+      "mcp__coordinator__coord_reject_plan",
+      "mcp__coordinator__coord_wake_session",
+      "Grep",
+      "Glob",
+      "AskUserQuestion",
+      "mcp__coordinator__coord_create_task",
+      "mcp__coordinator__coord_update_task",
+      "mcp__coordinator__coord_list_tasks",
+      "mcp__coordinator__coord_get_task",
+      "mcp__coordinator__coord_shutdown_request",
+      "mcp__coordinator__coord_shutdown_response",
+      "mcp__coordinator__coord_write_context",
+      "mcp__coordinator__coord_read_context",
+      "mcp__coordinator__coord_export_context",
+      "mcp__coordinator__coord_broadcast",
+      "mcp__coordinator__coord_boot_snapshot",
+      "mcp__coordinator__coord_worker_report",
+      "mcp__coordinator__coord_reassign_task",
+      "mcp__coordinator__coord_get_task_audit",
+      "mcp__coordinator__coord_check_quality_gates",
+      "mcp__coordinator__coord_delete_team",
+      "mcp__coordinator__coord_update_team_policy",
+      "mcp__coordinator__coord_cost_comparison",
+      "mcp__coordinator__coord_watch_output",
+      "mcp__coordinator__coord_list_agents",
+      "mcp__coordinator__coord_get_agent",
+      "mcp__coordinator__coord_create_agent",
+      "mcp__coordinator__coord_update_agent",
+      "mcp__coordinator__coord_delete_agent",
+      "mcp__coordinator__coord_sync_agent_manifest",
+      "Skill(lead)",
+      "WebFetch(domain:llmx.tech)",
+      "WebFetch(domain:www.raylogue.com)",
+      "mcp__filesystem__read_multiple_files",
+      "mcp__plugin_claude-mem_mcp-search__timeline",
+      "WebFetch(domain:jpcaparas.medium.com)",
+      "WebFetch(domain:x.com)",
+      "mcp__coordinator__coord_spawn_terminal",
+      "mcp__coordinator__coord_spawn_worker",
+      "mcp__coordinator__coord_spawn_workers",
+      "mcp__coordinator__coord_kill_worker",
+      "mcp__coordinator__coord_resume_worker",
+      "mcp__coordinator__coord_upgrade_worker",
+      "mcp__coordinator__coord_run_pipeline",
+      "mcp__coordinator__coord_get_pipeline",
+      "mcp__coordinator__coord_quick_team",
+      "mcp__coordinator__coord_focus_worker",
+      "mcp__coordinator__coord_focus_next",
+      "mcp__coordinator__coord_unfocus",
+      "WebFetch(domain:www.anthropic.com)",
+      "WebFetch(domain:docs.anthropic.com)",
+      "WebFetch(domain:newsletter.pragmaticengineer.com)",
+      "mcp__playwright__browser_hover",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:news.ycombinator.com)",
+      "WebFetch(domain:cmux.com)",
+      "WebFetch(domain:soloterm.com)",
+      "Skill(update-config)",
+      "WebFetch(domain:academicprograms.usc.edu)",
+      "WebFetch(domain:students.marshall.usc.edu)",
+      "WebFetch(domain:priceschool.usc.edu)",
+      "WebFetch(domain:www.marshall.usc.edu)",
+      "WebFetch(domain:viterbigradadmission.usc.edu)",
+      "WebFetch(domain:financialaid.usc.edu)",
+      "WebFetch(domain:iovine-young.usc.edu)",
+      "WebFetch(domain:annenberg.usc.edu)",
+      "WebFetch(domain:datascience.usc.edu)",
+      "WebFetch(domain:ame.usc.edu)",
+      "WebFetch(domain:sites.usc.edu)",
+      "WebFetch(domain:www.productsc.org)",
+      "WebFetch(domain:catalogue.usc.edu)",
+      "WebFetch(domain:uscmarshallweb.s3-us-west-2.amazonaws.com)",
+      "WebFetch(domain:ask.usc.edu)",
+      "WebFetch(domain:gradadm.usc.edu)",
+      "WebFetch(domain:thenewstack.io)",
+      "WebFetch(domain:docs.openclaw.ai)",
+      "WebFetch(domain:www.blackhatworld.com)",
+      "WebFetch(domain:virvid.ai)",
+      "WebFetch(domain:milx.app)",
+      "WebFetch(domain:outlierkit.com)",
+      "WebFetch(domain:virlo.ai)",
+      "WebFetch(domain:autofaceless.ai)",
+      "WebFetch(domain:influenceflow.io)",
+      "WebFetch(domain:playboard.co)",
+      "WebFetch(domain:socialblade.com)",
+      "WebFetch(domain:dicloak.com)",
+      "WebFetch(domain:elevenlabs.io)",
+      "WebFetch(domain:nerdynav.com)",
+      "WebFetch(domain:subscribr.ai)",
+      "WebFetch(domain:www.webfuse.com)",
+      "WebFetch(domain:youcast.cloud)",
+      "WebFetch(domain:aidemos.com)",
+      "WebFetch(domain:www.perplexity.ai)",
+      "WebFetch(domain:www.buildfastwithai.com)",
+      "mcp__notebooklm__setup_auth",
+      "mcp__notebooklm__get_health",
+      "mcp__notebooklm__list_notebooks",
+      "mcp__notebooklm__re_auth",
+      "mcp__notebooklm__add_notebook",
+      "mcp__notebooklm__select_notebook",
+      "mcp__notebooklm__ask_question",
+      "Skill(codex:setup)"
+    ],
+    "deny": [
+      "mcp__claude_ai_Tavily_Search__tavily_search",
+      "mcp__claude_ai_Tavily_Search__tavily_research",
+      "mcp__claude_ai_Tavily_Search__tavily_crawl",
+      "mcp__claude_ai_Tavily_Search__tavily_extract"
+    ]
+  },
+  "model": "claude-sonnet-4-6",
+  "hooks": {
+    "SessionEnd": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/session-end.sh",
+            "timeout": 3000
+          }
+        ]
+      }
+    ],
+    "TeammateIdle": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/teammate-lifecycle.sh TeammateIdle",
+            "timeout": 1000
+          }
+        ]
+      }
+    ],
+    "TaskCompleted": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/teammate-lifecycle.sh TaskCompleted",
+            "timeout": 1000
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/check-inbox.sh",
+            "timeout": 1000
+          }
+        ]
+      },
+      {
+        "matcher": "Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/token-guard.py",
+            "timeout": 1000
+          },
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/model-router.py",
+            "timeout": 1000
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/read-efficiency-guard.py",
+            "timeout": 1000
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write|Bash|Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/terminal-heartbeat.sh",
+            "timeout": 3000
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/session-register.sh",
+            "timeout": 5000
+          }
+        ]
+      }
+    ]
+  },
+  "outputStyle": "Explanatory",
+  "thinkingEnabled": true,
+  "mcpServers": {
+    "coordinator": {
+      "command": "/opt/homebrew/Cellar/node/25.6.1_1/bin/node",
+      "args": [
+        "/Users/drewdawson/.claude/mcp-coordinator/index.js"
+      ]
+    },
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp@latest"
+      ]
+    },
+    "serena": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/oraios/serena",
+        "serena",
+        "start-mcp-server",
+        "--project-from-cwd"
+      ]
+    },
+    "typescript-lsp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-lsp-bridge@latest"
+      ]
+    },
+    "pyright-lsp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@treedy/lsp-mcp@latest"
+      ]
+    },
+    "github": {
+      "command": "bash",
+      "args": [
+        "-lc",
+        "GITHUB_PERSONAL_ACCESS_TOKEN=\"${GITHUB_TOKEN:-$(gh auth token 2>/dev/null)}\" exec npx -y @modelcontextprotocol/server-github@latest"
+      ]
+    },
+    "notion": {
+      "type": "http",
+      "url": "https://mcp.notion.com/mcp"
+    },
+    "postgres": {
+      "command": "bash",
+      "args": [
+        "-lc",
+        "exec npx -y @modelcontextprotocol/server-postgres@latest \"${DATABASE_URL:-postgresql://localhost/postgres}\""
+      ]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp@latest"
+      ]
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking@latest"
+      ]
+    },
+    "sentry": {
+      "type": "http",
+      "url": "https://mcp.sentry.dev/mcp"
+    },
+    "n8n": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "n8n-mcp"
+      ]
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "name": "mcp-coordinator",
+  "version": "1.0.0",
+  "description": "Filesystem-native orchestration MCP server for Claude Lead System.",
+  "type": "module",
+  "main": "index.js",
+  "license": "MIT",
+  "author": "Drew Dawson",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DrewDawson2027/claude-lead-system.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DrewDawson2027/claude-lead-system/issues"
+  },
+  "homepage": "https://github.com/DrewDawson2027/claude-lead-system#readme",
+  "scripts": {
+    "test": "npm run test:all",
+    "test:all": "node scripts/run-node-tests.mjs",
+    "test:unit": "node --test test/validation.test.mjs test/platform-launch.test.mjs test/inbox-fuzz.test.mjs test/native-bridge.test.mjs",
+    "test:e2e": "node --test test/e2e-worker-pipeline.test.mjs",
+    "test:coverage": "npx c8 --check-coverage --lines 80 node scripts/run-node-tests.mjs",
+    "test:coverage:report": "npx c8 --reporter=text --reporter=html node scripts/run-node-tests.mjs",
+    "test:mutation": "npx stryker run"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.27.1"
+  },
+  "devDependencies": {
+    "@stryker-mutator/core": "^9.6.0",
+    "@stryker-mutator/javascript-mutator": "^4.0.0",
+    "c8": "^10.1.3"
+  }
+}

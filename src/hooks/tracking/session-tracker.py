@@ -14,6 +14,7 @@ import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Optional
 
 # Add scripts dir for pricing imports
 SCRIPTS_DIR = Path.home() / ".claude" / "scripts"
@@ -35,7 +36,7 @@ PROJECTS_DIR = Path.home() / ".claude" / "projects"
 STATE_DIR = Path.home() / ".claude" / "hooks" / "session-state"
 
 
-def find_session_jsonl(session_id: str) -> Path | None:
+def find_session_jsonl(session_id: str) -> Optional[Path]:
     """Find the JSONL file for a session across all project directories."""
     if not session_id or not PROJECTS_DIR.exists():
         return None
@@ -73,6 +74,9 @@ def main():
     try:
         input_data = json.loads(sys.stdin.read())
     except (json.JSONDecodeError, EOFError):
+        sys.exit(0)
+
+    if not isinstance(input_data, dict):
         sys.exit(0)
 
     session_id = input_data.get("session_id", "")

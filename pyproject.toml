@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "claude-token-guard"
+version = "1.1.0"
+description = "Self-contained token-drain control plane for Claude Code."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [
+  { name = "Drew Dawson" }
+]
+keywords = ["claude", "tokens", "budget", "cost", "hooks", "ops"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: MacOS",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Software Development :: Quality Assurance",
+  "Topic :: System :: Monitoring",
+  "Topic :: Utilities"
+]
+dependencies = []
+
+[project.scripts]
+claude-token-guard = "claude_token_guard.cli:main"
+
+[tool.setuptools]
+package-dir = { "" = "src/cli" }
+packages = ["claude_token_guard"]
+include-package-data = false
+
+[tool.setuptools.data-files]
+"share/claude-token-guard" = [
+  "src/hooks/guards/token-guard.py",
+  "src/hooks/guards/read-efficiency-guard.py",
+  "src/hooks/infrastructure/hook_utils.py",
+  "src/hooks/infrastructure/self-heal.py",
+  "src/hooks/infrastructure/guard_contracts.py",
+  "src/hooks/infrastructure/guard_normalize.py",
+  "src/hooks/infrastructure/guard_events.py",
+  "src/hooks/ops/ops_sources.py",
+  "src/hooks/ops/ops_trends.py",
+  "src/hooks/ops/ops_alerts.py",
+  "src/hooks/ops/ops_recap.py",
+  "src/hooks/ops/ops_aggregator.py",
+  "src/hooks/tracking/agent-metrics.py",
+  "src/hooks/runtime/agent-lifecycle.sh",
+  "src/hooks/runtime/health-check.sh",
+  "config/token-guard-config.json",
+]

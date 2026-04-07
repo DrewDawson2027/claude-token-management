@@ -141,6 +141,9 @@ def main():
     except (json.JSONDecodeError, EOFError):
         sys.exit(0)
 
+    if not isinstance(input_data, dict):
+        sys.exit(0)
+
     event = input_data.get("hook_event_name", "")
     if event != "SubagentStop":
         sys.exit(0)

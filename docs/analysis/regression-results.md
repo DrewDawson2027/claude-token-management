@@ -1,47 +1,72 @@
 # Regression Results
 
-## Command Run
+## 2026-04-07 Certification Snapshot
+
+### Fresh Runtime Certification
+
+Command:
 
 ```bash
 python3 tests/run_token_system_regression.py
 ```
 
-Executed from `/Users/drewdawson/projects/token-management` on **April 7, 2026**.
+Result:
 
-## Summary
+- `8/8` checks passed
+- `502 passed, 16 skipped` in vendored hook tests
+- Schema validation included in the certification run
+- Coordinator `npm ci`, syntax check, and spawn smoke all passed
 
-- Total checks: 8
-- Passed: 6
-- Failed: 2
+Checks covered:
 
-The harness behaved as the code suggests: it primarily validated the live `~/.claude` environment rather than this extracted repository (`tests/run_token_system_regression.py:10-23`, `tests/run_token_system_regression.py:48-152`).
+1. Vendored hook test suite against a materialized temporary runtime
+2. Schema validation for audit, metrics, alerts, session summaries, cost cache, usage index, and ops snapshot
+3. `health-check.sh --stats`
+4. `cost_runtime.py statusline`
+5. `observability.py health-report`
+6. Coordinator dependency install
+7. Coordinator syntax validation
+8. Coordinator spawn smoke
 
-## Passes
+### Standalone Schema Validation
 
-- `scripts_pytests`: `96 passed` in `~/.claude/scripts/tests`.
-- `cli_ops_today_smoke_cached`: passed.
-- `cli_session_recap_smoke`: passed.
-- `mcp_node_check`: passed.
-- `mcp_coord_session_health`: passed.
-- `trust_engine_adapter_smoke`: passed.
+Command:
 
-## Failures
+```bash
+python3 tests/validate_schemas.py
+```
 
-### 1. `hooks_pytests`
+Result:
 
-- Result: `21 failed, 470 passed, 16 skipped, 11 errors`
-- The most important pattern in the failures is that hook-counter tests error around missing `record_hook_outcome` behavior, which matches the source-analysis finding that several hooks import helpers not implemented in `hook_utils.py` (`src/hooks/infrastructure/hook_utils.py:40-165`, `src/hooks/guards/budget-guard.py:393-413`, `src/hooks/infrastructure/read-cache.py:176-187`, `src/hooks/infrastructure/result-compressor.py:95-108`, `src/hooks/tracking/cost-tagger.py:134-143`, `src/hooks/tracking/session-tracker.py:255-269`).
+- `1,304` documents validated
+- `0` schema errors
 
-### 2. `health_check_stats`
+Coverage:
 
-- Result: failed with `STATUS: UNHEALTHY`.
-- The output reported `coordinator MCP missing or miswired`.
-- stderr also showed a shell expression error in `health-check.sh`.
+- Generated audit records
+- Generated agent metrics lifecycle/usage records
+- `833` alert events
+- Alert state snapshot
+- `463` session summary rows
+- Cost cache snapshot
+- Usage index snapshot
+- Ops snapshot
 
-## Interpretation
+### Live Runtime Validation
 
-This regression run is useful as evidence about the live home-directory system, not as proof that the extracted project is self-contained.
+Commands:
 
-- The strongest evidence from the run is that the live scripts test suite under `~/.claude/scripts/tests` is healthy.
-- The strongest negative evidence is that the hook test suite and health check both surface the same class of integration problems already visible in source inspection.
-- The run does not validate the extracted coordinator subtree because the test harness points at `~/.claude/mcp-coordinator`, not `src/coordinator/` in this repository.
+```bash
+cd ~/.claude && python3 -m pytest hooks/tests -q
+bash ~/.claude/hooks/health-check.sh
+```
+
+Result:
+
+- Hook suite: `481 passed, 37 skipped`
+- Health-check: `42 passed, 0 failed, 0 warnings`
+- Status: `HEALTHY`
+
+## Current Read
+
+The repository is no longer a thin analytical extraction. It now certifies as a self-contained runtime artifact, validates its core file contracts, and keeps the source-tree coordinator test surface green alongside the installed live runtime.

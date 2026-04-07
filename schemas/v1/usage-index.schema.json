@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://claude-token-management.local/schemas/v1/usage-index.schema.json",
+  "title": "Usage Index",
+  "type": "object",
+  "required": [
+    "generatedAt",
+    "fingerprint",
+    "windows"
+  ],
+  "properties": {
+    "generatedAt": {
+      "type": "string",
+      "minLength": 1
+    },
+    "fingerprint": {
+      "type": "object",
+      "required": [
+        "fileCount",
+        "totalSize",
+        "latestMtime"
+      ],
+      "properties": {
+        "fileCount": {
+          "type": "integer"
+        },
+        "totalSize": {
+          "type": "integer"
+        },
+        "latestMtime": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": true
+    },
+    "windows": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "$ref": "#/$defs/windowRecord"
+      }
+    }
+  },
+  "$defs": {
+    "windowRecord": {
+      "type": "object",
+      "required": [
+        "generatedAt",
+        "window",
+        "filters",
+        "source",
+        "local"
+      ],
+      "properties": {
+        "generatedAt": {
+          "type": "string",
+          "minLength": 1
+        },
+        "window": {
+          "type": "string",
+          "minLength": 1
+        },
+        "filters": {
+          "type": "object",
+          "required": [
+            "since",
+            "until",
+            "team_id",
+            "session_id",
+            "project"
+          ],
+          "additionalProperties": true
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ccusage": {
+          "type": "object"
+        },
+        "local": {
+          "type": "object",
+          "required": [
+            "source",
+            "filteredMessages",
+            "totals",
+            "models",
+            "sessions"
+          ],
+          "additionalProperties": true
+        },
+        "totals": {
+          "type": "object"
+        },
+        "budget": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

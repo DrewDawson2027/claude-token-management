@@ -12,7 +12,15 @@ import json
 import os
 import sys
 import tempfile
-from typing import Callable, Dict, IO, List, Optional
+import time
+from datetime import datetime, timezone
+from typing import Any, Callable, Dict, IO, List, Optional
+
+try:
+    from guard_normalize import normalize_session_key, normalize_text
+except Exception:
+    normalize_session_key = None
+    normalize_text = None
 
 # Portable file locking — fcntl on Unix, msvcrt on Windows
 if sys.platform == "win32":
@@ -126,6 +134,155 @@ def read_jsonl_fault_tolerant(path: str) -> List[Dict]:
     except (FileNotFoundError, OSError):
         pass
     return entries
+
+
+STATE_DIR = os.environ.get(
+    "TOKEN_GUARD_STATE_DIR",
+    os.path.expanduser("~/.claude/hooks/session-state"),
+)
+COUNTERS_FILE = os.path.join(STATE_DIR, "hook-counters.json")
+
+
+def _utc_now_iso() -> str:
+    return (
+        datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    )
+
+
+def _sanitize_session_key(value: Any) -> str:
+    if normalize_session_key is not None:
+        return normalize_session_key(value)
+    text = str(value or "").replace("\x00", "")
+    cleaned = "".join(ch for ch in text if ch.isalnum() or ch in {"_", "-"})
+    return cleaned[:64] or "unknown"
+
+
+def _sanitize_tool_name(value: Any) -> str:
+    raw = str(value or "").replace("\x00", "")
+    cleaned = "".join(ch for ch in raw if ch.isalnum() or ch in {"_", "-"})
+    if normalize_text is not None:
+        cleaned = normalize_text(cleaned, max_len=64)
+    return cleaned[:64] or "unknown"
+
+
+def record_hook_outcome(hook_name: str, outcome: str) -> None:
+    """Record one hook invocation outcome in hook-counters.json.
+
+    This is intentionally best-effort and never raises. Unknown outcome keys are
+    preserved instead of being rejected so newer hooks can add outcome classes
+    without breaking older helper code.
+    """
+
+    dir_name = os.path.dirname(COUNTERS_FILE)
+    try:
+        os.makedirs(dir_name, exist_ok=True)
+    except OSError:
+        return
+
+    lock_path = COUNTERS_FILE + ".lock"
+    try:
+        with open(lock_path, "a+") as lf:
+            lock(lf)
+            try:
+                state = load_json_state(COUNTERS_FILE, default_factory=dict)
+                if not isinstance(state, dict):
+                    state = {}
+                hook_state = state.setdefault(str(hook_name), {})
+                if not isinstance(hook_state, dict):
+                    hook_state = {}
+                    state[str(hook_name)] = hook_state
+                for key in ("success", "fail_open", "fail_closed", "error"):
+                    try:
+                        hook_state[key] = max(0, int(hook_state.get(key, 0) or 0))
+                    except Exception:
+                        hook_state[key] = 0
+                hook_state[outcome] = max(0, int(hook_state.get(outcome, 0) or 0)) + 1
+                hook_state["last_updated"] = _utc_now_iso()
+                save_json_state(COUNTERS_FILE, state)
+            finally:
+                unlock(lf)
+    except OSError:
+        return
+
+
+def track_context_growth(session_id: Any, tool_name: Any, result_size: Any) -> Dict:
+    """Persist per-session context growth for result-compressor and reporting."""
+
+    session_key = _sanitize_session_key(session_id)
+    tool_key = _sanitize_tool_name(tool_name)
+    try:
+        size = max(0, int(result_size or 0))
+    except Exception:
+        size = 0
+
+    try:
+        os.makedirs(STATE_DIR, exist_ok=True)
+    except OSError:
+        return {
+            "session_key": session_key,
+            "total_chars": size,
+            "total_results": 1,
+            "large_results": 1 if size > 5000 else 0,
+            "tool_counts": {tool_key: 1},
+        }
+
+    path = os.path.join(STATE_DIR, f"{session_key}-context.json")
+    lock_path = path + ".lock"
+    default_state = {
+        "schema_version": 1,
+        "session_key": session_key,
+        "created_at": _utc_now_iso(),
+        "updated_at": _utc_now_iso(),
+        "total_chars": 0,
+        "total_results": 0,
+        "large_results": 0,
+        "tool_counts": {},
+        "recent_results": [],
+    }
+    try:
+        with open(lock_path, "a+") as lf:
+            lock(lf)
+            try:
+                state = load_json_state(path, default_factory=lambda: dict(default_state))
+                if not isinstance(state, dict):
+                    state = dict(default_state)
+                state["session_key"] = session_key
+                state["schema_version"] = 1
+                state["updated_at"] = _utc_now_iso()
+                state["total_chars"] = max(0, int(state.get("total_chars", 0) or 0)) + size
+                state["total_results"] = max(0, int(state.get("total_results", 0) or 0)) + 1
+                state["large_results"] = max(0, int(state.get("large_results", 0) or 0))
+                if size > 5000:
+                    state["large_results"] += 1
+                tool_counts = state.get("tool_counts")
+                if not isinstance(tool_counts, dict):
+                    tool_counts = {}
+                tool_counts[tool_key] = max(0, int(tool_counts.get(tool_key, 0) or 0)) + 1
+                state["tool_counts"] = tool_counts
+                recent_results = state.get("recent_results")
+                if not isinstance(recent_results, list):
+                    recent_results = []
+                recent_results.append(
+                    {
+                        "ts": _utc_now_iso(),
+                        "tool": tool_key,
+                        "chars": size,
+                    }
+                )
+                state["recent_results"] = recent_results[-50:]
+                save_json_state(path, state)
+                return state
+            finally:
+                unlock(lf)
+    except OSError:
+        return {
+            "session_key": session_key,
+            "total_chars": size,
+            "total_results": 1,
+            "large_results": 1 if size > 5000 else 0,
+            "tool_counts": {tool_key: 1},
+            "updated_at": _utc_now_iso(),
+        }
 
 
 # Single source of truth for default config — used by token-guard.py and self-heal.py.

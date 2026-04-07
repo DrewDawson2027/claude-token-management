@@ -1,0 +1,15 @@
+## Team Dashboard: golden-team
+- State: running | tmux: claude-golden-team
+- Members: 3 | Messages(open): 0
+- Delivery: open=0 stale=0 queue=0 avg_ack=<AGE> p50=<AGE> p95=<AGE>
+- Tasks: pending=0 blocked=1 claimed=0 in_progress=1 awaiting_approval=0 completed=1
+- Task Priorities: normal=1, low=1
+- Labels: test=1, ops=1
+
+### Members
+- lead: role=lead kind=None status=None tasks=0 session=goldsess1 pane=%0
+- alice: role=teammate kind=None status=None tasks=0 session=goldsess2 pane=%1
+- bob: role=teammate kind=None status=None tasks=0 session=goldsess3 pane=%2
+
+### Recent Events
+- #1 TeamBootstrapped <TS>

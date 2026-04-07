@@ -67,3 +67,4 @@ The extracted data copy includes session JSONL and weekly snapshots, but not dai
 ## Notable Consequence
 
 The project's main risk is not "nothing exists." A lot exists. The risk is that the implemented live system, the extracted repository, and the architectural narrative are three overlapping but non-identical things.
+> Historical note: this document captures gap analysis from the pre-hardening snapshot. Several items here have since been closed by runtime rewiring, helper restoration, coordinator completion, schemas, and certification.

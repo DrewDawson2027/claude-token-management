@@ -1,0 +1,6 @@
+## Cost Summary (today)
+- Source: local
+- Total Cost: $3.45 (local-known: $3.45)
+- Tokens: in=150,000 out=75,000 cache_create=10,000 cache_read=50,000
+- Messages: 42
+- Budget (global daily): $3.45 / $10.00 [ok] (34.5%)

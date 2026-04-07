@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://claude-token-management.local/schemas/v1/alert-state.schema.json",
+  "title": "Alert State",
+  "type": "object",
+  "required": [
+    "last_sent",
+    "suppressed",
+    "active"
+  ],
+  "properties": {
+    "last_sent": {
+      "type": "object"
+    },
+    "suppressed": {
+      "type": "object"
+    },
+    "active": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

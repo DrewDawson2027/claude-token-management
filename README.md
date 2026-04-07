@@ -1,80 +1,85 @@
-# Token Management System for Claude Code
+# Claude Token Management
 
-A comprehensive token/budget management, cost tracking, and usage optimization system built for Claude Code (Anthropic's CLI).
+Claude Token Management is a self-contained local control plane for Claude Code token usage. It hardens the live `~/.claude` runtime and ships the same behavior as a standalone repository with certification, schemas, CI, coordinator tests, and operator documentation.
 
-## What This Is
+## Current Status
 
-This system was built by Drew Dawson (February-April 2026) to solve the token waste, cost overruns, and budget transparency problems that plague Claude Code usage. It consists of:
+- Live `~/.claude` runtime and repository sources were re-converged on 2026-04-07.
+- Fresh-runtime certification passes: `8/8` checks green.
+- Schema validation passes: `1,304` documents validated, `0` errors.
+- Source-tree coordinator suite passes: `315/315`.
+- Live hook suite passes: `481 passed, 37 skipped`.
+- Live runtime health-check passes: `42 passed, 0 failed, 0 warnings`.
 
-- **Budget Guards** — PreToolUse hooks that intercept agent dispatches and block/warn when spending is excessive
-- **Cost Tracking** — Real-time cost aggregation from ccusage backend with caching and statusline display
-- **Model Routing** — Automatic Haiku/Sonnet selection based on task complexity
-- **Operational Alerting** — Anomaly detection, threshold alerts, and 7-day trending
-- **Session Analytics** — Per-session, per-agent, and per-team cost attribution
-- **MCP Coordinator Integration** — Cost tools exposed via MCP for multi-session coordination
+## What It Does
 
-## Architecture Overview
+- Blocks wasteful or policy-breaking subagent dispatch before spend happens.
+- Enforces read-discipline through duplicate-read and burst-read controls.
+- Tracks session, agent, and cost activity into local audit, metrics, and summary files.
+- Surfaces burn, anomaly, budget, and ops views through Python reporting and statusline output.
+- Runs a filesystem-native MCP coordinator with worker launch, messaging, planning, and lead tooling.
+- Ships versioned schemas for the core record formats so file-backed state is contract-tested instead of implied.
 
-See `docs/architecture/` for full diagrams and data flow documentation.
-
-## Key Parameters
-
-| Parameter | Value | Where |
-|-----------|-------|-------|
-| Monthly Budget | $200 USD | config/budgets.json |
-| Hourly Token Limit | 200,000 | budget-guard.py |
-| Warn Threshold | 75% hourly / 80% monthly | budget-guard.py / budgets.json |
-| Block Threshold | 92% hourly / 95% monthly | budget-guard.py / budgets.json |
-| Max Concurrent Agents | 5 | config/token-guard-config.json |
-| Max Per Agent Type | 1 | config/token-guard-config.json |
-| Fail Mode | Open (warn, don't hard-block) | config/token-guard-config.json |
-| Cache TTL | 60 seconds | config/cost-config.json |
-| Plan Type | Max ($200/mo subscription) | config/token-guard-config.json |
-
-## Directory Structure
+## Repository Layout
 
 ```text
-/Users/drewdawson/projects/token-management/
-|-- src/
-|   |-- hooks/
-|   |   |-- guards/
-|   |   |-- tracking/
-|   |   |-- routing/
-|   |   |-- ops/
-|   |   |-- infrastructure/
-|   |-- scripts/
-|   |   |-- core/
-|   |   |-- analytics/
-|   |   |-- reporting/
-|   |-- coordinator/
-|-- config/
-|-- data/
-|   |-- sessions/
-|   |-- weekly/
-|   |-- monthly/
-|   |-- daily/
-|   |-- alerts/
-|-- docs/
-|   |-- architecture/
-|   |-- analysis/
-|   |-- comparisons/
-|   |-- adrs/
-|-- tests/
-|-- README.md
-|-- .claude/
-|   |-- CLAUDE.md
+src/
+  cli/claude_token_guard/      Unified operator CLI
+  coordinator/                 MCP coordinator package and tests
+  hooks/
+    guards/                    Dispatch, budget, credential, shell, and read guards
+    infrastructure/            Shared contracts, queue helpers, self-heal, context tools
+    ops/                       Alerts, trends, recap, and ops snapshot builders
+    routing/                   Model routing and prompt reminders
+    runtime/                   Shell/runtime hooks and lifecycle helpers
+    tracking/                  Session, agent, and lifecycle telemetry
+  lead-tools/                  Shell wrappers for lead workflows
+  scripts/
+    core/                      Cost runtime, observability, pricing, policy tools
+    analytics/                 Snapshot and savings analysis
+    reporting/                 Higher-level operational reports
+config/                        Canonical settings and policy/config inputs
+data/                          Snapshots and fixtures for certification
+docs/                          Architecture, operator, migration, release, and comparison docs
+schemas/v1/                    JSON schemas for audit, metrics, alerts, summaries, and caches
+tests/                         Fresh-runtime cert harness and schema validator
 ```
 
-## How to Run the Regression Tests
+## Certification
+
+Primary commands:
 
 ```bash
+python3 tests/validate_schemas.py
 python3 tests/run_token_system_regression.py
+PATH="/opt/homebrew/bin:$PATH" /opt/homebrew/bin/npm --prefix src/coordinator test
 ```
 
-Note: this harness primarily smoke-tests the live `~/.claude/` environment referenced by the extracted scripts, not a fully self-contained copy of this repository.
+Convenience wrappers:
 
-## Context: Why This Exists
+```bash
+npm run cert:schemas
+npm run cert:a-plus:fresh
+npm run cert:coordinator
+npm run cert:all
+```
 
-In March-April 2026, the Claude Code community experienced a severe token usage crisis. Cache bugs inflated token costs 10-20x. Undisclosed peak-hour throttling drained session limits in fractions of expected time. Users on $200/month Max plans watched their usage jump from 21% to 100% on a single prompt.
+## Core Docs
 
-This system was built to combat those exact problems at the local level — providing transparency, enforcement, and optimization that Anthropic's platform does not natively offer.
+- `docs/architecture/system-overview.md`
+- `docs/architecture/hook-lifecycle.md`
+- `docs/architecture/data-flow.md`
+- `docs/analysis/component-grades.md`
+- `docs/analysis/production-readiness.md`
+- `docs/analysis/regression-results.md`
+- `docs/TOKEN_MANAGEMENT_OPERATOR_PLAYBOOK.md`
+- `docs/TOKEN_MANAGEMENT_MIGRATION_GUIDE.md`
+- `docs/COMPATIBILITY_MATRIX.md`
+- `docs/RELEASE_PROCESS.md`
+
+## Real Limits
+
+- This is still a local, file-backed control plane. It is hardened, but it is not a native Anthropic billing or rate-limit service.
+- Upstream prompt-cache regressions, peak-hour throttling, and subscription policy changes can be detected and mitigated locally, not fixed at the source.
+- Some scripts still assume `~/.claude` as the installed runtime target. New work should continue pushing path resolution toward cleaner repo/runtime separation.
+- Coordinator dependencies currently report `6` upstream `npm audit` findings after install. The coordinator test surface is green, but dependency hygiene is still an active maintenance concern.

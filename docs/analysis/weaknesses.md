@@ -39,3 +39,4 @@ The routing subsystem sounds policy-rich because `routing-policy.json` exists an
 ## 10. The Regression Suite Validates The Home Directory More Than This Repository
 
 The copied regression harness mostly shells into `~/.claude` tests, scripts, MCP, and shell helpers. That is useful for the live environment but weak evidence for the extracted repository’s health (`tests/run_token_system_regression.py:10-23`, `tests/run_token_system_regression.py:48-152`).
+> Historical note: this weakness review predates the April 2026 hardening pass. Current remaining weaknesses are summarized in `docs/analysis/production-readiness.md`.

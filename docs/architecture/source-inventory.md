@@ -84,3 +84,4 @@ This inventory covers every `.py` and `.js` file under `src/`. Each entry compre
 ## Inventory Conclusion
 
 The source inventory shows a system with a credible operational spine and a wider ring of partially integrated experiments. The live value comes from a subset of the tree, not the entire extracted directory.
+> Historical note: this per-file inventory was written against the older extraction state and contains outdated live-wiring judgments. Treat it as historical analysis rather than the current authoritative status map.

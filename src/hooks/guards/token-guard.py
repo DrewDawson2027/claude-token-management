@@ -639,12 +639,17 @@ def check_type_switching(
     state: Dict, description: str, subagent_type: str
 ) -> Tuple[bool, str]:
     """Detect if new spawn resembles a previously blocked spawn with different type."""
+    subagent_type_key = normalize_text(subagent_type, 80).lower()
     for attempt in state.get("blocked_attempts", []):
+        raw_attempt_type = str(attempt.get("type", "")).strip()
+        attempt_type = normalize_text(raw_attempt_type, 80).lower()
         similarity = difflib.SequenceMatcher(
-            None, description.lower(), attempt["description"].lower()
+            None,
+            description.lower(),
+            normalize_text(attempt.get("description", ""), 512).lower(),
         ).ratio()
-        if similarity > 0.6 and attempt["type"] != subagent_type:
-            return True, attempt["type"]
+        if similarity > 0.6 and attempt_type and attempt_type != subagent_type_key:
+            return True, raw_attempt_type or attempt_type
     return False, ""
 
 
@@ -723,6 +728,7 @@ def main():
     subagent_type = normalize_subagent_type(
         tool_input.get("subagent_type", ""), max_len=min(80, max_field_len)
     )
+    subagent_type_key = normalize_text(subagent_type, 80).lower()
     description = normalize_text(
         tool_input.get("description", ""), max_len=max_field_len
     )
@@ -734,7 +740,7 @@ def main():
     # RESUME DETECTION — continuing existing work, not new spawn
     if tool_input.get("resume"):
         if audit_enabled:
-            audit("resume", subagent_type or "resumed", description, session_id)
+            audit("resume", subagent_type_key or "resumed", description, session_id)
         sys.exit(0)  # Always allow resumes
 
     state_file = os.path.join(STATE_DIR, f"{session_key}.json")
@@ -846,7 +852,7 @@ def main():
                     )
                     state.setdefault("blocked_attempts", []).append(
                         {
-                            "type": subagent_type,
+                            "type": subagent_type_key,
                             "description": description,
                             "timestamp": now,
                         }
@@ -877,7 +883,7 @@ def main():
                 )
                 state.setdefault("blocked_attempts", []).append(
                     {
-                        "type": subagent_type,
+                        "type": subagent_type_key,
                         "description": description,
                         "timestamp": now,
                     }
@@ -905,7 +911,7 @@ def main():
                 )
                 state.setdefault("blocked_attempts", []).append(
                     {
-                        "type": subagent_type,
+                        "type": subagent_type_key,
                         "description": description,
                         "timestamp": now,
                     }
@@ -939,7 +945,7 @@ def main():
                 )
                 state.setdefault("blocked_attempts", []).append(
                     {
-                        "type": subagent_type,
+                        "type": subagent_type_key,
                         "description": description,
                         "timestamp": now,
                     }
@@ -982,7 +988,7 @@ def main():
                 )
                 state.setdefault("blocked_attempts", []).append(
                     {
-                        "type": subagent_type,
+                        "type": subagent_type_key,
                         "description": description,
                         "timestamp": now,
                     }
@@ -1013,7 +1019,7 @@ def main():
                 )
                 state.setdefault("blocked_attempts", []).append(
                     {
-                        "type": subagent_type,
+                        "type": subagent_type_key,
                         "description": description,
                         "timestamp": now,
                     }
@@ -1045,7 +1051,7 @@ def main():
                     )
                     state.setdefault("blocked_attempts", []).append(
                         {
-                            "type": subagent_type,
+                            "type": subagent_type_key,
                             "description": description,
                             "timestamp": now,
                         }
@@ -1093,7 +1099,7 @@ def main():
 
             # For Explore agents, extract target directories from the prompt
             # so read-efficiency-guard.py can detect duplicate reads
-            if subagent_type == "Explore":
+            if subagent_type_key == "explore":
                 prompt = tool_input.get("prompt", "")
                 target_dirs = extract_target_dirs(prompt)
                 if target_dirs:
@@ -1115,7 +1121,7 @@ def main():
             if audit_enabled:
                 audit(
                     "allow",
-                    subagent_type,
+                    subagent_type_key,
                     description,
                     session_id,
                     decision_id=decision_id,

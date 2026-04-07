@@ -48,3 +48,4 @@ What the code confirms:
 ## Evolution Verdict
 
 The timeline shows real learning, not random accretion. The project moved from uncontrolled agent usage toward explicit guardrails, measurement, and local ops views. The problem is that the implementation never fully converged after that learning phase. It still contains live protections, dormant experiments, partial refactors, and extraction gaps side by side.
+> Historical note: this document describes the pre-hardening extraction analysis. The current certified state is documented in `README.md`, `docs/architecture/`, and `docs/analysis/regression-results.md`.

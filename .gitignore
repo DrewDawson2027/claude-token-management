@@ -3,3 +3,8 @@
 .pytest_cache/
 __pycache__/
 *.pyc
+dist/
+build/
+coverage/
+htmlcov/
+src/coordinator/node_modules/

@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://claude-token-management.local/schemas/v1/session-summary.schema.json",
+  "title": "Session Summary",
+  "type": "object",
+  "required": [
+    "sessionId",
+    "startedAt",
+    "endedAt",
+    "totals",
+    "models",
+    "agentsSpawned",
+    "agentsBlocked",
+    "toolCounts",
+    "durationSeconds"
+  ],
+  "properties": {
+    "sessionId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "startedAt": {
+      "type": "string",
+      "minLength": 1
+    },
+    "endedAt": {
+      "type": "string",
+      "minLength": 1
+    },
+    "totals": {
+      "type": "object",
+      "required": [
+        "inputTokens",
+        "outputTokens",
+        "cacheCreationTokens",
+        "cacheReadTokens",
+        "costUSD",
+        "apiCalls"
+      ],
+      "properties": {
+        "inputTokens": {
+          "type": "integer"
+        },
+        "outputTokens": {
+          "type": "integer"
+        },
+        "cacheCreationTokens": {
+          "type": "integer"
+        },
+        "cacheReadTokens": {
+          "type": "integer"
+        },
+        "costUSD": {
+          "type": "number"
+        },
+        "apiCalls": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": true
+    },
+    "models": {
+      "type": "object"
+    },
+    "agentsSpawned": {
+      "type": "integer"
+    },
+    "agentsBlocked": {
+      "type": "integer"
+    },
+    "toolCounts": {
+      "type": "object"
+    },
+    "durationSeconds": {
+      "type": "integer"
+    }
+  },
+  "additionalProperties": true
+}
