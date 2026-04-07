@@ -1,0 +1,49 @@
+{
+  "schema_version": 2,
+  "max_agents": 5,
+  "parallel_window_seconds": 30,
+  "global_cooldown_seconds": 5,
+  "max_per_subagent_type": 1,
+  "state_ttl_hours": 24,
+  "audit_log": true,
+  "failure_mode": "fail_open",
+  "sanitize_session_ids": true,
+  "normalize_paths": true,
+  "fault_audit": true,
+  "max_string_field_length": 512,
+  "metrics_correlation_window_seconds": 15,
+  "shadow_rules": {},
+  "shadow_default_mode": "enforce",
+  "shadow_sample_pct": 100,
+  "shadow_audit": true,
+  "session_recap_default_window_minutes": 180,
+  "one_per_session": [
+    "Explore",
+    "master-coder",
+    "master-researcher",
+    "master-architect",
+    "master-workflow",
+    "Plan"
+  ],
+  "always_allowed": ["claude-code-guide", "statusline-setup", "haiku"],
+  "coordinator_roles": [
+    "researcher",
+    "implementer",
+    "reviewer",
+    "planner",
+    "scout",
+    "code-architect"
+  ],
+  "necessity_check_enabled": true,
+  "state_backend": "file",
+  "budget_guard": {
+    "enabled": true,
+    "plan_type": "max",
+    "monthly_usd": 200.0,
+    "daily_usd": 0,
+    "cache_ttl_seconds": 60,
+    "fail_open": true,
+    "block_on_critical": true,
+    "warn_on_warning": true
+  }
+}

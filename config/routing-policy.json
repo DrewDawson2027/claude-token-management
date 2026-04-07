@@ -1,0 +1,47 @@
+{
+  "strict_stock_parity_mode": false,
+  "risk_escalate_threshold": 3,
+  "risk_return_threshold": 1,
+  "min_response_chars": 80,
+  "uncertainty_terms": [
+    "maybe",
+    "might",
+    "uncertain",
+    "unsure",
+    "not sure",
+    "likely",
+    "probably"
+  ],
+  "error_terms": [
+    "error",
+    "failed",
+    "failure",
+    "exception",
+    "blocked",
+    "cannot",
+    "can't"
+  ],
+  "verifier_success_terms": [
+    "done",
+    "completed",
+    "implemented",
+    "fixed",
+    "verified",
+    "tests pass",
+    "all tests passed"
+  ],
+  "verifier_block_terms": [
+    "todo",
+    "remaining",
+    "next step",
+    "follow-up",
+    "not complete",
+    "still need"
+  ],
+  "lean_reason_budget_chars": 450,
+  "full_reason_budget_chars": 6000,
+  "context_budget_chars": 480,
+  "hard_total_token_budget": 2400,
+  "compiled_prompt_full_threshold": 2800,
+  "raw_task_full_threshold": 2800
+}

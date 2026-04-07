@@ -1,0 +1,2447 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-04-07T10:00:06Z",
+  "time_window": {
+    "kind": "today",
+    "since": "2026-04-07T07:00:00Z",
+    "until": "2026-04-07T10:00:04.232016Z"
+  },
+  "budget": {
+    "scope": "global",
+    "period": "daily",
+    "limitUSD": 0,
+    "currentUSD": 74.84081900000005,
+    "pct": null,
+    "level": "none"
+  },
+  "spend": {
+    "generatedAt": "2026-04-07T10:00:04Z",
+    "window": "today",
+    "filters": {
+      "since": null,
+      "until": null,
+      "team_id": null,
+      "session_id": null,
+      "project": null
+    },
+    "source": "local",
+    "ccusage": {
+      "ok": false,
+      "summary": null,
+      "error": "[Errno 2] No such file or directory: 'ccusage'"
+    },
+    "local": {
+      "source": "local",
+      "filteredMessages": 766,
+      "totals": {
+        "inputTokens": 1819,
+        "outputTokens": 156801,
+        "cacheCreationTokens": 5185902,
+        "cacheReadTokens": 48781619,
+        "localCostUSD": 74.84081900000005,
+        "localCostKnown": true,
+        "messages": 766
+      },
+      "models": {
+        "claude-opus-4-6": {
+          "messages": 409,
+          "inputTokens": 757,
+          "outputTokens": 111316,
+          "cacheCreationTokens": 4350346,
+          "cacheReadTokens": 41087007,
+          "localCostUSD": 66.83364200000008,
+          "localCostKnown": true
+        },
+        "<synthetic>": {
+          "messages": 3,
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "cacheCreationTokens": 0,
+          "cacheReadTokens": 0,
+          "localCostUSD": 0.0,
+          "localCostKnown": true
+        },
+        "claude-sonnet-4-6": {
+          "messages": 354,
+          "inputTokens": 1062,
+          "outputTokens": 45485,
+          "cacheCreationTokens": 835556,
+          "cacheReadTokens": 7694612,
+          "localCostUSD": 8.007176999999997,
+          "localCostKnown": true
+        }
+      },
+      "sessions": {
+        "a695cb24": {
+          "messages": 17,
+          "inputTokens": 37,
+          "outputTokens": 2079,
+          "cacheCreationTokens": 373742,
+          "cacheReadTokens": 839658,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "4f1bc0bb": {
+          "messages": 19,
+          "inputTokens": 25,
+          "outputTokens": 5848,
+          "cacheCreationTokens": 435941,
+          "cacheReadTokens": 2242104,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "c2f45926": {
+          "messages": 66,
+          "inputTokens": 117,
+          "outputTokens": 54062,
+          "cacheCreationTokens": 699108,
+          "cacheReadTokens": 7790475,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "<synthetic>",
+            "claude-opus-4-6"
+          ]
+        },
+        "9d0c0bac": {
+          "messages": 207,
+          "inputTokens": 273,
+          "outputTokens": 44780,
+          "cacheCreationTokens": 637368,
+          "cacheReadTokens": 24135612,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "efa92a30": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 72,
+          "cacheCreationTokens": 0,
+          "cacheReadTokens": 6026,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-sonnet-4-6"
+          ]
+        },
+        "36b7c818": {
+          "messages": 2,
+          "inputTokens": 6,
+          "outputTokens": 84,
+          "cacheCreationTokens": 0,
+          "cacheReadTokens": 12052,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-sonnet-4-6"
+          ]
+        },
+        "8a2268cb": {
+          "messages": 2,
+          "inputTokens": 6,
+          "outputTokens": 146,
+          "cacheCreationTokens": 12166,
+          "cacheReadTokens": 0,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-sonnet-4-6"
+          ]
+        },
+        "d71d7412": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 2,
+          "cacheCreationTokens": 6607,
+          "cacheReadTokens": 0,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-sonnet-4-6"
+          ]
+        },
+        "d74cff94": {
+          "messages": 2,
+          "inputTokens": 6,
+          "outputTokens": 67,
+          "cacheCreationTokens": 0,
+          "cacheReadTokens": 12052,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-sonnet-4-6"
+          ]
+        },
+        "08bf65df": {
+          "messages": 9,
+          "inputTokens": 27,
+          "outputTokens": 1744,
+          "cacheCreationTokens": 28776,
+          "cacheReadTokens": 112274,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-sonnet-4-6"
+          ]
+        },
+        "866e1d5b": {
+          "messages": 7,
+          "inputTokens": 21,
+          "outputTokens": 918,
+          "cacheCreationTokens": 31750,
+          "cacheReadTokens": 50979,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-sonnet-4-6"
+          ]
+        },
+        "9953598e": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 6,
+          "cacheCreationTokens": 0,
+          "cacheReadTokens": 6026,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-sonnet-4-6"
+          ]
+        },
+        "b0677171": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 2,
+          "cacheCreationTokens": 0,
+          "cacheReadTokens": 6026,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-sonnet-4-6"
+          ]
+        },
+        "c900568c": {
+          "messages": 5,
+          "inputTokens": 15,
+          "outputTokens": 849,
+          "cacheCreationTokens": 34570,
+          "cacheReadTokens": 40251,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-sonnet-4-6"
+          ]
+        },
+        "993f498c": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 0,
+          "cacheCreationTokens": 0,
+          "cacheReadTokens": 6026,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-sonnet-4-6"
+          ]
+        },
+        "f0e36c0c": {
+          "messages": 2,
+          "inputTokens": 6,
+          "outputTokens": 99,
+          "cacheCreationTokens": 0,
+          "cacheReadTokens": 12052,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-sonnet-4-6"
+          ]
+        },
+        "01de39e7": {
+          "messages": 26,
+          "inputTokens": 78,
+          "outputTokens": 4712,
+          "cacheCreationTokens": 30128,
+          "cacheReadTokens": 259469,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-sonnet-4-6"
+          ]
+        },
+        "29f5f846": {
+          "messages": 13,
+          "inputTokens": 39,
+          "outputTokens": 1634,
+          "cacheCreationTokens": 32900,
+          "cacheReadTokens": 108263,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-sonnet-4-6"
+          ]
+        },
+        "a96cb9ab": {
+          "messages": 2,
+          "inputTokens": 6,
+          "outputTokens": 77,
+          "cacheCreationTokens": 0,
+          "cacheReadTokens": 12052,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-sonnet-4-6"
+          ]
+        },
+        "8d3fc504": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 6,
+          "cacheCreationTokens": 0,
+          "cacheReadTokens": 6026,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-sonnet-4-6"
+          ]
+        },
+        "db9ff9a1": {
+          "messages": 2,
+          "inputTokens": 6,
+          "outputTokens": 12,
+          "cacheCreationTokens": 12438,
+          "cacheReadTokens": 0,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-sonnet-4-6"
+          ]
+        },
+        "c0249751": {
+          "messages": 1,
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "cacheCreationTokens": 0,
+          "cacheReadTokens": 0,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "<synthetic>"
+          ]
+        },
+        "7513296f": {
+          "messages": 10,
+          "inputTokens": 30,
+          "outputTokens": 2240,
+          "cacheCreationTokens": 23865,
+          "cacheReadTokens": 78139,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-sonnet-4-6"
+          ]
+        },
+        "ead95453": {
+          "messages": 38,
+          "inputTokens": 114,
+          "outputTokens": 4694,
+          "cacheCreationTokens": 31304,
+          "cacheReadTokens": 470424,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-sonnet-4-6"
+          ]
+        },
+        "88e387f1": {
+          "messages": 2,
+          "inputTokens": 6,
+          "outputTokens": 422,
+          "cacheCreationTokens": 12240,
+          "cacheReadTokens": 0,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-sonnet-4-6"
+          ]
+        },
+        "5b5671e6": {
+          "messages": 24,
+          "inputTokens": 72,
+          "outputTokens": 4911,
+          "cacheCreationTokens": 42416,
+          "cacheReadTokens": 639467,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-sonnet-4-6"
+          ]
+        },
+        "69ead438": {
+          "messages": 2,
+          "inputTokens": 6,
+          "outputTokens": 12,
+          "cacheCreationTokens": 0,
+          "cacheReadTokens": 12052,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-sonnet-4-6"
+          ]
+        },
+        "e49d0dc9": {
+          "messages": 9,
+          "inputTokens": 27,
+          "outputTokens": 192,
+          "cacheCreationTokens": 21787,
+          "cacheReadTokens": 49963,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-sonnet-4-6"
+          ]
+        },
+        "be9e5fd8": {
+          "messages": 105,
+          "inputTokens": 315,
+          "outputTokens": 10599,
+          "cacheCreationTokens": 154652,
+          "cacheReadTokens": 4370224,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-sonnet-4-6"
+          ]
+        },
+        "bb194358": {
+          "messages": 2,
+          "inputTokens": 6,
+          "outputTokens": 229,
+          "cacheCreationTokens": 12202,
+          "cacheReadTokens": 0,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-sonnet-4-6"
+          ]
+        },
+        "a44fdda5": {
+          "messages": 2,
+          "inputTokens": 6,
+          "outputTokens": 91,
+          "cacheCreationTokens": 0,
+          "cacheReadTokens": 12052,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-sonnet-4-6"
+          ]
+        },
+        "2fa761dd": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 63,
+          "cacheCreationTokens": 0,
+          "cacheReadTokens": 6026,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-sonnet-4-6"
+          ]
+        },
+        "061a8bf7": {
+          "messages": 16,
+          "inputTokens": 48,
+          "outputTokens": 5355,
+          "cacheCreationTokens": 133182,
+          "cacheReadTokens": 619751,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-sonnet-4-6"
+          ]
+        },
+        "baaca02d": {
+          "messages": 8,
+          "inputTokens": 24,
+          "outputTokens": 1372,
+          "cacheCreationTokens": 34965,
+          "cacheReadTokens": 121510,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-sonnet-4-6"
+          ]
+        },
+        "26a92c9c": {
+          "messages": 4,
+          "inputTokens": 12,
+          "outputTokens": 903,
+          "cacheCreationTokens": 24603,
+          "cacheReadTokens": 12984,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-sonnet-4-6"
+          ]
+        },
+        "27a7f88b": {
+          "messages": 2,
+          "inputTokens": 6,
+          "outputTokens": 130,
+          "cacheCreationTokens": 12162,
+          "cacheReadTokens": 0,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-sonnet-4-6"
+          ]
+        },
+        "8c9d497d": {
+          "messages": 15,
+          "inputTokens": 45,
+          "outputTokens": 2692,
+          "cacheCreationTokens": 106225,
+          "cacheReadTokens": 377708,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-sonnet-4-6"
+          ]
+        },
+        "abe6d6db": {
+          "messages": 10,
+          "inputTokens": 30,
+          "outputTokens": 352,
+          "cacheCreationTokens": 15808,
+          "cacheReadTokens": 55704,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-sonnet-4-6"
+          ]
+        },
+        "0046a3d7": {
+          "messages": 24,
+          "inputTokens": 72,
+          "outputTokens": 708,
+          "cacheCreationTokens": 20810,
+          "cacheReadTokens": 206982,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-sonnet-4-6"
+          ]
+        },
+        "975c9ad1": {
+          "messages": 2,
+          "inputTokens": 6,
+          "outputTokens": 90,
+          "cacheCreationTokens": 0,
+          "cacheReadTokens": 12052,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-sonnet-4-6"
+          ]
+        },
+        "58a7cbdb": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 10,
+          "cacheCreationTokens": 21664,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "6b97c40f": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21665,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "d70f2143": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 2,
+          "cacheCreationTokens": 21597,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "b7a888d5": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21665,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "ac77c708": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21665,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "9ca5f7c0": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21610,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "e9b430a4": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21665,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "8f93ab1a": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21665,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "0c914f0a": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21665,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "082be7cb": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21663,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "0a802426": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21665,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "674fa014": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21662,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "da2d6a19": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21667,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "09155454": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21664,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "289883e7": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 2,
+          "cacheCreationTokens": 21663,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "4e3d3562": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21667,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "5ce04295": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 2,
+          "cacheCreationTokens": 21663,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "e2018a24": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21666,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "69009365": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 2,
+          "cacheCreationTokens": 21662,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "37e2407e": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 2,
+          "cacheCreationTokens": 21664,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "2c1da919": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21664,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "efea024f": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21663,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "349dc802": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21664,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "7557d7f4": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21665,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "487e87fb": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21663,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "331e172a": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21663,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "531a72b9": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21664,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "add5066c": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21665,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "ae3e4944": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21664,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "02c69caa": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21664,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "d1f5c78e": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21668,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "76d931dc": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 80980,
+          "cacheReadTokens": 0,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "99e0db77": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21666,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "44eb93cb": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21663,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "8371d2c2": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21665,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "0f6149c8": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21665,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "756f8ed3": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21664,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "93456d88": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 2,
+          "cacheCreationTokens": 21663,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "f785f82d": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21664,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "e47dce6b": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21665,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "2e1a88d0": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21666,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "32c582f5": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21664,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "b439cfb2": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21590,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "b0ea2376": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21664,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "7b6d7ebc": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21668,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "aa3c0e61": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21667,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "87357007": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21662,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "8a506cc5": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21664,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "efdc9e7a": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21667,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "f0c4aff7": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21666,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "a27f5533": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21664,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "f5f5938a": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21665,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "bc010aef": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21663,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "33d56fe0": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21664,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "42c3b31e": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21665,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "cf85a328": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21665,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "665a7d44": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21664,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "bf3025c9": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21666,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "a9bf0fa4": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21665,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "34ae82f6": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21664,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "642dc9c2": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21664,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "156b86ea": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21628,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "8459dd18": {
+          "messages": 1,
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "cacheCreationTokens": 0,
+          "cacheReadTokens": 0,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "<synthetic>"
+          ]
+        },
+        "4ce3efbd": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21664,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "2ba64290": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21663,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "a3784c03": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21664,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "ccdebbc7": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21664,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "014909b2": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21665,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "c17e18c3": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21665,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "ed97043e": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21665,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "d9a888b5": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 11,
+          "cacheCreationTokens": 21665,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "8b898c0e": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 2,
+          "cacheCreationTokens": 21667,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "e86d4a93": {
+          "messages": 1,
+          "inputTokens": 3,
+          "outputTokens": 2,
+          "cacheCreationTokens": 21665,
+          "cacheReadTokens": 59391,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        },
+        "09e87b57": {
+          "messages": 29,
+          "inputTokens": 89,
+          "outputTokens": 3828,
+          "cacheCreationTokens": 585256,
+          "cacheReadTokens": 1862397,
+          "teamId": null,
+          "memberId": null,
+          "models": [
+            "claude-opus-4-6"
+          ]
+        }
+      },
+      "teams": {},
+      "members": {}
+    },
+    "totals": {
+      "totalUSD": null,
+      "localCostUSD": 74.84081900000005,
+      "inputTokens": 1819,
+      "outputTokens": 156801,
+      "cacheCreationTokens": 5185902,
+      "cacheReadTokens": 48781619,
+      "messages": 766
+    },
+    "budget": {
+      "scope": "global",
+      "period": "daily",
+      "limitUSD": 0,
+      "currentUSD": 74.84081900000005,
+      "pct": null,
+      "level": "none"
+    }
+  },
+  "alerts": {
+    "recent_count": 50,
+    "recent": [
+      {
+        "schema_version": 1,
+        "record_type": "alert_event",
+        "ts": "2026-03-31T00:46:15Z",
+        "alert_id": "744783a7799fa1bf",
+        "severity": "warn",
+        "category": "anomaly",
+        "dedup_key": "anomaly:3",
+        "trigger_source": "cost_runtime:burn-rate-check",
+        "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+        "session_key": "",
+        "cost_context": {
+          "anomalies": [
+            {
+              "type": "message_volume_spike",
+              "current": 5141,
+              "baseline": 2081.9,
+              "ratio": 2.47
+            },
+            {
+              "type": "token_usage_spike",
+              "current": 1718700,
+              "baseline": 708689.7,
+              "ratio": 2.43
+            },
+            {
+              "type": "cost_delta_spike",
+              "currentUSD": 422.27370100000155,
+              "baselineUSD": 160.17,
+              "ratio": 2.64
+            }
+          ],
+          "anomalyCount": 3,
+          "sensitivity": 2.0,
+          "baseline": {
+            "dailyMessages": 2081.9,
+            "dailyTokens": 708690,
+            "dailyCostUSD": 160.17
+          },
+          "current": {
+            "messages": 5141,
+            "tokens": 1718700,
+            "costUSD": 422.27370100000155
+          }
+        },
+        "budget_context": {},
+        "delivered_local": false,
+        "delivered_inbox": false,
+        "suppressed": true
+      },
+      {
+        "schema_version": 1,
+        "record_type": "alert_event",
+        "ts": "2026-03-31T00:46:17Z",
+        "alert_id": "5832d0151d2829da",
+        "severity": "warn",
+        "category": "anomaly",
+        "dedup_key": "anomaly:3",
+        "trigger_source": "cost_runtime:anomaly-check",
+        "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+        "session_key": "",
+        "cost_context": {
+          "anomalies": [
+            {
+              "type": "message_volume_spike",
+              "current": 5141,
+              "baseline": 2081.9,
+              "ratio": 2.47
+            },
+            {
+              "type": "token_usage_spike",
+              "current": 1718700,
+              "baseline": 708689.7,
+              "ratio": 2.43
+            },
+            {
+              "type": "cost_delta_spike",
+              "currentUSD": 422.27370100000155,
+              "baselineUSD": 160.17,
+              "ratio": 2.64
+            }
+          ],
+          "anomalyCount": 3,
+          "sensitivity": 2.0,
+          "baseline": {
+            "dailyMessages": 2081.9,
+            "dailyTokens": 708690,
+            "dailyCostUSD": 160.17
+          },
+          "current": {
+            "messages": 5141,
+            "tokens": 1718700,
+            "costUSD": 422.27370100000155
+          }
+        },
+        "budget_context": {},
+        "delivered_local": false,
+        "delivered_inbox": false,
+        "suppressed": true
+      },
+      {
+        "schema_version": 1,
+        "record_type": "alert_event",
+        "ts": "2026-03-31T01:01:19Z",
+        "alert_id": "86b8c00036ae8f23",
+        "severity": "warn",
+        "category": "anomaly",
+        "dedup_key": "anomaly:3",
+        "trigger_source": "cost_runtime:burn-rate-check",
+        "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+        "session_key": "",
+        "cost_context": {
+          "anomalies": [
+            {
+              "type": "message_volume_spike",
+              "current": 5141,
+              "baseline": 2081.9,
+              "ratio": 2.47
+            },
+            {
+              "type": "token_usage_spike",
+              "current": 1718700,
+              "baseline": 708689.7,
+              "ratio": 2.43
+            },
+            {
+              "type": "cost_delta_spike",
+              "currentUSD": 422.27370100000155,
+              "baselineUSD": 160.17,
+              "ratio": 2.64
+            }
+          ],
+          "anomalyCount": 3,
+          "sensitivity": 2.0,
+          "baseline": {
+            "dailyMessages": 2081.9,
+            "dailyTokens": 708690,
+            "dailyCostUSD": 160.17
+          },
+          "current": {
+            "messages": 5141,
+            "tokens": 1718700,
+            "costUSD": 422.27370100000155
+          }
+        },
+        "budget_context": {},
+        "delivered_local": true,
+        "delivered_inbox": true,
+        "suppressed": false
+      },
+      {
+        "schema_version": 1,
+        "record_type": "alert_event",
+        "ts": "2026-03-31T01:01:20Z",
+        "alert_id": "6c11d55deaa2cb84",
+        "severity": "warn",
+        "category": "anomaly",
+        "dedup_key": "anomaly:3",
+        "trigger_source": "cost_runtime:anomaly-check",
+        "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+        "session_key": "",
+        "cost_context": {
+          "anomalies": [
+            {
+              "type": "message_volume_spike",
+              "current": 5141,
+              "baseline": 2081.9,
+              "ratio": 2.47
+            },
+            {
+              "type": "token_usage_spike",
+              "current": 1718700,
+              "baseline": 708689.7,
+              "ratio": 2.43
+            },
+            {
+              "type": "cost_delta_spike",
+              "currentUSD": 422.27370100000155,
+              "baselineUSD": 160.17,
+              "ratio": 2.64
+            }
+          ],
+          "anomalyCount": 3,
+          "sensitivity": 2.0,
+          "baseline": {
+            "dailyMessages": 2081.9,
+            "dailyTokens": 708690,
+            "dailyCostUSD": 160.17
+          },
+          "current": {
+            "messages": 5141,
+            "tokens": 1718700,
+            "costUSD": 422.27370100000155
+          }
+        },
+        "budget_context": {},
+        "delivered_local": false,
+        "delivered_inbox": false,
+        "suppressed": true
+      },
+      {
+        "schema_version": 1,
+        "record_type": "alert_event",
+        "ts": "2026-03-31T01:16:22Z",
+        "alert_id": "a6a3059750d4a77e",
+        "severity": "warn",
+        "category": "anomaly",
+        "dedup_key": "anomaly:3",
+        "trigger_source": "cost_runtime:burn-rate-check",
+        "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+        "session_key": "",
+        "cost_context": {
+          "anomalies": [
+            {
+              "type": "message_volume_spike",
+              "current": 5141,
+              "baseline": 2081.9,
+              "ratio": 2.47
+            },
+            {
+              "type": "token_usage_spike",
+              "current": 1718700,
+              "baseline": 708689.7,
+              "ratio": 2.43
+            },
+            {
+              "type": "cost_delta_spike",
+              "currentUSD": 422.27370100000155,
+              "baselineUSD": 160.17,
+              "ratio": 2.64
+            }
+          ],
+          "anomalyCount": 3,
+          "sensitivity": 2.0,
+          "baseline": {
+            "dailyMessages": 2081.9,
+            "dailyTokens": 708690,
+            "dailyCostUSD": 160.17
+          },
+          "current": {
+            "messages": 5141,
+            "tokens": 1718700,
+            "costUSD": 422.27370100000155
+          }
+        },
+        "budget_context": {},
+        "delivered_local": false,
+        "delivered_inbox": false,
+        "suppressed": true
+      },
+      {
+        "schema_version": 1,
+        "record_type": "alert_event",
+        "ts": "2026-03-31T01:16:24Z",
+        "alert_id": "c1a9622a7abf5678",
+        "severity": "warn",
+        "category": "anomaly",
+        "dedup_key": "anomaly:3",
+        "trigger_source": "cost_runtime:anomaly-check",
+        "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+        "session_key": "",
+        "cost_context": {
+          "anomalies": [
+            {
+              "type": "message_volume_spike",
+              "current": 5141,
+              "baseline": 2081.9,
+              "ratio": 2.47
+            },
+            {
+              "type": "token_usage_spike",
+              "current": 1718700,
+              "baseline": 708689.7,
+              "ratio": 2.43
+            },
+            {
+              "type": "cost_delta_spike",
+              "currentUSD": 422.27370100000155,
+              "baselineUSD": 160.17,
+              "ratio": 2.64
+            }
+          ],
+          "anomalyCount": 3,
+          "sensitivity": 2.0,
+          "baseline": {
+            "dailyMessages": 2081.9,
+            "dailyTokens": 708690,
+            "dailyCostUSD": 160.17
+          },
+          "current": {
+            "messages": 5141,
+            "tokens": 1718700,
+            "costUSD": 422.27370100000155
+          }
+        },
+        "budget_context": {},
+        "delivered_local": false,
+        "delivered_inbox": false,
+        "suppressed": true
+      },
+      {
+        "schema_version": 1,
+        "record_type": "alert_event",
+        "ts": "2026-03-31T01:31:26Z",
+        "alert_id": "29bd395ba3d4ac3f",
+        "severity": "warn",
+        "category": "anomaly",
+        "dedup_key": "anomaly:3",
+        "trigger_source": "cost_runtime:burn-rate-check",
+        "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+        "session_key": "",
+        "cost_context": {
+          "anomalies": [
+            {
+              "type": "message_volume_spike",
+              "current": 5141,
+              "baseline": 2081.9,
+              "ratio": 2.47
+            },
+            {
+              "type": "token_usage_spike",
+              "current": 1718700,
+              "baseline": 708689.7,
+              "ratio": 2.43
+            },
+            {
+              "type": "cost_delta_spike",
+              "currentUSD": 422.27370100000155,
+              "baselineUSD": 160.17,
+              "ratio": 2.64
+            }
+          ],
+          "anomalyCount": 3,
+          "sensitivity": 2.0,
+          "baseline": {
+            "dailyMessages": 2081.9,
+            "dailyTokens": 708690,
+            "dailyCostUSD": 160.17
+          },
+          "current": {
+            "messages": 5141,
+            "tokens": 1718700,
+            "costUSD": 422.27370100000155
+          }
+        },
+        "budget_context": {},
+        "delivered_local": true,
+        "delivered_inbox": true,
+        "suppressed": false
+      },
+      {
+        "schema_version": 1,
+        "record_type": "alert_event",
+        "ts": "2026-03-31T01:31:27Z",
+        "alert_id": "a4430907df100270",
+        "severity": "warn",
+        "category": "anomaly",
+        "dedup_key": "anomaly:3",
+        "trigger_source": "cost_runtime:anomaly-check",
+        "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+        "session_key": "",
+        "cost_context": {
+          "anomalies": [
+            {
+              "type": "message_volume_spike",
+              "current": 5141,
+              "baseline": 2081.9,
+              "ratio": 2.47
+            },
+            {
+              "type": "token_usage_spike",
+              "current": 1718700,
+              "baseline": 708689.7,
+              "ratio": 2.43
+            },
+            {
+              "type": "cost_delta_spike",
+              "currentUSD": 422.27370100000155,
+              "baselineUSD": 160.17,
+              "ratio": 2.64
+            }
+          ],
+          "anomalyCount": 3,
+          "sensitivity": 2.0,
+          "baseline": {
+            "dailyMessages": 2081.9,
+            "dailyTokens": 708690,
+            "dailyCostUSD": 160.17
+          },
+          "current": {
+            "messages": 5141,
+            "tokens": 1718700,
+            "costUSD": 422.27370100000155
+          }
+        },
+        "budget_context": {},
+        "delivered_local": false,
+        "delivered_inbox": false,
+        "suppressed": true
+      },
+      {
+        "schema_version": 1,
+        "record_type": "alert_event",
+        "ts": "2026-03-31T01:46:29Z",
+        "alert_id": "5e08bbe1d0d00ab8",
+        "severity": "warn",
+        "category": "anomaly",
+        "dedup_key": "anomaly:3",
+        "trigger_source": "cost_runtime:burn-rate-check",
+        "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+        "session_key": "",
+        "cost_context": {
+          "anomalies": [
+            {
+              "type": "message_volume_spike",
+              "current": 5141,
+              "baseline": 2081.9,
+              "ratio": 2.47
+            },
+            {
+              "type": "token_usage_spike",
+              "current": 1718700,
+              "baseline": 708689.7,
+              "ratio": 2.43
+            },
+            {
+              "type": "cost_delta_spike",
+              "currentUSD": 422.27370100000155,
+              "baselineUSD": 160.17,
+              "ratio": 2.64
+            }
+          ],
+          "anomalyCount": 3,
+          "sensitivity": 2.0,
+          "baseline": {
+            "dailyMessages": 2081.9,
+            "dailyTokens": 708690,
+            "dailyCostUSD": 160.17
+          },
+          "current": {
+            "messages": 5141,
+            "tokens": 1718700,
+            "costUSD": 422.27370100000155
+          }
+        },
+        "budget_context": {},
+        "delivered_local": false,
+        "delivered_inbox": false,
+        "suppressed": true
+      },
+      {
+        "schema_version": 1,
+        "record_type": "alert_event",
+        "ts": "2026-03-31T01:46:31Z",
+        "alert_id": "8adf3268f0578e1b",
+        "severity": "warn",
+        "category": "anomaly",
+        "dedup_key": "anomaly:3",
+        "trigger_source": "cost_runtime:anomaly-check",
+        "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+        "session_key": "",
+        "cost_context": {
+          "anomalies": [
+            {
+              "type": "message_volume_spike",
+              "current": 5141,
+              "baseline": 2081.9,
+              "ratio": 2.47
+            },
+            {
+              "type": "token_usage_spike",
+              "current": 1718700,
+              "baseline": 708689.7,
+              "ratio": 2.43
+            },
+            {
+              "type": "cost_delta_spike",
+              "currentUSD": 422.27370100000155,
+              "baselineUSD": 160.17,
+              "ratio": 2.64
+            }
+          ],
+          "anomalyCount": 3,
+          "sensitivity": 2.0,
+          "baseline": {
+            "dailyMessages": 2081.9,
+            "dailyTokens": 708690,
+            "dailyCostUSD": 160.17
+          },
+          "current": {
+            "messages": 5141,
+            "tokens": 1718700,
+            "costUSD": 422.27370100000155
+          }
+        },
+        "budget_context": {},
+        "delivered_local": false,
+        "delivered_inbox": false,
+        "suppressed": true
+      }
+    ],
+    "suppressed": {
+      "anomaly:1": 23,
+      "anomaly:2": 144,
+      "anomaly:3": 241
+    },
+    "active": {
+      "anomaly:1": {
+        "severity": "warn",
+        "category": "anomaly",
+        "message": "Cost anomalies detected: 1 (sensitivity=2.0)",
+        "last_seen": 1774657295.014484
+      },
+      "anomaly:2": {
+        "severity": "warn",
+        "category": "anomaly",
+        "message": "Cost anomalies detected: 2 (sensitivity=2.0)",
+        "last_seen": 1774856409.477469
+      },
+      "anomaly:3": {
+        "severity": "warn",
+        "category": "anomaly",
+        "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+        "last_seen": 1774921591.2371452
+      }
+    }
+  },
+  "blocks": {
+    "count": 0,
+    "top_rules": {},
+    "warnings": 0,
+    "shadow_near_misses": 0
+  },
+  "agents": {
+    "spawn_attempts_allowed": 0,
+    "usage_records": 0,
+    "completed": 0,
+    "tokens": 0,
+    "cost_usd": 0,
+    "types": {}
+  },
+  "sessions": {
+    "active_count_estimate": 0,
+    "top": []
+  },
+  "self_heal": {
+    "events": 0,
+    "recent": []
+  },
+  "anomalies": {
+    "burn_rate": {
+      "alert": false,
+      "message": "No alert",
+      "projectedDailyUSD": 66.46069440000002,
+      "limitUSD": 0,
+      "currentUSD": 74.84081900000005,
+      "hoursToExhaustion": null,
+      "hourlyBurnUSD": 2.7691956000000006,
+      "scope": "global"
+    },
+    "cost_anomaly": {
+      "anomalies": [],
+      "anomalyCount": 0,
+      "sensitivity": 2.0,
+      "baseline": {
+        "dailyMessages": 706.3,
+        "dailyTokens": 188056,
+        "dailyCostUSD": 53.53
+      },
+      "current": {
+        "messages": 764,
+        "tokens": 158592,
+        "costUSD": 74.34752800000007
+      }
+    },
+    "trends": {
+      "schema_version": 1,
+      "generated_at": "2026-04-07T10:00:06Z",
+      "window_days": 7,
+      "series": [
+        {
+          "date": "2026-04-01",
+          "messages": 333,
+          "input_tokens": 3284,
+          "output_tokens": 63475,
+          "cache_read_tokens": 8939582,
+          "total_tokens": 66759,
+          "cost_usd": 3.6344,
+          "day_over_day_cost_delta_usd": -63.9789,
+          "rolling_7d_avg_cost_usd": 63.5973
+        },
+        {
+          "date": "2026-04-02",
+          "messages": 0,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "cache_read_tokens": 0,
+          "total_tokens": 0,
+          "cost_usd": 0.0,
+          "day_over_day_cost_delta_usd": -3.6344,
+          "rolling_7d_avg_cost_usd": 56.1431
+        },
+        {
+          "date": "2026-04-03",
+          "messages": 2345,
+          "input_tokens": 59720,
+          "output_tokens": 449600,
+          "cache_read_tokens": 240805206,
+          "total_tokens": 509320,
+          "cost_usd": 78.9865,
+          "day_over_day_cost_delta_usd": 78.9865,
+          "rolling_7d_avg_cost_usd": 60.0601
+        },
+        {
+          "date": "2026-04-04",
+          "messages": 1324,
+          "input_tokens": 165819,
+          "output_tokens": 358581,
+          "cache_read_tokens": 81717191,
+          "total_tokens": 524400,
+          "cost_usd": 29.8948,
+          "day_over_day_cost_delta_usd": -49.0917,
+          "rolling_7d_avg_cost_usd": 62.4761
+        },
+        {
+          "date": "2026-04-05",
+          "messages": 178,
+          "input_tokens": 2888,
+          "output_tokens": 54436,
+          "cache_read_tokens": 14690745,
+          "total_tokens": 57324,
+          "cost_usd": 5.224,
+          "day_over_day_cost_delta_usd": -24.6708,
+          "rolling_7d_avg_cost_usd": 53.3733
+        },
+        {
+          "date": "2026-04-06",
+          "messages": 0,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "cache_read_tokens": 0,
+          "total_tokens": 0,
+          "cost_usd": 0.0,
+          "day_over_day_cost_delta_usd": -5.224,
+          "rolling_7d_avg_cost_usd": 26.479
+        },
+        {
+          "date": "2026-04-07",
+          "messages": 766,
+          "input_tokens": 1819,
+          "output_tokens": 156801,
+          "cache_read_tokens": 48781619,
+          "total_tokens": 158620,
+          "cost_usd": 16.987,
+          "day_over_day_cost_delta_usd": 16.987,
+          "rolling_7d_avg_cost_usd": 19.2467
+        }
+      ],
+      "summary": {
+        "total_cost_usd": 134.7267,
+        "total_messages": 4946,
+        "total_tokens": 1316423,
+        "day_over_day_delta_usd": 16.987,
+        "week_over_week_delta_usd": -50.6263,
+        "moving_average_7d_cost_usd": 19.2467
+      },
+      "budget_thresholds": {
+        "warnPct": 80,
+        "critPct": 95
+      },
+      "legacy_series": [
+        {
+          "window": "today",
+          "costUSD": 16.987,
+          "messages": 766,
+          "inputTokens": 1819,
+          "outputTokens": 156801,
+          "dailyAvgCostUSD": 16.987,
+          "dailyAvgMessages": 766.0
+        },
+        {
+          "window": "week",
+          "costUSD": 134.7267,
+          "messages": 4946,
+          "inputTokens": 233530,
+          "outputTokens": 1082893,
+          "dailyAvgCostUSD": 19.25,
+          "dailyAvgMessages": 706.6
+        },
+        {
+          "window": "month",
+          "costUSD": 2124.5587,
+          "messages": 83160,
+          "inputTokens": 6286904,
+          "outputTokens": 21710106,
+          "dailyAvgCostUSD": 70.82,
+          "dailyAvgMessages": 2772.0
+        }
+      ],
+      "weekOverWeekChangePct": -11.8,
+      "cache": {
+        "hit": false
+      }
+    }
+  },
+  "data_quality": {
+    "audit": {
+      "lines": 179,
+      "parsed": 179,
+      "malformed": 0,
+      "missing": 0
+    },
+    "metrics": {
+      "lines": 21,
+      "parsed": 21,
+      "malformed": 0,
+      "missing": 0
+    },
+    "self_heal": {
+      "lines": 0,
+      "parsed": 0,
+      "malformed": 0,
+      "missing": 1
+    }
+  },
+  "sources": {
+    "/Users/drewdawson/.claude/hooks/session-state/audit.jsonl": {
+      "exists": true,
+      "mtime": "2026-03-24T04:23:58Z",
+      "age_seconds": 1229768.1,
+      "size": 62097
+    },
+    "/Users/drewdawson/.claude/hooks/session-state/agent-metrics.jsonl": {
+      "exists": true,
+      "mtime": "2026-04-04T23:34:44Z",
+      "age_seconds": 210322.7,
+      "size": 7350
+    },
+    "/Users/drewdawson/.claude/hooks/session-state/self-heal.jsonl": {
+      "exists": false
+    },
+    "/Users/drewdawson/.claude/cost/cache.json": {
+      "exists": true,
+      "mtime": "2026-04-07T10:00:05Z",
+      "age_seconds": 1.3,
+      "size": 363542
+    },
+    "/Users/drewdawson/.claude/cost/usage-index.json": {
+      "exists": true,
+      "mtime": "2026-04-07T10:00:05Z",
+      "age_seconds": 1.5,
+      "size": 301153
+    },
+    "/Users/drewdawson/.claude/cost/budgets.json": {
+      "exists": true,
+      "mtime": "2026-03-07T07:54:49Z",
+      "age_seconds": 2685917.4,
+      "size": 159
+    },
+    "/Users/drewdawson/.claude/cost/alerts.jsonl": {
+      "exists": true,
+      "mtime": "2026-03-31T01:46:31Z",
+      "age_seconds": 634415.8,
+      "size": 619469
+    }
+  },
+  "timeline": [
+    {
+      "ts": "2026-03-30T22:15:22Z",
+      "source": "alerts",
+      "event": "anomaly",
+      "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+      "severity": "warn"
+    },
+    {
+      "ts": "2026-03-30T22:15:23Z",
+      "source": "alerts",
+      "event": "anomaly",
+      "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+      "severity": "warn"
+    },
+    {
+      "ts": "2026-03-30T22:30:25Z",
+      "source": "alerts",
+      "event": "anomaly",
+      "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+      "severity": "warn"
+    },
+    {
+      "ts": "2026-03-30T22:30:27Z",
+      "source": "alerts",
+      "event": "anomaly",
+      "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+      "severity": "warn"
+    },
+    {
+      "ts": "2026-03-30T22:45:29Z",
+      "source": "alerts",
+      "event": "anomaly",
+      "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+      "severity": "warn"
+    },
+    {
+      "ts": "2026-03-30T22:45:30Z",
+      "source": "alerts",
+      "event": "anomaly",
+      "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+      "severity": "warn"
+    },
+    {
+      "ts": "2026-03-30T23:00:41Z",
+      "source": "alerts",
+      "event": "anomaly",
+      "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+      "severity": "warn"
+    },
+    {
+      "ts": "2026-03-30T23:00:42Z",
+      "source": "alerts",
+      "event": "anomaly",
+      "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+      "severity": "warn"
+    },
+    {
+      "ts": "2026-03-30T23:15:53Z",
+      "source": "alerts",
+      "event": "anomaly",
+      "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+      "severity": "warn"
+    },
+    {
+      "ts": "2026-03-30T23:15:54Z",
+      "source": "alerts",
+      "event": "anomaly",
+      "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+      "severity": "warn"
+    },
+    {
+      "ts": "2026-03-30T23:30:57Z",
+      "source": "alerts",
+      "event": "anomaly",
+      "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+      "severity": "warn"
+    },
+    {
+      "ts": "2026-03-30T23:30:58Z",
+      "source": "alerts",
+      "event": "anomaly",
+      "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+      "severity": "warn"
+    },
+    {
+      "ts": "2026-03-30T23:46:00Z",
+      "source": "alerts",
+      "event": "anomaly",
+      "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+      "severity": "warn"
+    },
+    {
+      "ts": "2026-03-30T23:46:02Z",
+      "source": "alerts",
+      "event": "anomaly",
+      "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+      "severity": "warn"
+    },
+    {
+      "ts": "2026-03-31T00:01:04Z",
+      "source": "alerts",
+      "event": "anomaly",
+      "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+      "severity": "warn"
+    },
+    {
+      "ts": "2026-03-31T00:01:06Z",
+      "source": "alerts",
+      "event": "anomaly",
+      "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+      "severity": "warn"
+    },
+    {
+      "ts": "2026-03-31T00:16:08Z",
+      "source": "alerts",
+      "event": "anomaly",
+      "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+      "severity": "warn"
+    },
+    {
+      "ts": "2026-03-31T00:16:09Z",
+      "source": "alerts",
+      "event": "anomaly",
+      "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+      "severity": "warn"
+    },
+    {
+      "ts": "2026-03-31T00:31:12Z",
+      "source": "alerts",
+      "event": "anomaly",
+      "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+      "severity": "warn"
+    },
+    {
+      "ts": "2026-03-31T00:31:13Z",
+      "source": "alerts",
+      "event": "anomaly",
+      "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+      "severity": "warn"
+    },
+    {
+      "ts": "2026-03-31T00:46:15Z",
+      "source": "alerts",
+      "event": "anomaly",
+      "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+      "severity": "warn"
+    },
+    {
+      "ts": "2026-03-31T00:46:17Z",
+      "source": "alerts",
+      "event": "anomaly",
+      "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+      "severity": "warn"
+    },
+    {
+      "ts": "2026-03-31T01:01:19Z",
+      "source": "alerts",
+      "event": "anomaly",
+      "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+      "severity": "warn"
+    },
+    {
+      "ts": "2026-03-31T01:01:20Z",
+      "source": "alerts",
+      "event": "anomaly",
+      "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+      "severity": "warn"
+    },
+    {
+      "ts": "2026-03-31T01:16:22Z",
+      "source": "alerts",
+      "event": "anomaly",
+      "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+      "severity": "warn"
+    },
+    {
+      "ts": "2026-03-31T01:16:24Z",
+      "source": "alerts",
+      "event": "anomaly",
+      "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+      "severity": "warn"
+    },
+    {
+      "ts": "2026-03-31T01:31:26Z",
+      "source": "alerts",
+      "event": "anomaly",
+      "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+      "severity": "warn"
+    },
+    {
+      "ts": "2026-03-31T01:31:27Z",
+      "source": "alerts",
+      "event": "anomaly",
+      "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+      "severity": "warn"
+    },
+    {
+      "ts": "2026-03-31T01:46:29Z",
+      "source": "alerts",
+      "event": "anomaly",
+      "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+      "severity": "warn"
+    },
+    {
+      "ts": "2026-03-31T01:46:31Z",
+      "source": "alerts",
+      "event": "anomaly",
+      "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+      "severity": "warn"
+    }
+  ]
+}

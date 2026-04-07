@@ -1,0 +1,127 @@
+{
+  "generatedAt": "2026-03-02T10:11:52Z",
+  "datesCovered": [
+    "2026-02-16",
+    "2026-02-17",
+    "2026-02-18",
+    "2026-02-19",
+    "2026-02-20",
+    "2026-02-21",
+    "2026-02-22"
+  ],
+  "daysCount": 7,
+  "totals": {
+    "inputTokens": 414714,
+    "outputTokens": 1898277,
+    "cacheCreationTokens": 131308203,
+    "cacheReadTokens": 2137327686,
+    "costUSD": 1993.11,
+    "messages": 27054,
+    "sessions": 465
+  },
+  "models": {
+    "claude-opus-4-6": {
+      "messages": 13221,
+      "inputTokens": 261565,
+      "outputTokens": 1659535,
+      "cacheCreationTokens": 62329388,
+      "cacheReadTokens": 1351422336,
+      "costUSD": 1341.81
+    },
+    "claude-sonnet-4-5": {
+      "messages": 12488,
+      "inputTokens": 98238,
+      "outputTokens": 42958,
+      "cacheCreationTokens": 59546769,
+      "cacheReadTokens": 675557927,
+      "costUSD": 560.89
+    },
+    "<synthetic>": {
+      "messages": 38,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "cacheCreationTokens": 0,
+      "cacheReadTokens": 0,
+      "costUSD": 0.0
+    },
+    "claude-sonnet-4-6": {
+      "messages": 1294,
+      "inputTokens": 25675,
+      "outputTokens": 195743,
+      "cacheCreationTokens": 8988866,
+      "cacheReadTokens": 109637501,
+      "costUSD": 89.44
+    },
+    "claude-haiku-4-5": {
+      "messages": 13,
+      "inputTokens": 29236,
+      "outputTokens": 41,
+      "cacheCreationTokens": 443180,
+      "cacheReadTokens": 709922,
+      "costUSD": 0.99
+    }
+  },
+  "agents": {
+    "spawned": 57,
+    "blocked": 33,
+    "byType": {
+      "unknown": {
+        "count": 57,
+        "tokens": 0,
+        "costUSD": 0.0
+      }
+    }
+  },
+  "guard": {
+    "allows": 56,
+    "blocks": 33,
+    "estimatedTokensSaved": 0,
+    "estimatedCostSaved": 0.0,
+    "blocksByRule": {
+      "one_per_session limit": 6,
+      "max_per_type limit": 3,
+      "session_cap limit": 2,
+      "necessity_check": 3,
+      "duplicate_file": 18,
+      "sequential_reads": 1
+    }
+  },
+  "dailyCosts": [
+    {
+      "date": "2026-02-16",
+      "costUSD": 111.97,
+      "messages": 1490
+    },
+    {
+      "date": "2026-02-17",
+      "costUSD": 271.77,
+      "messages": 3445
+    },
+    {
+      "date": "2026-02-18",
+      "costUSD": 58.72,
+      "messages": 822
+    },
+    {
+      "date": "2026-02-19",
+      "costUSD": 397.4,
+      "messages": 4864
+    },
+    {
+      "date": "2026-02-20",
+      "costUSD": 122.07,
+      "messages": 1731
+    },
+    {
+      "date": "2026-02-21",
+      "costUSD": 522.01,
+      "messages": 7711
+    },
+    {
+      "date": "2026-02-22",
+      "costUSD": 509.17,
+      "messages": 6991
+    }
+  ],
+  "isoWeek": "2026-W08"
+}

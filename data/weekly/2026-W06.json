@@ -1,0 +1,90 @@
+{
+  "generatedAt": "2026-02-26T03:55:20Z",
+  "datesCovered": [
+    "2026-02-02",
+    "2026-02-03",
+    "2026-02-04",
+    "2026-02-05",
+    "2026-02-06",
+    "2026-02-07",
+    "2026-02-08"
+  ],
+  "daysCount": 7,
+  "totals": {
+    "inputTokens": 296485,
+    "outputTokens": 505124,
+    "cacheCreationTokens": 21038756,
+    "cacheReadTokens": 379883137,
+    "costUSD": 414.43,
+    "messages": 4170,
+    "sessions": 31
+  },
+  "models": {
+    "claude-opus-4-5": {
+      "messages": 4168,
+      "inputTokens": 296485,
+      "outputTokens": 505124,
+      "cacheCreationTokens": 21038756,
+      "cacheReadTokens": 379883137,
+      "costUSD": 414.43
+    },
+    "<synthetic>": {
+      "messages": 2,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "cacheCreationTokens": 0,
+      "cacheReadTokens": 0,
+      "costUSD": 0.0
+    }
+  },
+  "agents": {
+    "spawned": 0,
+    "blocked": 0,
+    "byType": {}
+  },
+  "guard": {
+    "allows": 0,
+    "blocks": 0,
+    "estimatedTokensSaved": 0,
+    "estimatedCostSaved": 0.0,
+    "blocksByRule": {}
+  },
+  "dailyCosts": [
+    {
+      "date": "2026-02-02",
+      "costUSD": 12.18,
+      "messages": 85
+    },
+    {
+      "date": "2026-02-03",
+      "costUSD": 69.63,
+      "messages": 757
+    },
+    {
+      "date": "2026-02-04",
+      "costUSD": 93.52,
+      "messages": 1030
+    },
+    {
+      "date": "2026-02-05",
+      "costUSD": 64.41,
+      "messages": 534
+    },
+    {
+      "date": "2026-02-06",
+      "costUSD": 83.99,
+      "messages": 804
+    },
+    {
+      "date": "2026-02-07",
+      "costUSD": 84.35,
+      "messages": 883
+    },
+    {
+      "date": "2026-02-08",
+      "costUSD": 6.35,
+      "messages": 77
+    }
+  ],
+  "isoWeek": "2026-W06"
+}

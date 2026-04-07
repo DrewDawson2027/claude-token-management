@@ -1,0 +1,138 @@
+{
+  "generatedAt": "2026-03-09T09:11:30Z",
+  "datesCovered": [
+    "2026-02-23",
+    "2026-02-24",
+    "2026-02-25",
+    "2026-02-26"
+  ],
+  "daysCount": 4,
+  "totals": {
+    "inputTokens": 221046,
+    "outputTokens": 686691,
+    "cacheCreationTokens": 38697939,
+    "cacheReadTokens": 660309259,
+    "costUSD": 576.96,
+    "messages": 9667,
+    "sessions": 253
+  },
+  "models": {
+    "claude-sonnet-4-6": {
+      "messages": 1438,
+      "inputTokens": 15958,
+      "outputTokens": 193466,
+      "cacheCreationTokens": 7785031,
+      "cacheReadTokens": 140545559,
+      "costUSD": 91.83
+    },
+    "claude-opus-4-6": {
+      "messages": 3493,
+      "inputTokens": 149295,
+      "outputTokens": 309399,
+      "cacheCreationTokens": 16608488,
+      "cacheReadTokens": 329491605,
+      "costUSD": 339.31
+    },
+    "<synthetic>": {
+      "messages": 407,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "cacheCreationTokens": 0,
+      "cacheReadTokens": 0,
+      "costUSD": 0.0
+    },
+    "qwen2.5-coder:14b": {
+      "messages": 3,
+      "inputTokens": 12288,
+      "outputTokens": 369,
+      "cacheCreationTokens": 0,
+      "cacheReadTokens": 0,
+      "costUSD": 0.04
+    },
+    "claude-sonnet-4-5": {
+      "messages": 4291,
+      "inputTokens": 43505,
+      "outputTokens": 183246,
+      "cacheCreationTokens": 14304420,
+      "cacheReadTokens": 190272095,
+      "costUSD": 145.79
+    },
+    "local-fast": {
+      "messages": 2,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "cacheCreationTokens": 0,
+      "cacheReadTokens": 0,
+      "costUSD": 0.0
+    },
+    "gemini-flash": {
+      "messages": 12,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "cacheCreationTokens": 0,
+      "cacheReadTokens": 0,
+      "costUSD": 0.0
+    },
+    "gemini-pro": {
+      "messages": 21,
+      "inputTokens": 0,
+      "outputTokens": 211,
+      "cacheCreationTokens": 0,
+      "cacheReadTokens": 0,
+      "costUSD": 0.0
+    }
+  },
+  "agents": {
+    "spawned": 154,
+    "blocked": 3,
+    "byType": {
+      "unknown": {
+        "count": 152,
+        "tokens": 0,
+        "costUSD": 0.0
+      },
+      "general-purpose": {
+        "count": 1,
+        "tokens": 288,
+        "costUSD": 0.99
+      },
+      "Explore": {
+        "count": 1,
+        "tokens": 0,
+        "costUSD": 0.0
+      }
+    }
+  },
+  "guard": {
+    "allows": 4,
+    "blocks": 3,
+    "estimatedTokensSaved": 0,
+    "estimatedCostSaved": 0.0,
+    "blocksByRule": {
+      "necessity_check": 3
+    }
+  },
+  "dailyCosts": [
+    {
+      "date": "2026-02-23",
+      "costUSD": 138.22,
+      "messages": 2743
+    },
+    {
+      "date": "2026-02-24",
+      "costUSD": 183.49,
+      "messages": 2779
+    },
+    {
+      "date": "2026-02-25",
+      "costUSD": 126.76,
+      "messages": 2335
+    },
+    {
+      "date": "2026-02-26",
+      "costUSD": 128.49,
+      "messages": 1810
+    }
+  ],
+  "isoWeek": "2026-W09"
+}

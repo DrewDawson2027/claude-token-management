@@ -1,0 +1,12 @@
+{
+  "global": {
+    "monthlyUSD": 200,
+    "dailyUSD": null
+  },
+  "teams": {},
+  "projects": {},
+  "thresholds": {
+    "warnPct": 80,
+    "critPct": 95
+  }
+}

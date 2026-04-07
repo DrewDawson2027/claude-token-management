@@ -1,0 +1,15 @@
+{
+  "backend": "ccusage",
+  "offlineDefault": true,
+  "costSourceDefault": "both",
+  "statusline": {
+    "enabled": true,
+    "fallbackHookPrint": true,
+    "hookCooldownSeconds": 30,
+    "showOnlyOnChange": true
+  },
+  "timeouts": {
+    "ccusageSeconds": 10,
+    "statuslineSeconds": 4
+  }
+}

@@ -1,0 +1,505 @@
+{
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+    "ENABLE_CLAUDEAI_MCP_SERVERS": "true",
+    "ENABLE_TOOL_SEARCH": "auto:5",
+    "MAX_THINKING_TOKENS": "8000"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(python3 *)",
+      "Bash(pip3 *)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(gh pr *)",
+      "Bash(npm *)",
+      "Bash(node *)",
+      "Bash(ollama *)",
+      "Bash(brew list*)",
+      "Bash(brew info*)",
+      "Edit(~/.claude/**)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(bun *)",
+      "Bash(bun test *)",
+      "Bash(bun run *)",
+      "Bash(npx *)",
+      "Bash(pytest *)",
+      "Bash(gh issue *)",
+      "Bash(gh repo *)",
+      "Bash(prettier *)",
+      "Bash(black *)",
+      "Bash(eslint *)",
+      "Bash(tsc *)",
+      "Grep",
+      "Glob",
+      "AskUserQuestion",
+      "TeamCreate",
+      "TeamStatus",
+      "SendMessage",
+      "mcp__coordinator__coord_list_sessions",
+      "mcp__coordinator__coord_get_session",
+      "mcp__coordinator__coord_check_inbox",
+      "mcp__coordinator__coord_detect_conflicts",
+      "mcp__coordinator__coord_get_result",
+      "mcp__coordinator__coord_send_message",
+      "mcp__coordinator__coord_create_team",
+      "mcp__coordinator__coord_get_team",
+      "mcp__coordinator__coord_list_teams",
+      "mcp__coordinator__coord_team_dispatch",
+      "mcp__coordinator__coord_team_status_compact",
+      "mcp__coordinator__coord_team_queue_task",
+      "mcp__coordinator__coord_team_assign_next",
+      "mcp__coordinator__coord_team_rebalance",
+      "mcp__coordinator__coord_sidecar_status",
+      "mcp__coordinator__coord_send_directive",
+      "mcp__coordinator__coord_approve_plan",
+      "mcp__coordinator__coord_reject_plan",
+      "mcp__coordinator__coord_wake_session",
+      "mcp__coordinator__coord_create_task",
+      "mcp__coordinator__coord_update_task",
+      "mcp__coordinator__coord_list_tasks",
+      "mcp__coordinator__coord_get_task",
+      "mcp__coordinator__coord_shutdown_request",
+      "mcp__coordinator__coord_shutdown_response",
+      "mcp__coordinator__coord_write_context",
+      "mcp__coordinator__coord_read_context",
+      "mcp__coordinator__coord_export_context",
+      "mcp__coordinator__coord_broadcast",
+      "mcp__coordinator__coord_boot_snapshot",
+      "mcp__coordinator__coord_worker_report",
+      "mcp__coordinator__coord_reassign_task",
+      "mcp__coordinator__coord_get_task_audit",
+      "mcp__coordinator__coord_check_quality_gates",
+      "mcp__coordinator__coord_delete_team",
+      "mcp__coordinator__coord_update_team_policy",
+      "mcp__coordinator__coord_cost_comparison",
+      "mcp__coordinator__coord_cost_overview",
+      "mcp__coordinator__coord_cost_budget",
+      "mcp__coordinator__coord_cost_sessions",
+      "mcp__coordinator__coord_cost_teams",
+      "mcp__coordinator__coord_ops_today",
+      "mcp__coordinator__coord_ops_alerts",
+      "mcp__coordinator__coord_ops_trends",
+      "mcp__coordinator__coord_watch_output",
+      "mcp__coordinator__coord_list_agents",
+      "mcp__coordinator__coord_get_agent",
+      "mcp__coordinator__coord_create_agent",
+      "mcp__coordinator__coord_update_agent",
+      "mcp__coordinator__coord_delete_agent",
+      "mcp__coordinator__coord_sync_agent_manifest",
+      "mcp__coordinator__coord_spawn_terminal",
+      "mcp__coordinator__coord_spawn_worker",
+      "mcp__coordinator__coord_spawn_workers",
+      "mcp__coordinator__coord_kill_worker",
+      "mcp__coordinator__coord_resume_worker",
+      "mcp__coordinator__coord_upgrade_worker",
+      "mcp__coordinator__coord_run_pipeline",
+      "mcp__coordinator__coord_get_pipeline",
+      "mcp__coordinator__coord_quick_team",
+      "mcp__coordinator__coord_focus_worker",
+      "mcp__coordinator__coord_focus_next",
+      "mcp__coordinator__coord_unfocus"
+    ],
+    "deny": [
+      "Read(.env*)",
+      "Write(production.config.*)",
+      "Bash(sudo *)"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/lean-ralph-stop.sh",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/session-summary.py",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/ccusage-stop.sh",
+            "timeout": 8
+          },
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/learning-debrief.py",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/session-end-auto-commit.sh",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash|Read|Edit|Write|Grep|Glob|Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/terminal-heartbeat.sh",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/format-on-edit.py",
+            "timeout": 12
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/auto-review-dispatch.py",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Bash|Read|Edit|Write|Grep|Glob|Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/worker-status-push.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/token-guard.py",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/model-router.py",
+            "timeout": 3
+          }
+        ]
+      },
+      {
+        "matcher": "Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/worktree-router.py",
+            "timeout": 6
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/conflict-guard.sh",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/credential-guard.py",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/risky-command-guard.py",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/read-efficiency-guard.py",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/agent-lifecycle.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/agent-lifecycle.sh",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/agent-metrics.py",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/build-chain-dispatcher.py",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/session-tracker.py",
+            "timeout": 3
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/pre-compact-save.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/session-register.sh",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/cost-tagger.py",
+            "timeout": 3
+          },
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/session-memory-inject.py",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/auto-lint-installer.py",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "TeammateIdle": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/teammate-idle.py",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "TaskCompleted": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/task-completed.py",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.sh",
+    "padding": 1
+  },
+  "enabledPlugins": {
+    "frontend-design@claude-plugins-official": false,
+    "github@claude-plugins-official": true,
+    "code-review@claude-plugins-official": false,
+    "context7@claude-plugins-official": true,
+    "feature-dev@claude-plugins-official": false,
+    "commit-commands@claude-plugins-official": false,
+    "playwright@claude-plugins-official": false,
+    "security-guidance@claude-plugins-official": false,
+    "serena@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true,
+    "pyright-lsp@claude-plugins-official": true,
+    "Notion@claude-plugins-official": false,
+    "supabase@claude-plugins-official": false,
+    "pr-review-toolkit@claude-plugins-official": false,
+    "hookify@claude-plugins-official": false,
+    "linear@claude-plugins-official": false,
+    "figma@claude-plugins-official": false,
+    "greptile@claude-plugins-official": true,
+    "agent-sdk-dev@claude-plugins-official": false,
+    "plugin-dev@claude-plugins-official": false,
+    "explanatory-output-style@claude-plugins-official": false,
+    "ralph-loop@claude-plugins-official": false,
+    "php-lsp@claude-plugins-official": false,
+    "firebase@claude-plugins-official": false,
+    "huggingface-skills@claude-plugins-official": false,
+    "stripe@claude-plugins-official": false,
+    "business-analytics@claude-code-workflows": false,
+    "data-engineering@claude-code-workflows": false,
+    "developer-essentials@claude-code-workflows": false,
+    "javascript-typescript@claude-code-workflows": false,
+    "python-development@claude-code-workflows": false,
+    "backend-api-security@claude-code-workflows": false,
+    "database-design@claude-code-workflows": false,
+    "debugging-toolkit@claude-code-workflows": false,
+    "data-validation-suite@claude-code-workflows": false,
+    "api-testing-observability@claude-code-workflows": false,
+    "observability-monitoring@claude-code-workflows": false,
+    "payment-processing@claude-code-workflows": false,
+    "content-marketing@claude-code-workflows": false,
+    "application-performance@claude-code-workflows": false,
+    "comprehensive-review@claude-code-workflows": false,
+    "tdd-workflows@claude-code-workflows": false,
+    "code-refactoring@claude-code-workflows": false,
+    "performance-testing-review@claude-code-workflows": false,
+    "security-scanning@claude-code-workflows": false,
+    "code-documentation@claude-code-workflows": false,
+    "unit-testing@claude-code-workflows": false,
+    "git-pr-workflows@claude-code-workflows": false,
+    "claude-mem@thedotmack": true,
+    "superpowers@claude-plugins-official": false,
+    "claude-md-management@claude-plugins-official": false,
+    "learning-output-style@claude-plugins-official": false,
+    "firecrawl@claude-plugins-official": false,
+    "codex@openai-codex": false
+  },
+  "extraKnownMarketplaces": {
+    "openai-codex": {
+      "source": {
+        "source": "github",
+        "repo": "openai/codex-plugin-cc"
+      }
+    }
+  },
+  "effortLevel": "high",
+  "skipDangerousModePermissionPrompt": true,
+  "skipAutoPermissionPrompt": true,
+  "defaultMode": "auto",
+  "teammateMode": "in-process",
+  "mcpServers": {
+    "smartledger": {
+      "command": "/Users/drewdawson/projects/smartledger-mcp/.venv/bin/python",
+      "args": [
+        "-m",
+        "smartledger.server"
+      ],
+      "cwd": "/Users/drewdawson/projects/smartledger-mcp"
+    },
+    "coordinator": {
+      "command": "/opt/homebrew/bin/node",
+      "args": [
+        "/Users/drewdawson/.claude/mcp-coordinator/index.js"
+      ],
+      "env": {
+        "COORDINATOR_PROCESS": "1"
+      }
+    },
+    "yahoo-finance": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "yahoo-finance-mcp-server"
+      ]
+    },
+    "sec-edgar": {
+      "command": "/Users/drewdawson/Desktop/Perplexity-Stock-Pitch/.venv/bin/python",
+      "args": [
+        "-m",
+        "edgar.ai"
+      ],
+      "env": {
+        "EDGAR_IDENTITY": "Drew Dawson drewdawson@usc.edu"
+      }
+    },
+    "octagon": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "octagon-mcp@latest"
+      ],
+      "env": {
+        "OCTAGON_API_KEY": "NEEDS_FREE_SIGNUP"
+      }
+    },
+    "alpha-vantage": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@anthropic/alpha-vantage-mcp"
+      ],
+      "env": {
+        "ALPHA_VANTAGE_API_KEY": "NEEDS_FREE_SIGNUP"
+      }
+    },
+    "edgartools": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "edgartools[mcp]",
+        "edgartools-mcp"
+      ],
+      "disabled": false
+    },
+    "voxlink-finance": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@voxlink/finance-tools-mcp"
+      ],
+      "disabled": false
+    },
+    "financial-datasets": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@financial-datasets/mcp-server"
+      ],
+      "disabled": false
+    }
+  }
+}

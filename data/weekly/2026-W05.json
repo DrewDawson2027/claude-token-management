@@ -1,0 +1,86 @@
+{
+  "generatedAt": "2026-02-26T03:55:20Z",
+  "datesCovered": [
+    "2026-01-27",
+    "2026-01-28",
+    "2026-01-30",
+    "2026-01-31",
+    "2026-02-01"
+  ],
+  "daysCount": 5,
+  "totals": {
+    "inputTokens": 79395,
+    "outputTokens": 3029,
+    "cacheCreationTokens": 6865054,
+    "cacheReadTokens": 112016251,
+    "costUSD": 94.11,
+    "messages": 1454,
+    "sessions": 17
+  },
+  "models": {
+    "claude-sonnet-4": {
+      "messages": 767,
+      "inputTokens": 5500,
+      "outputTokens": 1626,
+      "cacheCreationTokens": 3460218,
+      "cacheReadTokens": 60502506,
+      "costUSD": 33.91
+    },
+    "claude-opus-4-5": {
+      "messages": 685,
+      "inputTokens": 73895,
+      "outputTokens": 1403,
+      "cacheCreationTokens": 3404836,
+      "cacheReadTokens": 51513745,
+      "costUSD": 60.2
+    },
+    "<synthetic>": {
+      "messages": 2,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "cacheCreationTokens": 0,
+      "cacheReadTokens": 0,
+      "costUSD": 0.0
+    }
+  },
+  "agents": {
+    "spawned": 0,
+    "blocked": 0,
+    "byType": {}
+  },
+  "guard": {
+    "allows": 0,
+    "blocks": 0,
+    "estimatedTokensSaved": 0,
+    "estimatedCostSaved": 0.0,
+    "blocksByRule": {}
+  },
+  "dailyCosts": [
+    {
+      "date": "2026-01-27",
+      "costUSD": 8.51,
+      "messages": 120
+    },
+    {
+      "date": "2026-01-28",
+      "costUSD": 23.63,
+      "messages": 605
+    },
+    {
+      "date": "2026-01-30",
+      "costUSD": 3.89,
+      "messages": 56
+    },
+    {
+      "date": "2026-01-31",
+      "costUSD": 2.27,
+      "messages": 34
+    },
+    {
+      "date": "2026-02-01",
+      "costUSD": 55.81,
+      "messages": 639
+    }
+  ],
+  "isoWeek": "2026-W05"
+}

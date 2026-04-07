@@ -1,0 +1,32 @@
+{
+  "last_sent": {
+    "anomaly:1": 1774656391.1268978,
+    "anomaly:2": 1774856402.171186,
+    "anomaly:3": 1774920686.348381
+  },
+  "suppressed": {
+    "anomaly:1": 23,
+    "anomaly:2": 144,
+    "anomaly:3": 241
+  },
+  "active": {
+    "anomaly:1": {
+      "severity": "warn",
+      "category": "anomaly",
+      "message": "Cost anomalies detected: 1 (sensitivity=2.0)",
+      "last_seen": 1774657295.014484
+    },
+    "anomaly:2": {
+      "severity": "warn",
+      "category": "anomaly",
+      "message": "Cost anomalies detected: 2 (sensitivity=2.0)",
+      "last_seen": 1774856409.477469
+    },
+    "anomaly:3": {
+      "severity": "warn",
+      "category": "anomaly",
+      "message": "Cost anomalies detected: 3 (sensitivity=2.0)",
+      "last_seen": 1774921591.2371452
+    }
+  }
+}
