@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">Claude Token Management launch card</title>
+  <desc id="desc">Launch graphic showing Claude Token Management certification metrics and repository link.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#081421" />
+      <stop offset="55%" stop-color="#0f2b3d" />
+      <stop offset="100%" stop-color="#123e43" />
+    </linearGradient>
+    <linearGradient id="panel" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#13334a" />
+      <stop offset="100%" stop-color="#102537" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#bg)" />
+  <circle cx="1030" cy="120" r="190" fill="#1f9d79" opacity="0.18" />
+  <circle cx="160" cy="590" r="220" fill="#1d6fd1" opacity="0.14" />
+  <rect x="64" y="58" width="1072" height="559" rx="28" fill="#0b1722" opacity="0.42" />
+  <text x="88" y="118" font-family="Menlo, Monaco, Consolas, monospace" font-size="24" fill="#66e5b6">CLAUDE TOKEN MANAGEMENT</text>
+  <text x="88" y="184" font-family="Helvetica, Arial, sans-serif" font-size="56" font-weight="700" fill="#f5fbff">Local control plane for</text>
+  <text x="88" y="246" font-family="Helvetica, Arial, sans-serif" font-size="56" font-weight="700" fill="#f5fbff">Claude Code token drain</text>
+  <text x="88" y="302" font-family="Helvetica, Arial, sans-serif" font-size="26" fill="#c9d8e6">Blocks avoidable spend. Benchmarks known drain paths. Certifies the runtime.</text>
+
+  <rect x="88" y="360" width="228" height="108" rx="20" fill="url(#panel)" stroke="#2f5f78" />
+  <text x="110" y="398" font-family="Menlo, Monaco, Consolas, monospace" font-size="18" fill="#88d6ff">FRESH CERT</text>
+  <text x="110" y="442" font-family="Helvetica, Arial, sans-serif" font-size="38" font-weight="700" fill="#ffffff">10 / 10</text>
+
+  <rect x="336" y="360" width="228" height="108" rx="20" fill="url(#panel)" stroke="#2f5f78" />
+  <text x="358" y="398" font-family="Menlo, Monaco, Consolas, monospace" font-size="18" fill="#88d6ff">LIVE HOOKS</text>
+  <text x="358" y="442" font-family="Helvetica, Arial, sans-serif" font-size="38" font-weight="700" fill="#ffffff">481 PASS</text>
+
+  <rect x="584" y="360" width="228" height="108" rx="20" fill="url(#panel)" stroke="#2f5f78" />
+  <text x="606" y="398" font-family="Menlo, Monaco, Consolas, monospace" font-size="18" fill="#88d6ff">HEALTH</text>
+  <text x="606" y="442" font-family="Helvetica, Arial, sans-serif" font-size="38" font-weight="700" fill="#ffffff">42 / 42</text>
+
+  <rect x="832" y="360" width="228" height="108" rx="20" fill="url(#panel)" stroke="#2f5f78" />
+  <text x="854" y="398" font-family="Menlo, Monaco, Consolas, monospace" font-size="18" fill="#88d6ff">DRAIN BENCH</text>
+  <text x="854" y="442" font-family="Helvetica, Arial, sans-serif" font-size="38" font-weight="700" fill="#ffffff">9 / 9</text>
+
+  <rect x="88" y="492" width="972" height="90" rx="20" fill="#0f2130" stroke="#24516c" />
+  <text x="116" y="529" font-family="Menlo, Monaco, Consolas, monospace" font-size="18" fill="#66e5b6">SCHEMAS</text>
+  <text x="252" y="529" font-family="Helvetica, Arial, sans-serif" font-size="26" font-weight="700" fill="#ffffff">1,307 docs validated</text>
+  <text x="545" y="529" font-family="Helvetica, Arial, sans-serif" font-size="26" font-weight="700" fill="#ffffff">0 errors</text>
+  <text x="704" y="529" font-family="Menlo, Monaco, Consolas, monospace" font-size="18" fill="#66e5b6">COORDINATOR</text>
+  <text x="900" y="529" font-family="Helvetica, Arial, sans-serif" font-size="26" font-weight="700" fill="#ffffff">316 / 316</text>
+
+  <text x="88" y="633" font-family="Menlo, Monaco, Consolas, monospace" font-size="20" fill="#dce7f2">github.com/DrewDawson2027/claude-token-management</text>
+</svg>

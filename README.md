@@ -1,6 +1,8 @@
 # Claude Token Management
 
-Claude Token Management is a self-contained local control plane for Claude Code token usage. It hardens the live `~/.claude` runtime and ships the same behavior as a standalone repository with certification, schemas, CI, coordinator tests, and operator documentation.
+[![Certify](https://github.com/DrewDawson2027/claude-token-management/actions/workflows/certify.yml/badge.svg)](https://github.com/DrewDawson2027/claude-token-management/actions/workflows/certify.yml)
+
+Claude Token Management is a self-contained local control plane for Claude Code token usage. It exists to stop avoidable token drain from bad resume flows, redundant reads, over-fanout, and weak routing before that spend lands, then prove the runtime is still healthy with certs, schemas, and live checks.
 
 ## Current Status
 
@@ -13,6 +15,12 @@ Claude Token Management is a self-contained local control plane for Claude Code 
 - Live runtime health-check passes: `42 passed, 0 failed, 0 warnings`.
 - Live drain benchmark passes: `9/9`.
 - Live compatibility summary reports `9` tracked issue classes with `unresolved_critical = 0`.
+
+## Why It Exists
+
+- Claude Code token usage can spike for reasons that are partly self-inflicted: repeated reads, weak task routing, wasteful subagent fanout, and long-session context bloat.
+- Upstream issues like prompt-cache regressions and peak-hour throttling still matter, but they can be tracked, benchmarked, warned on, and routed around locally instead of being treated as invisible failures.
+- This project turns those problems into a local control plane with prevention, telemetry, compatibility intake, certification, and operator workflows.
 
 ## What It Does
 
@@ -81,6 +89,12 @@ npm run cert:all
 - `docs/TOKEN_MANAGEMENT_MIGRATION_GUIDE.md`
 - `docs/COMPATIBILITY_MATRIX.md`
 - `docs/RELEASE_PROCESS.md`
+
+## Launch Assets
+
+- `docs/release/TWITTER_LAUNCH_SCRIPT.md`
+- `docs/release/GITHUB_LAUNCH_COPY.md`
+- `assets/social/launch-card.svg`
 
 ## Real Limits
 
