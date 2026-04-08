@@ -3,20 +3,21 @@
 ## If Someone Says "Does This Actually Save Tokens?"
 
 ```text
-Yes, on the local-control side.
+Yeah, on the local side.
 
-It blocks wasteful fanout, repeated reads, risky resume flows, and bad routing before spend happens, then benchmarks the known drain classes.
+It stops the obvious dumb stuff before more usage gets burned: bad resumes, rereading the same files, wasteful fanout, and bad routing.
 
-Proof is in the repo:
-https://github.com/DrewDawson2027/claude-token-management
+If you want the repo, I’ll drop it.
 ```
 
 ## If Someone Says "Is This Just Logging?"
 
 ```text
-No. Logging without enforcement is hindsight.
+No.
 
-This has guard hooks, budget gates, read controls, resume-risk blocking, compatibility tracking, and certs for both repo mode and live runtime.
+If it were just logging I wouldn’t care either.
+
+It actually blocks bad resumes, repeated reads, fanout waste, and bad routing before they pile up.
 ```
 
 ## If Someone Says "Did You Fix Anthropic?"
@@ -24,17 +25,19 @@ This has guard hooks, budget gates, read controls, resume-risk blocking, compati
 ```text
 No.
 
-Anthropic-side cache behavior and throttling are upstream systems. This project tracks them, benchmarks them, warns on them, and routes around what can be routed around locally.
+Nobody outside Anthropic is fixing Anthropic upstream.
+
+This handles the local side: block what can be blocked, measure what can’t, and make the ugly failure modes obvious instead of mysterious.
 ```
 
 ## If Someone Says "Why Should I Trust This?"
 
 ```text
-Because the repo ships receipts instead of vague claims:
+Because it ships receipts, not vibes:
 
-- fresh-runtime cert: 10/10
-- live hooks: 481 passed
-- health-check: 42/42
-- drain bench: 9/9
-- schemas: 1,307 docs / 0 errors
+10/10 fresh cert
+481 passed hooks
+42/42 health
+9/9 drain bench
+1,307 schema checks
 ```

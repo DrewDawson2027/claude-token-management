@@ -10,14 +10,17 @@
 - X profile photo, bio, and repo link are updated.
 - `assets/social/launch-proof.png` is ready for upload.
 - Existing X header is acceptable, or you explicitly chose to replace it.
+- Preferred posting window is Wednesday between `9:00 AM` and `11:00 AM` local time unless your own audience data says otherwise.
+- Do not put the GitHub link in the opening post.
 
 ## At Launch
 
 1. Post the main launch copy from [TWITTER_LAUNCH_SCRIPT.md](/Users/drewdawson/projects/token-management/docs/release/TWITTER_LAUNCH_SCRIPT.md).
 2. Attach the proof image.
 3. Reply to yourself with the proof comment within 2 minutes.
-4. Pin the launch post.
-5. Stay in the reply window for at least 90 minutes.
+4. Do not drop the repo link yet unless someone asks for it.
+5. Pin the launch post.
+6. Stay in the reply window for at least 90 minutes.
 
 ## During The First 90 Minutes
 
