@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "claude-token-guard"
-version = "1.1.0"
+version = "1.1.1"
 description = "Self-contained token-drain control plane for Claude Code."
 readme = "README.md"
 requires-python = ">=3.11"
