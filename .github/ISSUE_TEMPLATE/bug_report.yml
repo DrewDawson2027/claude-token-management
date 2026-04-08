@@ -1,0 +1,53 @@
+name: Bug report
+description: Report a defect in the repo, runtime, CLI, or certification surface.
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What is broken and why does it matter?
+    validations:
+      required: true
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Affected surface
+      options:
+        - live runtime
+        - repo runtime
+        - coordinator
+        - CLI
+        - schema validation
+        - docs
+        - release/launch
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+      description: Give exact commands or actions.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: proof
+    attributes:
+      label: Proof
+      description: Paste cert output, logs, screenshots, or links.
+    validations:
+      required: false

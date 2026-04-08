@@ -20,5 +20,9 @@
 - CI workflow is green.
 - Docs describe the current, tested state rather than a historical extraction.
 - Launch assets in `docs/release/` and `assets/social/` reflect the current certification numbers.
+- README above-the-fold section still matches the current proof metrics.
+- `LICENSE`, `CONTRIBUTING.md`, `SECURITY.md`, and `CODE_OF_CONDUCT.md` are present and current.
+- GitHub issue templates and PR template still match the active cert flow.
 - Git history contains the full hardening change set.
 - GitHub repo description and pinned profile entry reflect the current artifact.
+- GitHub topics and release notes reflect the current artifact.

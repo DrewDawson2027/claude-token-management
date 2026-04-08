@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Claude Token Management hero</title>
+  <desc id="desc">A hero graphic describing Claude Token Management as a control plane for Claude Code token drain.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#07111a" />
+      <stop offset="55%" stop-color="#0c2437" />
+      <stop offset="100%" stop-color="#14514d" />
+    </linearGradient>
+    <linearGradient id="card" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#112738" />
+      <stop offset="100%" stop-color="#0a1b2a" />
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)" />
+  <circle cx="1070" cy="150" r="180" fill="#1cb58a" opacity="0.18" />
+  <circle cx="160" cy="640" r="230" fill="#2576d9" opacity="0.14" />
+  <text x="84" y="114" font-family="Menlo, Monaco, Consolas, monospace" font-size="28" fill="#71efc0">CLAUDE TOKEN MANAGEMENT</text>
+  <text x="84" y="196" font-family="Helvetica, Arial, sans-serif" font-size="68" font-weight="700" fill="#f7fbff">Stop avoidable Claude Code</text>
+  <text x="84" y="272" font-family="Helvetica, Arial, sans-serif" font-size="68" font-weight="700" fill="#f7fbff">token drain before spend lands</text>
+  <text x="84" y="338" font-family="Helvetica, Arial, sans-serif" font-size="28" fill="#cfdeea">Guardrails, benchmarks, compatibility tracking, live/runtime certs, and local operator proof.</text>
+
+  <rect x="84" y="402" width="332" height="110" rx="24" fill="url(#card)" stroke="#2d566f" />
+  <text x="112" y="440" font-family="Menlo, Monaco, Consolas, monospace" font-size="18" fill="#8bdcff">FRESH RUNTIME CERT</text>
+  <text x="112" y="487" font-family="Helvetica, Arial, sans-serif" font-size="42" font-weight="700" fill="#ffffff">10 / 10 green</text>
+
+  <rect x="442" y="402" width="332" height="110" rx="24" fill="url(#card)" stroke="#2d566f" />
+  <text x="470" y="440" font-family="Menlo, Monaco, Consolas, monospace" font-size="18" fill="#8bdcff">LIVE HOOK SUITE</text>
+  <text x="470" y="487" font-family="Helvetica, Arial, sans-serif" font-size="42" font-weight="700" fill="#ffffff">481 passed</text>
+
+  <rect x="800" y="402" width="396" height="110" rx="24" fill="url(#card)" stroke="#2d566f" />
+  <text x="828" y="440" font-family="Menlo, Monaco, Consolas, monospace" font-size="18" fill="#8bdcff">SCHEMA VALIDATION</text>
+  <text x="828" y="487" font-family="Helvetica, Arial, sans-serif" font-size="42" font-weight="700" fill="#ffffff">1,307 docs / 0 errors</text>
+
+  <rect x="84" y="552" width="1112" height="96" rx="24" fill="#0d1f2d" stroke="#285067" />
+  <text x="116" y="592" font-family="Menlo, Monaco, Consolas, monospace" font-size="18" fill="#71efc0">TARGETS</text>
+  <text x="240" y="592" font-family="Helvetica, Arial, sans-serif" font-size="26" fill="#ffffff">resume cache regressions</text>
+  <text x="620" y="592" font-family="Helvetica, Arial, sans-serif" font-size="26" fill="#ffffff">redundant reads</text>
+  <text x="850" y="592" font-family="Helvetica, Arial, sans-serif" font-size="26" fill="#ffffff">fanout waste</text>
+  <text x="1030" y="592" font-family="Helvetica, Arial, sans-serif" font-size="26" fill="#ffffff">bad routing</text>
+</svg>

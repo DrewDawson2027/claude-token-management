@@ -1,8 +1,59 @@
 # Claude Token Management
 
 [![Certify](https://github.com/DrewDawson2027/claude-token-management/actions/workflows/certify.yml/badge.svg)](https://github.com/DrewDawson2027/claude-token-management/actions/workflows/certify.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-0f766e.svg)](LICENSE)
 
-Claude Token Management is a self-contained local control plane for Claude Code token usage. It exists to stop avoidable token drain from bad resume flows, redundant reads, over-fanout, and weak routing before that spend lands, then prove the runtime is still healthy with certs, schemas, and live checks.
+![Claude Token Management hero](assets/social/readme-hero.svg)
+
+Claude Token Management is a self-contained local control plane for Claude Code token usage. It blocks avoidable spend before it happens, measures the rest, and proves the runtime is healthy with fresh-runtime certs, live-runtime checks, schema validation, and coordinator test coverage.
+
+## The Problem
+
+Claude Code token drain usually is not one mysterious thing. It is a stack of failure modes:
+
+- resume or continue flows with degraded prompt-cache behavior
+- repeated reads and line-number overhead
+- wasteful subagent fanout
+- wrong model routing for the task
+- peak-hour burn spikes that go unbounded
+
+This project exists to turn those from hidden cost leaks into enforceable, measurable runtime behavior.
+
+## Proof
+
+| Surface | Current proof |
+|---|---|
+| Fresh runtime certification | `10/10` checks green |
+| Live hook suite | `481 passed, 37 skipped` |
+| Live health-check | `42 passed, 0 failed, 0 warnings` |
+| Drain benchmark | `9/9` passed |
+| Schema validation | `1,307` documents, `0` errors |
+| Coordinator source-tree suite | `316/316` |
+
+## 30-Second Quick Start
+
+```bash
+git clone https://github.com/DrewDawson2027/claude-token-management.git
+cd claude-token-management
+npm run cert:all
+python3 src/scripts/core/drain_bench.py --fixture tests/fixtures/token-drain-scenarios.json --json
+```
+
+If you want the shortest possible trust check, run `npm run cert:all` and look at the generated proof surface before reading deeper.
+
+## Before vs After
+
+| Failure mode | Before | After |
+|---|---|---|
+| Resume cache regression | silent token spike after reopening work | SessionStart warning plus explicit budget-guard ack gate |
+| Redundant reads | repeated file pulls and burst-read waste | duplicate-read and burst-read controls |
+| Fanout waste | too many agents spawned with oversized contexts | dispatch and budget gates block or constrain fanout |
+| Bad routing | expensive model selected without justification | routing rules and reminders force cheaper safe paths first |
+| Peak-hour burn | budget gets consumed without forecast | ops snapshots and burn projections flag it early |
+
+## See The Control Plane
+
+![Runtime demo](assets/social/runtime-demo.svg)
 
 ## Current Status
 
@@ -10,7 +61,7 @@ Claude Token Management is a self-contained local control plane for Claude Code 
 - Fresh-runtime certification passes: `10/10` checks green.
 - Schema validation passes: `1,307` documents validated, `0` errors.
 - Source-tree coordinator suite passes: `316/316`.
-- Repo-native certification tests pass: `14 passed`.
+- Repo-native certification tests pass: `16 passed`.
 - Live hook suite passes: `481 passed, 37 skipped`.
 - Live runtime health-check passes: `42 passed, 0 failed, 0 warnings`.
 - Live drain benchmark passes: `9/9`.
@@ -77,6 +128,13 @@ npm run cert:coordinator
 npm run cert:all
 ```
 
+## Community And Trust
+
+- [CONTRIBUTING.md](CONTRIBUTING.md)
+- [SECURITY.md](SECURITY.md)
+- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+- [LICENSE](LICENSE)
+
 ## Core Docs
 
 - `docs/architecture/system-overview.md`
@@ -94,7 +152,11 @@ npm run cert:all
 
 - `docs/release/TWITTER_LAUNCH_SCRIPT.md`
 - `docs/release/GITHUB_LAUNCH_COPY.md`
+- `docs/release/LAUNCH_DAY_CHECKLIST.md`
+- `docs/release/REPLY_PACK.md`
 - `assets/social/launch-card.svg`
+- `assets/social/x-header.svg`
+- `assets/social/runtime-demo.svg`
 
 ## Real Limits
 

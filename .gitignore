@@ -8,3 +8,4 @@ build/
 coverage/
 htmlcov/
 src/coordinator/node_modules/
+src/coordinator/lib/platform/worker-settings.runtime.json

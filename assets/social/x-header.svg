@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="500" viewBox="0 0 1500 500" role="img" aria-labelledby="title desc">
+  <title id="title">Claude Token Management X header</title>
+  <desc id="desc">A header image for X describing the repository as a control plane for Claude Code token drain.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#08121b" />
+      <stop offset="55%" stop-color="#10324a" />
+      <stop offset="100%" stop-color="#135149" />
+    </linearGradient>
+  </defs>
+  <rect width="1500" height="500" fill="url(#bg)" />
+  <circle cx="1310" cy="110" r="150" fill="#27c392" opacity="0.18" />
+  <circle cx="170" cy="450" r="180" fill="#2e73d3" opacity="0.16" />
+  <text x="78" y="120" font-family="Menlo, Monaco, Consolas, monospace" font-size="26" fill="#73edc1">CLAUDE TOKEN MANAGEMENT</text>
+  <text x="78" y="208" font-family="Helvetica, Arial, sans-serif" font-size="62" font-weight="700" fill="#ffffff">Guardrails for Claude Code token drain</text>
+  <text x="78" y="272" font-family="Helvetica, Arial, sans-serif" font-size="28" fill="#cfddea">Blocks avoidable spend, tracks known regressions, certifies the runtime.</text>
+  <text x="78" y="352" font-family="Menlo, Monaco, Consolas, monospace" font-size="22" fill="#8fe1ff">10 / 10 fresh cert   |   481 passed   |   42 / 42 health   |   9 / 9 drain bench</text>
+</svg>

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Operator playbook
+    url: https://github.com/DrewDawson2027/claude-token-management/blob/main/docs/TOKEN_MANAGEMENT_OPERATOR_PLAYBOOK.md
+    about: Use the operator playbook before filing runtime issues that are already covered by local checks.
+  - name: Security policy
+    url: https://github.com/DrewDawson2027/claude-token-management/blob/main/SECURITY.md
+    about: Follow this path for sensitive or security-relevant issues.

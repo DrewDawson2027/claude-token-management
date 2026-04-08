@@ -15,6 +15,7 @@ The goal is not empty impressions. The goal is to make cold traffic believe thre
 ## Pre-Flight
 
 - Attach `assets/social/launch-card.svg` to the first post.
+- Upload `assets/social/x-header.svg` as the X header image before posting.
 - Keep the profile bio direct: `Building guardrails and observability for Claude Code token usage. Public repo. Proof over hype.`
 - Link the public repo in the profile: `https://github.com/DrewDawson2027/claude-token-management`
 - If GitHub profile pins are available, pin this repo before posting.
@@ -142,3 +143,4 @@ That honesty matters more than pretending every token problem is solved.
 - Do not hide the repo link in the fourth post of a long thread. Put it in the first post.
 - Do not lead with architecture jargon. Lead with the cost problem and the receipts.
 - If people ask for proof, link them straight to `README.md`, `docs/analysis/regression-results.md`, and `docs/analysis/component-grades.md`.
+- Use `docs/release/REPLY_PACK.md` for fast objection handling instead of improvising under pressure.

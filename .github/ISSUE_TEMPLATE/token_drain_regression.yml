@@ -1,0 +1,47 @@
+name: Token-drain regression
+description: Report a real Claude Code usage-drain case with enough detail to benchmark.
+title: "[Drain]: "
+labels:
+  - token-drain
+  - needs-repro
+body:
+  - type: textarea
+    id: workflow
+    attributes:
+      label: Exact workflow
+      description: Describe the Claude Code flow step by step.
+    validations:
+      required: true
+  - type: dropdown
+    id: session_source
+    attributes:
+      label: Session source
+      options:
+        - fresh
+        - resume
+        - continue
+        - reopen
+        - unknown
+    validations:
+      required: true
+  - type: textarea
+    id: symptom
+    attributes:
+      label: Drain symptom
+      description: What exploded or looked wrong?
+    validations:
+      required: true
+  - type: textarea
+    id: metrics
+    attributes:
+      label: Evidence
+      description: Include token counts, cost deltas, screenshots, or audit output.
+    validations:
+      required: true
+  - type: textarea
+    id: benchmark
+    attributes:
+      label: Repro candidate
+      description: If possible, describe a fixture shape or benchmark scenario.
+    validations:
+      required: false

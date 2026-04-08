@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="840" viewBox="0 0 1280 840" role="img" aria-labelledby="title desc">
+  <title id="title">Claude Token Management runtime demo</title>
+  <desc id="desc">A terminal-style proof graphic showing a blocked resume-risk session and green certification output.</desc>
+  <rect width="1280" height="840" fill="#08131d" />
+  <rect x="48" y="42" width="1184" height="756" rx="24" fill="#0b1926" stroke="#234860" />
+  <circle cx="92" cy="82" r="10" fill="#ff6b5d" />
+  <circle cx="122" cy="82" r="10" fill="#f8c94a" />
+  <circle cx="152" cy="82" r="10" fill="#4cc76a" />
+  <text x="188" y="89" font-family="Menlo, Monaco, Consolas, monospace" font-size="22" fill="#9fc1d8">runtime-demo.sh</text>
+
+  <text x="84" y="150" font-family="Menlo, Monaco, Consolas, monospace" font-size="26" fill="#72f0c0">$ claude-token-guard ops compatibility --markdown</text>
+  <text x="84" y="194" font-family="Menlo, Monaco, Consolas, monospace" font-size="24" fill="#d9e8f4">Compatibility Summary</text>
+  <text x="84" y="230" font-family="Menlo, Monaco, Consolas, monospace" font-size="24" fill="#d9e8f4">tracked issue classes: 9</text>
+  <text x="84" y="266" font-family="Menlo, Monaco, Consolas, monospace" font-size="24" fill="#d9e8f4">unresolved critical: 0</text>
+
+  <text x="84" y="338" font-family="Menlo, Monaco, Consolas, monospace" font-size="26" fill="#72f0c0">$ python3 hooks/guards/budget-guard.py &lt; task.json</text>
+  <text x="84" y="382" font-family="Menlo, Monaco, Consolas, monospace" font-size="24" fill="#ffb44c">BLOCK  resume/continue session requires explicit ack</text>
+  <text x="84" y="418" font-family="Menlo, Monaco, Consolas, monospace" font-size="24" fill="#d9e8f4">reason: prompt-cache risk remains active for resumed sessions</text>
+  <text x="84" y="454" font-family="Menlo, Monaco, Consolas, monospace" font-size="24" fill="#d9e8f4">action: create resume-risk ack marker, then continue intentionally</text>
+
+  <text x="84" y="530" font-family="Menlo, Monaco, Consolas, monospace" font-size="26" fill="#72f0c0">$ npm run cert:all</text>
+  <text x="84" y="574" font-family="Menlo, Monaco, Consolas, monospace" font-size="24" fill="#8cfca6">PASS  cert:schemas</text>
+  <text x="84" y="610" font-family="Menlo, Monaco, Consolas, monospace" font-size="24" fill="#8cfca6">PASS  cert:a-plus:fresh (10 / 10)</text>
+  <text x="84" y="646" font-family="Menlo, Monaco, Consolas, monospace" font-size="24" fill="#8cfca6">PASS  cert:coordinator (316 / 316)</text>
+  <text x="84" y="698" font-family="Helvetica, Arial, sans-serif" font-size="30" font-weight="700" fill="#ffffff">Prevention first. Proof second. Hype never.</text>
+</svg>
