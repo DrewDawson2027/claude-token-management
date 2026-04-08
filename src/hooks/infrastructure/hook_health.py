@@ -18,11 +18,23 @@ import os
 import sys
 import statistics
 from collections import defaultdict
+from pathlib import Path
 from typing import Dict, List
+
+THIS_DIR = Path(__file__).resolve().parent
+if str(THIS_DIR) not in sys.path:
+    sys.path.insert(0, str(THIS_DIR))
+
+try:
+    from runtime_paths import session_state_dir
+except Exception:
+    def session_state_dir() -> Path:
+        return Path.home() / ".claude" / "hooks" / "session-state"
+
 
 STATE_DIR = os.environ.get(
     "TOKEN_GUARD_STATE_DIR",
-    os.path.expanduser("~/.claude/hooks/session-state"),
+    str(session_state_dir()),
 )
 COUNTERS_FILE = os.path.join(STATE_DIR, "hook-counters.json")
 AUDIT_FILE = os.path.join(STATE_DIR, "audit.jsonl")

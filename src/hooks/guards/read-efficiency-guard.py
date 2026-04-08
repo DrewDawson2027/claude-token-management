@@ -34,12 +34,13 @@ from guard_normalize import (
     normalize_session_key,
     short_hash,
 )
+from runtime_paths import session_state_dir
 
 # Shared infrastructure — locking, state, atomic writes
 from hook_utils import lock, unlock, load_json_state, save_json_state
 
 STATE_DIR = os.environ.get(
-    "TOKEN_GUARD_STATE_DIR", os.path.expanduser("~/.claude/hooks/session-state")
+    "TOKEN_GUARD_STATE_DIR", str(session_state_dir())
 )
 
 SEQUENTIAL_THRESHOLD = 4  # Warn after this many sequential reads

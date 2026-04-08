@@ -14,15 +14,15 @@ Result:
 
 - `10/10` checks passed
 - `502 passed, 16 skipped` in vendored hook tests
-- `6 passed` in repo-native pytest coverage for runtime overrides, drain bench, and guard behavior
+- `14 passed` in repo-native pytest coverage for runtime overrides, drain bench, compatibility intake/reporting, resume-risk handling, and guard behavior
 - Schema validation included in the certification run
 - Coordinator `npm ci`, syntax check, and spawn smoke all passed
 
 Checks covered:
 
 1. Vendored hook test suite against a materialized temporary runtime
-2. Schema validation for audit, metrics, alerts, session summaries, cost cache, usage index, and ops snapshot
-3. Repo-native pytest coverage for benchmark CLI, runtime overrides, and token-guard behavior
+2. Schema validation for audit, metrics, alerts, session summaries, cost cache, usage index, ops snapshot, and compatibility contracts
+3. Repo-native pytest coverage for benchmark CLI, compatibility registry/CLI, resume compatibility guards, runtime overrides, and token-guard behavior
 4. `drain_bench.py --json`
 5. `health-check.sh --stats`
 6. `cost_runtime.py statusline`
@@ -41,7 +41,7 @@ python3 tests/validate_schemas.py
 
 Result:
 
-- `1,305` documents validated
+- `1,307` documents validated
 - `0` schema errors
 
 Coverage:
@@ -54,6 +54,8 @@ Coverage:
 - Cost cache snapshot
 - Usage index snapshot
 - Ops snapshot
+- Compatibility registry snapshot
+- Compatibility report snapshot
 - Benchmark report snapshot
 
 ### Live Runtime Validation
@@ -70,9 +72,11 @@ Result:
 - Hook suite: `481 passed, 37 skipped`
 - Health-check: `42 passed, 0 failed, 0 warnings`
 - Live drain benchmark: `9/9` passed
+- Live compatibility report: `9` tracked issue classes, `unresolved_critical = 0`
 - Source-tree coordinator suite: `316 passed, 0 failed`
+- `npm run cert:all`: pass
 - Status: `HEALTHY`
 
 ## Current Read
 
-The repository is no longer a thin analytical extraction. It now certifies as a self-contained runtime artifact, validates its core file contracts, and keeps the source-tree coordinator test surface green alongside the installed live runtime.
+The repository is no longer a thin analytical extraction. It now certifies as a self-contained runtime artifact, validates its core file contracts, keeps the source-tree coordinator test surface green alongside the installed live runtime, and maintains a first-class compatibility program for upstream token-drain regressions.

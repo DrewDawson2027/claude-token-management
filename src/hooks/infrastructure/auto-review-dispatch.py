@@ -18,8 +18,20 @@ import re
 import sys
 import time
 import uuid
+from pathlib import Path
 
-QUEUE_DIR = os.path.expanduser("~/.claude/hooks/session-state")
+THIS_DIR = Path(__file__).resolve().parent
+if str(THIS_DIR) not in sys.path:
+    sys.path.insert(0, str(THIS_DIR))
+
+try:
+    from runtime_paths import session_state_dir
+except Exception:
+    def session_state_dir() -> Path:
+        return Path.home() / ".claude" / "hooks" / "session-state"
+
+
+QUEUE_DIR = str(session_state_dir())
 QUEUE_FILE = os.path.join(QUEUE_DIR, "mandatory-actions.jsonl")
 
 

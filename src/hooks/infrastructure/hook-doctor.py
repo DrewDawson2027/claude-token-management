@@ -24,9 +24,10 @@ import shutil
 import subprocess
 import sys
 import time
+from runtime_paths import hooks_dir, session_state_dir
 
-HOOKS_DIR = os.path.dirname(os.path.abspath(__file__))
-STATE_DIR = os.path.expanduser("~/.claude/hooks/session-state")
+HOOKS_DIR = str(hooks_dir())
+STATE_DIR = str(session_state_dir())
 CONFIG_PATH = os.path.join(HOOKS_DIR, "token-guard-config.json")
 COUNTERS_FILE = os.path.join(STATE_DIR, "hook-counters.json")
 CIRCUIT_FILE = os.path.join(STATE_DIR, "circuit-breaker.json")

@@ -6,8 +6,11 @@
 # Runs on: Edit, Write
 umask 077
 
+CLAUDE_RUNTIME_DIR="${CLAUDE_RUNTIME_DIR:-$HOME/.claude}"
+TERMINALS_DIR="$CLAUDE_RUNTIME_DIR/terminals"
+
 # Quick-exit: if only one session exists, nothing can conflict — skip entire hook (~2ms)
-SESSION_COUNT=$(find "$HOME/.claude/terminals" -maxdepth 1 -name 'session-*.json' 2>/dev/null | wc -l)
+SESSION_COUNT=$(find "$TERMINALS_DIR" -maxdepth 1 -name 'session-*.json' 2>/dev/null | wc -l)
 [ "$SESSION_COUNT" -lt 2 ] && exit 0
 
 # Load portable utilities
@@ -26,8 +29,6 @@ fi
 SID8="${RAW_SESSION_ID:0:8}"
 FILE_PATH=$(echo "$INPUT" | jq -r '.tool_input.file_path // ""')
 [ -z "$FILE_PATH" ] && exit 0
-
-TERMINALS_DIR=~/.claude/terminals
 
 # Check all other active sessions' files_touched arrays
 for sf in "$TERMINALS_DIR"/session-*.json; do

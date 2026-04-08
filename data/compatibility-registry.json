@@ -1,0 +1,237 @@
+{
+  "schema_version": 1,
+  "registry_version": "2026-04-07",
+  "issues": [
+    {
+      "issue_id": "prompt-cache-resume-continue",
+      "title": "Resume/continue cache invalidation",
+      "issue_class": "prompt-cache",
+      "severity": "critical",
+      "ownership": "upstream",
+      "status": "mitigated",
+      "impact": "Resume and continue flows can burn substantially more input tokens than fresh-session starts.",
+      "local_controls": [
+        "warn on known expensive resume/continue paths",
+        "budget-guard resume source block until explicit acknowledgement",
+        "prefer fresh-session fallback when cache hit confidence is low"
+      ],
+      "detection": [
+        "drain_bench:prompt-cache:resume-continue-penalty",
+        "compatibility-registry"
+      ],
+      "benchmarks": [
+        "drain_bench.prompt-cache"
+      ],
+      "repro_commands": [
+        "claude-token-guard bench --suite drain --json"
+      ],
+      "last_verified_at": "2026-04-07",
+      "unresolved_reason": "Actual cache behavior is controlled by Anthropic-side Claude Code internals."
+    },
+    {
+      "issue_id": "peak-hour-throttling",
+      "title": "Peak-hour rate-limit compression",
+      "issue_class": "throttling",
+      "severity": "high",
+      "ownership": "hybrid",
+      "status": "mitigated",
+      "impact": "The same workload can exhaust usable session budget faster during peak periods.",
+      "local_controls": [
+        "hourly headroom warnings",
+        "admission control via budget-guard",
+        "prefer cheaper routing during peak burn"
+      ],
+      "detection": [
+        "budget-guard hourly utilization",
+        "drain_bench:peak-hour"
+      ],
+      "benchmarks": [
+        "drain_bench.peak-hour"
+      ],
+      "repro_commands": [
+        "claude-token-guard bench --suite drain --json",
+        "claude-token-guard ops today --json"
+      ],
+      "last_verified_at": "2026-04-07",
+      "unresolved_reason": "Peak-hour platform throttling remains upstream behavior even when local routing is optimized."
+    },
+    {
+      "issue_id": "context-window-bloat",
+      "title": "Oversized context accumulation",
+      "issue_class": "context-window",
+      "severity": "high",
+      "ownership": "local",
+      "status": "mitigated",
+      "impact": "Repeated large reads and oversized tool output inflate prompt size and session burn rate.",
+      "local_controls": [
+        "read-efficiency-guard",
+        "result-compressor warnings",
+        "pre-compact-save state preservation"
+      ],
+      "detection": [
+        "hook audit trail",
+        "context growth tracking"
+      ],
+      "benchmarks": [
+        "drain_bench.read-batching"
+      ],
+      "repro_commands": [
+        "claude-token-guard bench --suite drain --json"
+      ],
+      "last_verified_at": "2026-04-07"
+    },
+    {
+      "issue_id": "line-number-overhead",
+      "title": "Line-number formatting overhead",
+      "issue_class": "read-overhead",
+      "severity": "medium",
+      "ownership": "upstream",
+      "status": "benchmarked",
+      "impact": "Line-number-heavy read flows add measurable token overhead even when the user only needs targeted content.",
+      "local_controls": [
+        "batch read guidance",
+        "duplicate read suppression"
+      ],
+      "detection": [
+        "drain_bench:line-number-overhead"
+      ],
+      "benchmarks": [
+        "drain_bench.line-number-overhead"
+      ],
+      "repro_commands": [
+        "claude-token-guard bench --suite drain --json"
+      ],
+      "last_verified_at": "2026-04-07",
+      "unresolved_reason": "The upstream read formatter determines the baseline token overhead."
+    },
+    {
+      "issue_id": "redundant-reads",
+      "title": "Repeated and overlapping file reads",
+      "issue_class": "read-overhead",
+      "severity": "high",
+      "ownership": "local",
+      "status": "mitigated",
+      "impact": "Re-reading the same file region wastes input tokens and compounds long-session drain.",
+      "local_controls": [
+        "read-efficiency-guard",
+        "read-cache",
+        "batch-read benchmark coverage"
+      ],
+      "detection": [
+        "session-state read counters",
+        "drain_bench:read-batching"
+      ],
+      "benchmarks": [
+        "drain_bench.read-batching"
+      ],
+      "repro_commands": [
+        "claude-token-guard bench --suite drain --json"
+      ],
+      "last_verified_at": "2026-04-07"
+    },
+    {
+      "issue_id": "agent-fanout-overrun",
+      "title": "Subagent fanout budget overrun",
+      "issue_class": "fanout",
+      "severity": "critical",
+      "ownership": "local",
+      "status": "mitigated",
+      "impact": "Too many concurrent workers can consume the session budget faster than the lead agent can recover value.",
+      "local_controls": [
+        "token-guard max_agents enforcement",
+        "fanout benchmark gate",
+        "budget-guard hourly headroom enforcement"
+      ],
+      "detection": [
+        "token-guard audit events",
+        "drain_bench:fanout"
+      ],
+      "benchmarks": [
+        "drain_bench.fanout"
+      ],
+      "repro_commands": [
+        "claude-token-guard bench --suite drain --json"
+      ],
+      "last_verified_at": "2026-04-07"
+    },
+    {
+      "issue_id": "model-misrouting",
+      "title": "Unnecessarily expensive model selection",
+      "issue_class": "routing",
+      "severity": "high",
+      "ownership": "local",
+      "status": "mitigated",
+      "impact": "Sending lookup and lightweight work to expensive models burns tokens without increasing outcome quality.",
+      "local_controls": [
+        "model-router hard blocks",
+        "routing-reminder",
+        "routing benchmark delta checks"
+      ],
+      "detection": [
+        "model-router audit blocks",
+        "drain_bench:routing"
+      ],
+      "benchmarks": [
+        "drain_bench.routing"
+      ],
+      "repro_commands": [
+        "claude-token-guard bench --suite drain --json"
+      ],
+      "last_verified_at": "2026-04-07"
+    },
+    {
+      "issue_id": "visibility-gaps",
+      "title": "Low-visibility session burn and alerting gaps",
+      "issue_class": "observability",
+      "severity": "medium",
+      "ownership": "local",
+      "status": "mitigated",
+      "impact": "Without near-real-time burn visibility, users discover token drain after the damage is already done.",
+      "local_controls": [
+        "ops today snapshot",
+        "proactive alerts",
+        "statusline cache",
+        "session recap"
+      ],
+      "detection": [
+        "ops today",
+        "ops alerts status",
+        "health-check"
+      ],
+      "benchmarks": [],
+      "repro_commands": [
+        "claude-token-guard ops today --json",
+        "claude-token-guard ops alerts status --json"
+      ],
+      "last_verified_at": "2026-04-07"
+    },
+    {
+      "issue_id": "upstream-regression-intake",
+      "title": "New upstream token-drain regressions",
+      "issue_class": "compatibility",
+      "severity": "high",
+      "ownership": "upstream",
+      "status": "active",
+      "impact": "New Claude Code regressions can invalidate local assumptions and silently degrade burn efficiency.",
+      "local_controls": [
+        "compatibility registry with upsert path",
+        "drain benchmark reruns",
+        "operator compatibility report"
+      ],
+      "detection": [
+        "ops compatibility report",
+        "manual issue intake via CLI"
+      ],
+      "benchmarks": [
+        "drain_bench.prompt-cache",
+        "drain_bench.peak-hour"
+      ],
+      "repro_commands": [
+        "claude-token-guard ops compatibility --json",
+        "claude-token-guard ops compatibility intake --issue-id new-upstream-regression --title '...' --issue-class compatibility --severity high --ownership upstream --status active --impact '...'"
+      ],
+      "last_verified_at": "2026-04-07",
+      "unresolved_reason": "New regressions require active intake and re-benchmarking; they cannot be prevented purely by static configuration."
+    }
+  ]
+}

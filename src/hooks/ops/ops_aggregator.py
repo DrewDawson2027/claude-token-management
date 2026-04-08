@@ -10,6 +10,7 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from typing import Any, Dict, List
 
+from compatibility_registry import build_report as build_compatibility_report
 from guard_contracts import entry_reason, entry_session_key, entry_type
 from ops_alerts import alert_status, evaluate_alerts
 from ops_sources import (
@@ -216,6 +217,7 @@ def _build_snapshot(
             "suppressed": alerts_doc.get("suppressed") or {},
             "active": alerts_doc.get("active") or {},
         },
+        "compatibility": build_compatibility_report().get("summary") or {},
         "blocks": {
             "count": len(blocks),
             "top_rules": dict(
@@ -276,6 +278,7 @@ def _build_snapshot(
 def _render_text(doc: Dict[str, Any]) -> str:
     budget = doc.get("budget") or {}
     spend = doc.get("spend") or {}
+    compatibility = doc.get("compatibility") or {}
     totals = (spend.get("totals") or {}) if isinstance(spend, dict) else {}
     lines = [
         "Token Management Ops Today",
@@ -285,6 +288,7 @@ def _render_text(doc: Dict[str, Any]) -> str:
         f"Blocks: {doc.get('blocks', {}).get('count', 0)} (shadow near-misses: {doc.get('blocks', {}).get('shadow_near_misses', 0)})",
         f"Agents: completed={doc.get('agents', {}).get('completed', 0)} tokens={doc.get('agents', {}).get('tokens', 0):,} cost=${float(doc.get('agents', {}).get('cost_usd', 0) or 0):.4f}",
         f"Alerts: recent={doc.get('alerts', {}).get('recent_count', 0)} active={len(doc.get('alerts', {}).get('active', {}) or {})}",
+        f"Compatibility: issues={compatibility.get('total_issues', 0)} unresolved_critical={compatibility.get('unresolved_critical', 0)} benchmark_coverage={compatibility.get('benchmark_coverage_pct', 0)}%",
         f"Self-heal events: {doc.get('self_heal', {}).get('events', 0)}",
         "",
         "Top block rules:",
@@ -306,6 +310,7 @@ def _render_text(doc: Dict[str, Any]) -> str:
 def _render_markdown(doc: Dict[str, Any]) -> str:
     budget = doc.get("budget") or {}
     spend = doc.get("spend") or {}
+    compatibility = doc.get("compatibility") or {}
     totals = (spend.get("totals") or {}) if isinstance(spend, dict) else {}
     lines = [
         "# Token Management Ops Today",
@@ -316,6 +321,7 @@ def _render_markdown(doc: Dict[str, Any]) -> str:
         f"- Blocks: {doc.get('blocks', {}).get('count', 0)}",
         f"- Shadow near-misses: {doc.get('blocks', {}).get('shadow_near_misses', 0)}",
         f"- Alerts (recent): {doc.get('alerts', {}).get('recent_count', 0)}",
+        f"- Compatibility: {compatibility.get('total_issues', 0)} issues, unresolved critical {compatibility.get('unresolved_critical', 0)}, benchmark coverage {compatibility.get('benchmark_coverage_pct', 0)}%",
         "",
         "## Top Block Rules",
     ]
@@ -335,8 +341,9 @@ def _render_statusline(doc: Dict[str, Any]) -> str:
     budget = doc.get("budget") or {}
     agents = doc.get("agents") or {}
     blocks = doc.get("blocks") or {}
+    compatibility = doc.get("compatibility") or {}
     level = str(budget.get("level") or "none").upper()
-    return f"OPS budget={level}:{budget.get('pct', '?')}% blocks={blocks.get('count', 0)} agents={agents.get('completed', 0)} cost=${float(agents.get('cost_usd', 0) or 0):.2f}"
+    return f"OPS budget={level}:{budget.get('pct', '?')}% blocks={blocks.get('count', 0)} compat={compatibility.get('unresolved_critical', 0)} agents={agents.get('completed', 0)} cost=${float(agents.get('cost_usd', 0) or 0):.2f}"
 
 
 def main() -> int:

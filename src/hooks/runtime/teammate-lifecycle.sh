@@ -3,6 +3,9 @@
 # Tracks native Agent Teams lifecycle events in activity.jsonl + session metadata.
 umask 077
 
+CLAUDE_RUNTIME_DIR="${CLAUDE_RUNTIME_DIR:-$HOME/.claude}"
+TERMINALS_DIR="$CLAUDE_RUNTIME_DIR/terminals"
+
 HOOK_DIR="$(cd "$(dirname "$0")" && pwd)"
 # shellcheck source=lib/portable.sh
 # shellcheck disable=SC1091
@@ -26,8 +29,8 @@ TEAMMATE_ID=$(echo "$INPUT" | jq -r '.teammate_session_id // .teammate_id // .te
 TASK_ID=$(echo "$INPUT" | jq -r '.task_id // .task.id // ""')
 DETAIL=$(echo "$INPUT" | jq -c '{reason: (.reason // ""), status: (.status // ""), summary: (.summary // "")}')
 
-ACTIVITY_FILE=~/.claude/terminals/activity.jsonl
-mkdir -p ~/.claude/terminals
+ACTIVITY_FILE="$TERMINALS_DIR/activity.jsonl"
+mkdir -p "$TERMINALS_DIR"
 
 EVENT_JSON=$(jq -c -n \
   --arg ts "$NOW" \
@@ -54,7 +57,7 @@ rm -f "$TMP_EVENT"
 
 # Best-effort session enrichment (never blocks the parent tool flow).
 if [ -n "$SESSION_ID" ]; then
-  SESSION_FILE=~/.claude/terminals/session-${SESSION_ID}.json
+  SESSION_FILE="$TERMINALS_DIR/session-${SESSION_ID}.json"
   if [ -f "$SESSION_FILE" ]; then
     TMP=$(mktemp)
     jq --arg now "$NOW" \

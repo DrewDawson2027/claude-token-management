@@ -6,11 +6,13 @@ Claude Token Management is a self-contained local control plane for Claude Code 
 
 - Live `~/.claude` runtime and repository sources were re-converged on 2026-04-07.
 - Fresh-runtime certification passes: `10/10` checks green.
-- Schema validation passes: `1,305` documents validated, `0` errors.
+- Schema validation passes: `1,307` documents validated, `0` errors.
 - Source-tree coordinator suite passes: `316/316`.
+- Repo-native certification tests pass: `14 passed`.
 - Live hook suite passes: `481 passed, 37 skipped`.
 - Live runtime health-check passes: `42 passed, 0 failed, 0 warnings`.
 - Live drain benchmark passes: `9/9`.
+- Live compatibility summary reports `9` tracked issue classes with `unresolved_critical = 0`.
 
 ## What It Does
 
@@ -18,8 +20,10 @@ Claude Token Management is a self-contained local control plane for Claude Code 
 - Enforces read-discipline through duplicate-read and burst-read controls.
 - Tracks session, agent, and cost activity into local audit, metrics, and summary files.
 - Surfaces burn, anomaly, budget, and ops views through Python reporting and statusline output.
+- Tracks known Claude Code token-drain issue classes through a compatibility registry with repro commands, intake, and operator reporting.
 - Runs a filesystem-native MCP coordinator with worker launch, messaging, planning, and lead tooling.
 - Ships versioned schemas for the core record formats so file-backed state is contract-tested instead of implied.
+- Blocks resumed/continued sessions with known prompt-cache risk until the operator explicitly acknowledges the compatibility warning.
 
 ## Repository Layout
 
@@ -80,7 +84,6 @@ npm run cert:all
 
 ## Real Limits
 
-- This is still a local, file-backed control plane. It is hardened, but it is not a native Anthropic billing or rate-limit service.
-- Upstream prompt-cache regressions, peak-hour throttling, and subscription policy changes can be detected and mitigated locally, not fixed at the source.
-- Some runtime hooks still target the installed `~/.claude` shape directly, even though the core/control-plane layers now honor `CLAUDE_RUNTIME_DIR`.
-- The coordinator dependency tree is currently clean, but ongoing dependency hygiene remains an active maintenance concern.
+- This is a local Claude Code control plane, not Anthropic's billing or rate-limit service.
+- Upstream prompt-cache regressions, peak-hour throttling, and subscription policy changes are now tracked, benchmarked, and worked around locally; the root platforms remain upstream-owned.
+- The coordinator dependency tree is currently clean, but dependency hygiene remains an active maintenance obligation.

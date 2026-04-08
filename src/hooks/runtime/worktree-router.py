@@ -22,9 +22,26 @@ import subprocess
 import sys
 from pathlib import Path
 
+THIS_DIR = Path(__file__).resolve().parent
+INFRA_DIR = THIS_DIR.parent / "infrastructure"
+for candidate in (THIS_DIR, INFRA_DIR):
+    candidate_str = str(candidate)
+    if candidate.is_dir() and candidate_str not in sys.path:
+        sys.path.insert(0, candidate_str)
+
+try:
+    from runtime_paths import hooks_dir, worktrees_dir
+except Exception:
+    def hooks_dir() -> Path:
+        return Path.home() / ".claude" / "hooks"
+
+    def worktrees_dir() -> Path:
+        return Path.home() / ".claude" / "worktrees"
+
+
 HOME = Path.home()
-CONFIG_PATH = HOME / ".claude" / "hooks" / "token-guard-config.json"
-WORKTREE_STATE = HOME / ".claude" / "worktrees" / "slots.json"
+CONFIG_PATH = hooks_dir() / "token-guard-config.json"
+WORKTREE_STATE = worktrees_dir() / "slots.json"
 
 DEFAULT_MAX_SLOTS = 3
 

@@ -20,6 +20,7 @@ import subprocess
 import sys
 import tempfile
 import time
+from runtime_paths import hooks_dir, session_state_dir, runtime_path
 
 # Import shared config (single source of truth — prevents config drift).
 # Fallback to inline copy if hook_utils is broken (self-heal must be self-contained).
@@ -59,15 +60,15 @@ except (ImportError, SyntaxError):
 
 HOOKS_DIR = os.environ.get(
     "TOKEN_GUARD_HOOKS_DIR",
-    os.path.expanduser("~/.claude/hooks"),
+    str(hooks_dir()),
 )
 STATE_DIR = os.environ.get(
     "TOKEN_GUARD_STATE_DIR",
-    os.path.expanduser("~/.claude/hooks/session-state"),
+    str(session_state_dir()),
 )
 CONFIG_PATH = os.environ.get(
     "TOKEN_GUARD_CONFIG_PATH",
-    os.path.expanduser("~/.claude/hooks/token-guard-config.json"),
+    str(hooks_dir() / "token-guard-config.json"),
 )
 HEAL_LOG = os.path.join(STATE_DIR, "self-heal.jsonl")
 
@@ -81,7 +82,7 @@ REQUIRED_HOOKS = {
 AUDIT_MAX_LINES = 10000
 STALE_LOCK_SECONDS = 300  # 5 minutes
 
-MASTER_AGENTS_DIR = os.path.expanduser("~/.claude/master-agents")
+MASTER_AGENTS_DIR = str(runtime_path("master-agents"))
 
 # Mode files referenced by master agents — validated on session start
 EXPECTED_MODE_FILES = {

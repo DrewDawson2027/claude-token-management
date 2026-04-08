@@ -38,17 +38,55 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional, Tuple
 
-SESSIONS_DIR = Path.home() / ".claude" / "token-analytics" / "sessions"
+THIS_DIR = Path(__file__).resolve().parent
+INFRA_DIR = THIS_DIR.parent / "infrastructure"
+for candidate in (THIS_DIR, INFRA_DIR):
+    candidate_str = str(candidate)
+    if candidate.is_dir() and candidate_str not in sys.path:
+        sys.path.insert(0, candidate_str)
 
-HOOKS_DIR = Path(__file__).parent
-SCRIPTS_DIR = Path(__file__).parent.parent / "scripts"
-COST_DIR = Path.home() / ".claude" / "cost"
+try:
+    from runtime_paths import (
+        cost_dir,
+        hooks_dir,
+        scripts_dir,
+        session_state_dir,
+        terminals_dir,
+        token_analytics_dir,
+    )
+except Exception:
+    def hooks_dir() -> Path:
+        return Path.home() / ".claude" / "hooks"
+
+    def scripts_dir() -> Path:
+        return Path.home() / ".claude" / "scripts"
+
+    def session_state_dir() -> Path:
+        return hooks_dir() / "session-state"
+
+    def terminals_dir() -> Path:
+        return Path.home() / ".claude" / "terminals"
+
+    def cost_dir() -> Path:
+        return Path.home() / ".claude" / "cost"
+
+    def token_analytics_dir() -> Path:
+        return Path.home() / ".claude" / "token-analytics"
+
+
+SESSIONS_DIR = token_analytics_dir() / "sessions"
+
+HOOKS_DIR = hooks_dir()
+SCRIPTS_DIR = scripts_dir()
+COST_DIR = cost_dir()
 CONFIG_PATH = os.environ.get(
     "TOKEN_GUARD_CONFIG_PATH",
-    str(Path.home() / ".claude" / "hooks" / "token-guard-config.json"),
+    str(HOOKS_DIR / "token-guard-config.json"),
 )
-BUDGETS_PATH = Path.home() / ".claude" / "cost" / "budgets.json"
+BUDGETS_PATH = COST_DIR / "budgets.json"
 CACHE_FILE = COST_DIR / "cache.json"
+STATE_DIR = session_state_dir()
+TERMINALS_DIR = terminals_dir()
 
 # How long a subprocess refresh may run before we give up and fail-open
 REFRESH_TIMEOUT_SECONDS = 4
@@ -56,6 +94,7 @@ REFRESH_TIMEOUT_SECONDS = 4
 # Cooldown between refresh attempts to avoid subprocess pile-ups
 REFRESH_COOLDOWN_FILE = "/tmp/budget-guard-refresh.ts"
 REFRESH_COOLDOWN_SECONDS = 30
+RESUME_RISK_SOURCES = {"resume", "continue", "restore", "reopen"}
 
 
 def load_config() -> dict:
@@ -72,6 +111,8 @@ def load_config() -> dict:
         "hourly_token_limit": 200_000,
         "hourly_warn_pct": 75,
         "hourly_block_pct": 92,
+        "resume_source_guard_enabled": True,
+        "resume_source_guard_block": True,
     }
 
     # Primary: budgets.json (single source of truth for budget values)
@@ -98,6 +139,8 @@ def load_config() -> dict:
             "block_on_critical",
             "warn_on_warning",
             "hourly_token_limit",
+            "resume_source_guard_enabled",
+            "resume_source_guard_block",
         ):
             if key in section:
                 defaults[key] = section[key]
@@ -316,6 +359,59 @@ def check_daily_token_budget() -> None:
         pass  # fail-open — advisory only
 
 
+def load_payload() -> dict:
+    try:
+        raw = sys.stdin.read()
+        if not raw.strip():
+            return {}
+        data = json.loads(raw)
+        return data if isinstance(data, dict) else {}
+    except Exception:
+        return {}
+
+
+def resume_ack_path(session_id: str) -> Path:
+    safe = "".join(ch for ch in str(session_id or "") if ch.isalnum() or ch in "-_")[:64]
+    return STATE_DIR / f"resume-risk-ack-{safe}"
+
+
+def lookup_session_source(session_id: str) -> str:
+    safe = "".join(ch for ch in str(session_id or "") if ch.isalnum() or ch in "-_")[:8]
+    if not safe:
+        return ""
+    session_file = TERMINALS_DIR / f"session-{safe}.json"
+    try:
+        data = json.loads(session_file.read_text())
+        return str(data.get("source") or "").strip().lower()
+    except Exception:
+        return ""
+
+
+def enforce_resume_source_guard(config: dict, payload: dict) -> None:
+    if not config.get("resume_source_guard_enabled", True):
+        return
+    session_id = str(payload.get("session_id") or "").strip()
+    if not session_id:
+        return
+    source = lookup_session_source(session_id)
+    if source not in RESUME_RISK_SOURCES:
+        return
+    if os.environ.get("CLAUDE_ACK_RESUME_RISK") == "1":
+        return
+    ack_path = resume_ack_path(session_id)
+    if ack_path.exists():
+        return
+    message = (
+        "BLOCKED: resume/continue session compatibility risk detected. "
+        f"Source={source}. Known prompt-cache regressions can inflate token burn "
+        "before useful work begins. Preferred path: start a fresh session for heavy work. "
+        f"To acknowledge and continue anyway: touch {ack_path}"
+    )
+    print(message, file=sys.stderr)
+    if config.get("resume_source_guard_block", True):
+        sys.exit(2)
+
+
 def main() -> None:
     try:
         from circuit_breaker import check_circuit, record_success, record_failure
@@ -335,10 +431,13 @@ def main() -> None:
     except ImportError:
         pass
 
+    payload = load_payload()
     config = load_config()
 
     if not config.get("enabled", True):
         sys.exit(0)
+
+    enforce_resume_source_guard(config, payload)
 
     # Advisory: warn if today's total token burn is unusually high
     check_daily_token_budget()

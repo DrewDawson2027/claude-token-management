@@ -16,6 +16,20 @@ import json
 import sys
 import os
 import re
+from pathlib import Path
+
+THIS_DIR = Path(__file__).resolve().parent
+INFRA_DIR = THIS_DIR.parent / "infrastructure"
+for candidate in (THIS_DIR, INFRA_DIR):
+    candidate_str = str(candidate)
+    if candidate.is_dir() and candidate_str not in sys.path:
+        sys.path.insert(0, candidate_str)
+
+try:
+    from runtime_paths import logs_dir
+except Exception:
+    def logs_dir() -> Path:
+        return Path.home() / ".claude" / "logs"
 
 
 def main():
@@ -37,8 +51,8 @@ def main():
     files_changed = payload.get("files_changed", [])
     is_native = "teammate_name" in payload or "task_in_progress" in payload
 
-    log_path = os.path.expanduser("~/.claude/logs/teammate-idle.log")
-    os.makedirs(os.path.dirname(log_path), exist_ok=True)
+    log_path = logs_dir() / "teammate-idle.log"
+    log_path.parent.mkdir(parents=True, exist_ok=True)
 
     issues = []
 
@@ -85,7 +99,7 @@ def main():
                 issues.append(f"Task '{task_name}' sounds like it requires deliverables but no files were changed and no completion signal found in output.")
 
     # ── Write audit log ──
-    with open(log_path, "a") as f:
+    with log_path.open("a", encoding="utf-8") as f:
         import datetime
         ts = datetime.datetime.now().isoformat()
         if issues:

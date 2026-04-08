@@ -66,6 +66,7 @@ HOOK_FILES = [
     "token-guard.py",
     "read-efficiency-guard.py",
     "hook_utils.py",
+    "runtime_paths.py",
     "self-heal.py",
     "health-check.sh",
     "token-guard-config.json",
@@ -77,6 +78,7 @@ HOOK_FILES = [
     "ops_alerts.py",
     "ops_recap.py",
     "ops_aggregator.py",
+    "compatibility_registry.py",
     "agent-lifecycle.sh",
     "agent-metrics.py",
 ]
@@ -84,6 +86,7 @@ HOOK_SOURCE_MAP = {
     "token-guard.py": "src/hooks/guards/token-guard.py",
     "read-efficiency-guard.py": "src/hooks/guards/read-efficiency-guard.py",
     "hook_utils.py": "src/hooks/infrastructure/hook_utils.py",
+    "runtime_paths.py": "src/hooks/infrastructure/runtime_paths.py",
     "self-heal.py": "src/hooks/infrastructure/self-heal.py",
     "health-check.sh": "src/hooks/runtime/health-check.sh",
     "token-guard-config.json": "config/token-guard-config.json",
@@ -95,6 +98,7 @@ HOOK_SOURCE_MAP = {
     "ops_alerts.py": "src/hooks/ops/ops_alerts.py",
     "ops_recap.py": "src/hooks/ops/ops_recap.py",
     "ops_aggregator.py": "src/hooks/ops/ops_aggregator.py",
+    "compatibility_registry.py": "src/hooks/ops/compatibility_registry.py",
     "agent-lifecycle.sh": "src/hooks/runtime/agent-lifecycle.sh",
     "agent-metrics.py": "src/hooks/tracking/agent-metrics.py",
 }
@@ -144,6 +148,11 @@ def _run_python(script_path, argv, check=False, capture=False, timeout=60):
 def _import_ops_modules():
     from ops_aggregator import build_ops_today, render_ops_today
     from ops_alerts import alert_status, evaluate_alerts
+    from compatibility_registry import (
+        build_report as build_compatibility_report,
+        render_report as render_compatibility_report,
+        upsert_issue as upsert_compatibility_issue,
+    )
     from ops_recap import build_session_recap, render_recap
     from ops_trends import build_trends, render_text as render_trends_text
 
@@ -156,6 +165,9 @@ def _import_ops_modules():
         "render_recap": render_recap,
         "build_trends": build_trends,
         "render_trends_text": render_trends_text,
+        "build_compatibility_report": build_compatibility_report,
+        "render_compatibility_report": render_compatibility_report,
+        "upsert_compatibility_issue": upsert_compatibility_issue,
     }
 
 
@@ -201,13 +213,14 @@ def _cmd_ops(argv):
     ops = _import_ops_modules()
     if not argv or argv[0] in {"help", "--help", "-h"}:
         print(
-            "Usage: claude-token-guard ops <today|session-recap|alerts|trends|doctor>"
+            "Usage: claude-token-guard ops <today|session-recap|alerts|trends|compatibility|doctor>"
         )
         print("Examples:")
         print("  claude-token-guard ops today --json")
         print("  claude-token-guard ops session-recap --latest")
         print("  claude-token-guard ops alerts status")
         print("  claude-token-guard ops trends --window 7 --json")
+        print("  claude-token-guard ops compatibility --markdown")
         raise SystemExit(0)
 
     sub = argv[0]
@@ -337,6 +350,59 @@ def _cmd_ops(argv):
             print("```")
         else:
             print(ops["render_trends_text"](doc))
+        raise SystemExit(0)
+
+    if sub == "compatibility":
+        action = "status"
+        rest = list(argv[1:])
+        if rest and rest[0] in {"status", "intake"}:
+            action = rest[0]
+            rest = rest[1:]
+        if action == "status":
+            ap = argparse.ArgumentParser(prog="claude-token-guard ops compatibility")
+            ap.add_argument("--json", action="store_true")
+            ap.add_argument("--markdown", action="store_true")
+            args = ap.parse_args(rest)
+            doc = ops["build_compatibility_report"]()
+            fmt = "json" if args.json else "markdown" if args.markdown else "text"
+            print(ops["render_compatibility_report"](doc, fmt=fmt))
+            raise SystemExit(0)
+
+        ap = argparse.ArgumentParser(
+            prog="claude-token-guard ops compatibility intake"
+        )
+        ap.add_argument("--issue-id", required=True)
+        ap.add_argument("--title", required=True)
+        ap.add_argument("--issue-class", required=True)
+        ap.add_argument("--severity", required=True)
+        ap.add_argument("--ownership", required=True)
+        ap.add_argument("--status", required=True)
+        ap.add_argument("--impact", required=True)
+        ap.add_argument("--local-control", action="append", dest="local_controls")
+        ap.add_argument("--detection", action="append")
+        ap.add_argument("--benchmark", action="append", dest="benchmarks")
+        ap.add_argument("--repro-command", action="append", dest="repro_commands")
+        ap.add_argument("--unresolved-reason")
+        ap.add_argument("--json", action="store_true")
+        ap.add_argument("--markdown", action="store_true")
+        args = ap.parse_args(rest)
+        registry = ops["upsert_compatibility_issue"](
+            issue_id=args.issue_id,
+            title=args.title,
+            issue_class=args.issue_class,
+            severity=args.severity,
+            ownership=args.ownership,
+            status=args.status,
+            impact=args.impact,
+            local_controls=args.local_controls,
+            detection=args.detection,
+            benchmarks=args.benchmarks,
+            repro_commands=args.repro_commands,
+            unresolved_reason=args.unresolved_reason,
+        )
+        doc = ops["build_compatibility_report"](registry)
+        fmt = "json" if args.json else "markdown" if args.markdown else "text"
+        print(ops["render_compatibility_report"](doc, fmt=fmt))
         raise SystemExit(0)
 
     if sub == "doctor":

@@ -17,8 +17,23 @@ import json
 import os
 import sys
 import time
+from pathlib import Path
 
-FLAG_PATH = os.path.expanduser("~/.claude/hooks/session-state/review-pending")
+THIS_DIR = Path(__file__).resolve().parent
+INFRA_DIR = THIS_DIR.parent / "infrastructure"
+for candidate in (THIS_DIR, INFRA_DIR):
+    candidate_str = str(candidate)
+    if candidate.is_dir() and candidate_str not in sys.path:
+        sys.path.insert(0, candidate_str)
+
+try:
+    from runtime_paths import session_state_dir
+except Exception:
+    def session_state_dir() -> Path:
+        return Path.home() / ".claude" / "hooks" / "session-state"
+
+
+FLAG_PATH = str(session_state_dir() / "review-pending")
 FLAG_TTL_SECONDS = 900  # 15 minutes
 
 
@@ -62,7 +77,7 @@ def main():
         "has not been dispatched yet. Spawn `quick-reviewer` (model: haiku) on "
         "the committed files FIRST, then continue editing.\n"
         "To unblock: dispatch the quick-reviewer agent on the committed files.\n"
-        "Emergency escape: rm ~/.claude/hooks/session-state/review-pending"
+        f"Emergency escape: rm {FLAG_PATH}"
     )
     sys.exit(2)
 

@@ -10,6 +10,10 @@
 # All date/stat calls use portable.sh for cross-platform compatibility.
 umask 077
 
+CLAUDE_RUNTIME_DIR="${CLAUDE_RUNTIME_DIR:-$HOME/.claude}"
+TERMINALS_DIR="$CLAUDE_RUNTIME_DIR/terminals"
+RESULTS_DIR="$TERMINALS_DIR/results"
+
 # Load portable utilities
 HOOK_DIR="$(cd "$(dirname "$0")" && pwd)"
 # shellcheck source=lib/portable.sh
@@ -34,8 +38,8 @@ PROJECT=$(basename "$CWD")
 SID8="${RAW_SESSION_ID:0:8}"
 FILE_BASE=$(basename "$FILE_PATH")
 
-mkdir -p ~/.claude/terminals
-INBOX_DIR=~/.claude/terminals/inbox
+mkdir -p "$TERMINALS_DIR"
+INBOX_DIR="$TERMINALS_DIR/inbox"
 mkdir -p "$INBOX_DIR"
 
 NOW=$(date -u +%Y-%m-%dT%H:%M:%SZ)
@@ -45,7 +49,7 @@ MAX_TURNS_MESSAGE=""
 # ─── ACTIVITY LOG (always fires before cooldown — intentional by design) ───
 # The rate-limit check is AFTER this block. Activity log gets every event;
 # the full session-file update is rate-limited to 1/5s. This is correct behavior.
-ACTIVITY_FILE=~/.claude/terminals/activity.jsonl
+ACTIVITY_FILE="$TERMINALS_DIR/activity.jsonl"
 JSON_LINE=$(jq -n --arg ts "$NOW" --arg session "$SID8" --arg tool "$TOOL_NAME" \
       --arg file "$FILE_BASE" --arg path "$FILE_PATH" --arg project "$PROJECT" \
       '{ts:$ts,session:$session,tool:$tool,file:$file,path:$path,project:$project}')
@@ -77,7 +81,7 @@ if { [ "$TOOL_NAME" = "Read" ] || [ "$TOOL_NAME" = "Edit" ] || [ "$TOOL_NAME" = 
   TRACK_CURRENT_FILE="yes"
 fi
 
-SESSION_FILE=~/.claude/terminals/session-${SID8}.json
+SESSION_FILE="$TERMINALS_DIR/session-${SID8}.json"
 SCHEMA_VERSION=2  # Increment when adding new fields
 
 if [ -f "$SESSION_FILE" ]; then
@@ -126,7 +130,7 @@ if [ -f "$SESSION_FILE" ]; then
       jq -n --arg ts "$NOW" --arg content "$MAX_TURNS_MESSAGE" \
         '{ts:$ts,from:"coordinator",priority:"urgent",content:$content}' \
         >> "${INBOX_DIR}/${SID8}.jsonl" 2>/dev/null
-      META_FILE=~/.claude/terminals/results/${WORKER_TASK_ID}.meta.json
+      META_FILE="$RESULTS_DIR/${WORKER_TASK_ID}.meta.json"
       if [ -f "$META_FILE" ]; then
         LEAD_SID=$(jq -r '.notify_session_id // empty' "$META_FILE" 2>/dev/null || true)
         if [ -n "$LEAD_SID" ]; then
@@ -134,7 +138,7 @@ if [ -f "$SESSION_FILE" ]; then
             '{ts:$ts,from:"coordinator",priority:"urgent",content:("[MAX_TURNS_REACHED] Worker " + $task + " hit " + ($max|tostring) + " turns. Auto-terminated.")}' \
             >> "${INBOX_DIR}/${LEAD_SID}.jsonl" 2>/dev/null
         fi
-        PID_FILE=~/.claude/terminals/results/${WORKER_TASK_ID}.pid
+        PID_FILE="$RESULTS_DIR/${WORKER_TASK_ID}.pid"
         if [ -f "$PID_FILE" ]; then
           WORKER_PID=$(cat "$PID_FILE" 2>/dev/null)
           if [[ "$WORKER_PID" =~ ^[0-9]+$ ]]; then
@@ -221,7 +225,7 @@ fi
 
 if $DO_STALE; then
   NOW_EPOCH=$(date +%s)
-  for sf in ~/.claude/terminals/session-*.json; do
+  for sf in "$TERMINALS_DIR"/session-*.json; do
     [ -f "$sf" ] || continue
     [ "$sf" = "$SESSION_FILE" ] && continue
 
@@ -242,7 +246,7 @@ if $DO_STALE; then
 
       # Notify lead only for the matching worker task (avoid cross-worker false alerts)
       [ -z "$SF_TASK" ] && continue
-      for mf in ~/.claude/terminals/results/*.meta.json; do
+      for mf in "$RESULTS_DIR"/*.meta.json; do
         [ -f "$mf" ] || continue
         TASK_ID=$(jq -r '.task_id // empty' "$mf" 2>/dev/null || true)
         [ -z "$TASK_ID" ] && continue
@@ -252,7 +256,7 @@ if $DO_STALE; then
         [ -z "$LEAD_SID" ] && continue
         [ "$WORKER_MODE" != "interactive" ] && continue
         # Notify lead that this interactive worker went stale
-        IDLE_REPORTED=~/.claude/terminals/results/"$(basename "$mf" .meta.json)".${SF_SID}.idle-notified
+        IDLE_REPORTED="$RESULTS_DIR/$(basename "$mf" .meta.json).${SF_SID}.idle-notified"
         [ -f "$IDLE_REPORTED" ] && continue
         jq -n --arg ts "$(date -u +%Y-%m-%dT%H:%M:%SZ)" --arg sid "$SF_SID" \
           '{ts:$ts,from:"coordinator",priority:"normal",content:("[WORKER IDLE] Session " + $sid + " — inactive for >30s, marked stale.")}' \

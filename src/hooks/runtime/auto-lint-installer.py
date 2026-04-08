@@ -21,6 +21,19 @@ from pathlib import Path
 
 OWNER = "DrewDawson2027"
 
+THIS_DIR = Path(__file__).resolve().parent
+INFRA_DIR = THIS_DIR.parent / "infrastructure"
+for candidate in (THIS_DIR, INFRA_DIR):
+    candidate_str = str(candidate)
+    if candidate.is_dir() and candidate_str not in sys.path:
+        sys.path.insert(0, candidate_str)
+
+try:
+    from runtime_paths import logs_dir
+except Exception:
+    def logs_dir() -> Path:
+        return Path.home() / ".claude" / "logs"
+
 PYTHON_WORKFLOW = """\
 name: Auto-Lint
 
@@ -221,7 +234,7 @@ def main():
         pass
 
     # Log it (silent — no stdout so Claude doesn't see it as a system reminder)
-    log_path = Path.home() / ".claude" / "logs" / "auto-lint-installer.log"
+    log_path = logs_dir() / "auto-lint-installer.log"
     log_path.parent.mkdir(parents=True, exist_ok=True)
     with open(log_path, "a") as f:
         f.write(f"installed: {project_dir} ({remote})\n")

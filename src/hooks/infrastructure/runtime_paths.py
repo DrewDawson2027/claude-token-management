@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Runtime path helpers for installed and materialized Claude runtimes."""
+"""Runtime path helpers for hook code running against installed or materialized runtimes."""
 
 from __future__ import annotations
 

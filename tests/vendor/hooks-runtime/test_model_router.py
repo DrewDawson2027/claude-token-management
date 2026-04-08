@@ -34,6 +34,7 @@ def make_task_input(subagent_type: str, *, model: str = "", prompt: str = "do wo
 def run_router(payload: dict, *, home: Path):
     env = os.environ.copy()
     env["HOME"] = str(home)
+    env["CLAUDE_RUNTIME_DIR"] = str(home / ".claude")
     result = subprocess.run(
         [sys.executable, str(HOOK)],
         input=json.dumps(payload),

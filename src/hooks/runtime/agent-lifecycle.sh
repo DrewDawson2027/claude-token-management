@@ -3,6 +3,8 @@
 # Triggered by SubagentStart and SubagentStop hooks
 # Part of the Master Agent System's observability layer
 set -u
+CLAUDE_RUNTIME_DIR="${CLAUDE_RUNTIME_DIR:-$HOME/.claude}"
+HOOKS_STATE_DIR="$CLAUDE_RUNTIME_DIR/hooks/session-state"
 INPUT=$(cat)
 
 EVENT=$(echo "$INPUT" | jq -r '.hook_event_name // "unknown"')
@@ -15,15 +17,15 @@ SESSION_KEY=$(python3 -c 'import re,sys; raw=str(sys.argv[1]) if len(sys.argv) >
 AGENT_TYPE_SAFE=$(python3 -c 'import re,sys; s=str(sys.argv[1]) if len(sys.argv) > 1 else "unknown"; s=re.sub(r"[\x00-\x1f\x7f]"," ",s); s=" ".join(s.split()); print((s[:80] or "unknown"))' "$AGENT_TYPE" 2>/dev/null) || AGENT_TYPE_SAFE="unknown"
 AGENT_ID_SAFE=$(python3 -c 'import re,sys; s=str(sys.argv[1]) if len(sys.argv) > 1 else "unknown"; s=re.sub(r"[\x00-\x1f\x7f]"," ",s); s=" ".join(s.split()); print((s[:64] or "unknown"))' "$AGENT_ID" 2>/dev/null) || AGENT_ID_SAFE="unknown"
 
-METRICS_DIR="$HOME/.claude/hooks/session-state"
+METRICS_DIR="$HOOKS_STATE_DIR"
 METRICS_FILE="$METRICS_DIR/agent-metrics.jsonl"
 mkdir -p "$METRICS_DIR"
 
 consume_pending_decision() {
-  python3 - "$HOME" "$SESSION_ID" "$AGENT_TYPE_SAFE" <<'PY'
+  python3 - "$HOOKS_STATE_DIR" "$SESSION_ID" "$AGENT_TYPE_SAFE" <<'PY'
 import json, os, sys, time
-home, session_id, agent_type = sys.argv[1], sys.argv[2], sys.argv[3]
-state_file = os.path.join(home, '.claude', 'hooks', 'session-state', f'{session_id}.json')
+state_dir, session_id, agent_type = sys.argv[1], sys.argv[2], sys.argv[3]
+state_file = os.path.join(state_dir, f'{session_id}.json')
 try:
     with open(state_file, 'r') as f:
         state = json.load(f)

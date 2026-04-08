@@ -21,6 +21,10 @@ try:
 except Exception:
     normalize_session_key = None
     normalize_text = None
+try:
+    from runtime_paths import session_state_dir
+except Exception:
+    session_state_dir = None
 
 # Portable file locking — fcntl on Unix, msvcrt on Windows
 if sys.platform == "win32":
@@ -138,7 +142,7 @@ def read_jsonl_fault_tolerant(path: str) -> List[Dict]:
 
 STATE_DIR = os.environ.get(
     "TOKEN_GUARD_STATE_DIR",
-    os.path.expanduser("~/.claude/hooks/session-state"),
+    str(session_state_dir() if session_state_dir is not None else os.path.expanduser("~/.claude/hooks/session-state")),
 )
 COUNTERS_FILE = os.path.join(STATE_DIR, "hook-counters.json")
 

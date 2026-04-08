@@ -36,9 +36,31 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from statistics import median
 
-# Add dirs to path
-SCRIPTS_DIR = Path.home() / ".claude" / "scripts"
-HOOKS_DIR = Path.home() / ".claude" / "hooks"
+THIS_DIR = Path(__file__).resolve().parent
+INFRA_DIR = THIS_DIR.parent / "infrastructure"
+for candidate in (THIS_DIR, INFRA_DIR):
+    candidate_str = str(candidate)
+    if candidate.is_dir() and candidate_str not in sys.path:
+        sys.path.insert(0, candidate_str)
+
+try:
+    from runtime_paths import hooks_dir, scripts_dir, session_state_dir, token_analytics_dir
+except Exception:
+    def hooks_dir() -> Path:
+        return Path.home() / ".claude" / "hooks"
+
+    def scripts_dir() -> Path:
+        return Path.home() / ".claude" / "scripts"
+
+    def session_state_dir() -> Path:
+        return hooks_dir() / "session-state"
+
+    def token_analytics_dir() -> Path:
+        return Path.home() / ".claude" / "token-analytics"
+
+
+SCRIPTS_DIR = scripts_dir()
+HOOKS_DIR = hooks_dir()
 for d in (str(SCRIPTS_DIR), str(HOOKS_DIR)):
     if d not in sys.path:
         sys.path.insert(0, d)
@@ -82,8 +104,8 @@ except ImportError:
         pass
 
 HOME = Path.home()
-CLAUDE_DIR = HOME / ".claude"
-STATE_DIR = CLAUDE_DIR / "hooks" / "session-state"
+CLAUDE_DIR = hooks_dir().parent
+STATE_DIR = session_state_dir()
 AGENT_METRICS_FILE = STATE_DIR / "agent-metrics.jsonl"
 AUDIT_FILE = STATE_DIR / "audit.jsonl"
 

@@ -20,8 +20,9 @@ import json
 import os
 import sys
 import time
+from runtime_paths import runtime_path
 
-CACHE_DIR = os.path.expanduser("~/.claude/cache/read-results")
+CACHE_DIR = str(runtime_path("cache", "read-results"))
 CACHE_INDEX = os.path.join(CACHE_DIR, "index.json")
 TTL_SECONDS = 300  # 5 minutes
 MAX_ENTRIES = 50

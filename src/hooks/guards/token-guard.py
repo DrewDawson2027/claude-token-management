@@ -45,7 +45,15 @@ import re
 import subprocess
 import sys
 import time
+from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
+
+THIS_DIR = Path(__file__).resolve().parent
+INFRA_DIR = THIS_DIR.parent / "infrastructure"
+for candidate in (THIS_DIR, INFRA_DIR):
+    candidate_str = str(candidate)
+    if candidate.is_dir() and candidate_str not in sys.path:
+        sys.path.insert(0, candidate_str)
 
 from guard_contracts import (
     build_audit_entry,
@@ -71,13 +79,21 @@ from hook_utils import (
     save_json_state,
     read_jsonl_fault_tolerant,
 )
+try:
+    from runtime_paths import hooks_dir, session_state_dir
+except Exception:
+    def hooks_dir() -> Path:
+        return Path.home() / ".claude" / "hooks"
+
+    def session_state_dir() -> Path:
+        return hooks_dir() / "session-state"
 
 STATE_DIR = os.environ.get(
-    "TOKEN_GUARD_STATE_DIR", os.path.expanduser("~/.claude/hooks/session-state")
+    "TOKEN_GUARD_STATE_DIR", str(session_state_dir())
 )
 CONFIG_PATH = os.environ.get(
     "TOKEN_GUARD_CONFIG_PATH",
-    os.path.expanduser("~/.claude/hooks/token-guard-config.json"),
+    str(hooks_dir() / "token-guard-config.json"),
 )
 AUDIT_LOG = os.path.join(STATE_DIR, "audit.jsonl")
 

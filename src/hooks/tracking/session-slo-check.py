@@ -15,16 +15,18 @@ Timeout: 3 seconds max (kept tight to avoid blocking session start).
 Fail-open: all errors → exit(0).
 """
 
+import json
 import subprocess
 import sys
 from pathlib import Path
+from runtime_paths import hooks_dir, scripts_dir
 
-HOME = Path.home()
-OBS_SCRIPT = HOME / ".claude" / "scripts" / "observability.py"
+OBS_SCRIPT = scripts_dir() / "observability.py"
 TIMEOUT_SECONDS = 3
 
 # Phrases that indicate a red/failing SLO in health-report output
 RED_INDICATORS = ["FAIL", "RED", "CRITICAL", "SLO BREACH", "ALERT", "ERROR", "DOWN"]
+RESUME_SOURCES = {"resume", "continue", "restore", "reopen"}
 
 
 def run_health_report() -> tuple[int, str]:
@@ -56,43 +58,78 @@ def extract_red_lines(output: str) -> list[str]:
     return red
 
 
+def extract_startup_source(input_data: dict) -> str:
+    source = str(input_data.get("source") or "").strip().lower()
+    if source in RESUME_SOURCES:
+        return source
+    return ""
+
+
+def build_resume_warning(source: str) -> list[str]:
+    if not source:
+        return []
+    return [
+        "",
+        "╔══════════════════════════════════════════════════════════╗",
+        "║  ⚠  COMPATIBILITY WARNING — resume/continue session     ║",
+        "╚══════════════════════════════════════════════════════════╝",
+        "",
+        f"  Session source: {source}",
+        "  Known issue class: prompt-cache regressions can inflate input tokens",
+        "  Mitigation: prefer a fresh session for heavy work if burn spikes or cache hits look poor.",
+        "  Check: `claude-token-guard ops compatibility --json` or rerun the drain benchmark.",
+        "",
+    ]
+
+
 def main() -> None:
+    try:
+        input_data = json.loads(sys.stdin.read() or "{}")
+    except Exception:
+        input_data = {}
+
     rc, output = run_health_report()
+    source = extract_startup_source(input_data if isinstance(input_data, dict) else {})
+    resume_warning = build_resume_warning(source)
 
     if rc < 0 or not output.strip():
-        # Script missing, timed out, or no output — silent pass
+        if resume_warning:
+            print("\n".join(resume_warning))
         sys.exit(0)
 
     red_lines = extract_red_lines(output)
 
-    if not red_lines:
-        # All green — silent pass
+    if not red_lines and not resume_warning:
         sys.exit(0)
 
     # Surface the warning
-    banner = [
-        "",
-        "╔══════════════════════════════════════════════════════════╗",
-        "║  ⚠  SLO WARNING — system health issues detected         ║",
-        "╚══════════════════════════════════════════════════════════╝",
-        "",
-    ]
-    for line in red_lines[:10]:  # cap at 10 lines
-        banner.append(f"  {line}")
+    banner = list(resume_warning)
+    if red_lines:
+        banner.extend(
+            [
+                "",
+                "╔══════════════════════════════════════════════════════════╗",
+                "║  ⚠  SLO WARNING — system health issues detected         ║",
+                "╚══════════════════════════════════════════════════════════╝",
+                "",
+            ]
+        )
+        for line in red_lines[:10]:  # cap at 10 lines
+            banner.append(f"  {line}")
 
-    banner += [
-        "",
-        "Run `/ops-cost` or `python3 ~/.claude/scripts/observability.py health-report`",
-        "to investigate before starting work.",
-        "",
-    ]
+        banner += [
+            "",
+            "Run `/ops-cost` or `python3 ~/.claude/scripts/observability.py health-report`",
+            "to investigate before starting work.",
+            "",
+        ]
 
     print("\n".join(banner))
 
     # Hook health check — append per-hook metrics if available
     try:
-        hook_health_script = HOME / ".claude" / "hooks" / "hook_health.py"
-        if hook_health_script.exists():
+        hook_health_script = hooks_dir() / "hook_health.py"
+        if hook_health_script.exists() and red_lines:
             result = subprocess.run(
                 [sys.executable, str(hook_health_script), "--human"],
                 capture_output=True, text=True, timeout=2,

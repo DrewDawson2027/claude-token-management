@@ -3,6 +3,18 @@
 # Runs before EVERY tool call. If inbox has messages, prints them so the model sees them.
 umask 077
 
+CLAUDE_RUNTIME_DIR="${CLAUDE_RUNTIME_DIR:-$HOME/.claude}"
+TERMINALS_DIR="$CLAUDE_RUNTIME_DIR/terminals"
+RESULTS_DIR="$TERMINALS_DIR/results"
+INBOX_DIR="$TERMINALS_DIR/inbox"
+TASKS_DIR="$TERMINALS_DIR/tasks"
+HOOKS_DIR="$CLAUDE_RUNTIME_DIR/hooks"
+HOOKS_STATE_DIR="$HOOKS_DIR/session-state"
+MANDATORY_QUEUE="$HOOKS_STATE_DIR/mandatory-actions.jsonl"
+DONE_DIR="$HOOKS_STATE_DIR/done"
+DEAD_LETTER="$HOOKS_STATE_DIR/dead-letter.jsonl"
+CHAINS_DIR="$HOOKS_STATE_DIR/chains"
+
 # NOTE: No top-of-hook early-exit guard here by design.
 # Permission enforcement (readOnly/planOnly/planRequired) must always run for
 # every tool call — it reads tool_name from stdin to block restricted modes.
@@ -54,7 +66,7 @@ fi
 # planOnly mode: blocks Edit/Write/Bash until plan approved (enforced plan-first)
 if [ "$PERMISSION_MODE" = "planOnly" ] || { [ -n "$WORKER_TASK_ID" ] && [ "$PERMISSION_MODE" = "acceptEdits" ]; }; then
   if [ -n "$WORKER_TASK_ID" ]; then
-    META_FILE=~/.claude/terminals/results/${WORKER_TASK_ID}.meta.json
+    META_FILE="$RESULTS_DIR/${WORKER_TASK_ID}.meta.json"
     if [ -f "$META_FILE" ]; then
       REQUIRE_PLAN=$(jq -r '.require_plan // false' "$META_FILE" 2>/dev/null)
       IS_PLAN_MODE="false"
@@ -63,7 +75,7 @@ if [ "$PERMISSION_MODE" = "planOnly" ] || { [ -n "$WORKER_TASK_ID" ] && [ "$PERM
       if [ "$IS_PLAN_MODE" = "true" ]; then
         case "$TOOL_NAME" in
           Edit|Write|Bash)
-            APPROVAL_FILE=~/.claude/terminals/results/${WORKER_TASK_ID}.approval
+            APPROVAL_FILE="$RESULTS_DIR/${WORKER_TASK_ID}.approval"
             if [ ! -f "$APPROVAL_FILE" ]; then
               echo "BLOCKED: Plan approval required before editing. Write your plan to results/${WORKER_TASK_ID}.plan.md, then notify lead and wait for '[APPROVED]' in your inbox."
               exit 2
@@ -79,9 +91,7 @@ if [ "$PERMISSION_MODE" = "planOnly" ] || { [ -n "$WORKER_TASK_ID" ] && [ "$PERM
     fi
   fi
 fi
-INBOX_DIR=~/.claude/terminals/inbox
 INBOX="${INBOX_DIR}/${SESSION_ID}.jsonl"
-RESULTS_DIR=~/.claude/terminals/results
 INTERRUPT_ON_NOTICES="${CLAUDE_LEAD_INTERRUPT_ON_NOTICES:-0}"
 
 mkdir -p "$INBOX_DIR"
@@ -160,7 +170,7 @@ fi
 
 # ─── Plan Approval Check ───
 # If this worker has a pending approval file, check and deliver it
-RESULTS_DIR_CHECK=~/.claude/terminals/results
+RESULTS_DIR_CHECK="$RESULTS_DIR"
 if [ -n "$WORKER_TASK_ID" ]; then
   approval_file="$RESULTS_DIR_CHECK/${WORKER_TASK_ID}.approval"
   APPROVAL_REPORTED="$RESULTS_DIR_CHECK/${WORKER_TASK_ID}.approval.reported"
@@ -185,7 +195,6 @@ fi
 
 # ─── Task Board Suggestions (for interactive workers) ───
 # Check for unassigned, unblocked pending tasks and suggest them
-TASKS_DIR=~/.claude/terminals/tasks
 if [ "${CLAUDE_LEAD_SHOW_TASK_SUGGESTIONS:-0}" = "1" ] && [ -d "$TASKS_DIR" ]; then
   PENDING_TASKS=""
   for tf in "$TASKS_DIR"/*.json; do
@@ -210,10 +219,6 @@ if [ "${CLAUDE_LEAD_SHOW_TASK_SUGGESTIONS:-0}" = "1" ] && [ -d "$TASKS_DIR" ]; t
 fi
 
 # --- MANDATORY ACTION QUEUE (mechanical dispatch = Agent Teams SendMessage) ---
-MANDATORY_QUEUE="$HOME/.claude/hooks/session-state/mandatory-actions.jsonl"
-DONE_DIR="$HOME/.claude/hooks/session-state/done"
-DEAD_LETTER="$HOME/.claude/hooks/session-state/dead-letter.jsonl"
-CHAINS_DIR="$HOME/.claude/hooks/session-state/chains"
 if [ "${CLAUDE_LEAD_ENABLE_MANDATORY_ACTIONS:-1}" = "1" ] && [ -f "$MANDATORY_QUEUE" ] && [ -s "$MANDATORY_QUEUE" ]; then
   mkdir -p "$DONE_DIR" "$CHAINS_DIR"
   NOW_EPOCH=$(date +%s)
@@ -231,7 +236,7 @@ if [ "${CLAUDE_LEAD_ENABLE_MANDATORY_ACTIONS:-1}" = "1" ] && [ -f "$MANDATORY_QU
 
     if [ -n "$AID" ] && [ -f "$DONE_DIR/$AID" ]; then
       if [ -n "$CHAIN_ID" ] && [ -f "$CHAINS_DIR/$CHAIN_ID.json" ]; then
-        NEXT=$(python3 "$HOME/.claude/hooks/chain-advance.py" "$CHAINS_DIR/$CHAIN_ID.json" 2>/dev/null)
+        NEXT=$(python3 "$HOOKS_DIR/chain-advance.py" "$CHAINS_DIR/$CHAIN_ID.json" 2>/dev/null)
         [ -n "$NEXT" ] && echo "$NEXT" >> "$MANDATORY_QUEUE"
       fi
       continue
@@ -277,8 +282,8 @@ PY
     UL=$(echo "$line" | jq -c ".delivery_count = $NC | .last_delivery_epoch = $NOW_EPOCH" 2>/dev/null)
     REMAINING="${REMAINING}${UL}
 "
-    printf '\n\n!!! MANDATORY ACTION REQUIRED — ACT NOW BEFORE ANY OTHER WORK !!!\n[MANDATORY ACTION %s — delivery #%d]\n%s\n[To complete this action: touch ~/.claude/hooks/session-state/done/%s]\n!!! THIS MESSAGE REPEATS UNTIL DONE MARKER EXISTS — ACT IMMEDIATELY !!!\n\n' \
-      "$ATYPE" "$NC" "$AINST" "$AID"
+    printf '\n\n!!! MANDATORY ACTION REQUIRED — ACT NOW BEFORE ANY OTHER WORK !!!\n[MANDATORY ACTION %s — delivery #%d]\n%s\n[To complete this action: touch %s/%s]\n!!! THIS MESSAGE REPEATS UNTIL DONE MARKER EXISTS — ACT IMMEDIATELY !!!\n\n' \
+      "$ATYPE" "$NC" "$AINST" "$DONE_DIR" "$AID"
   done < "$MANDATORY_QUEUE"
   if [ -n "$REMAINING" ]; then
     printf '%s' "$REMAINING" > "$MANDATORY_QUEUE.tmp"
@@ -314,8 +319,8 @@ fi
 # When a worker is focused (via coord_focus_worker or coord_focus_next),
 # show their latest output on each tool call. Emulates native Agent Teams'
 # in-process output display.
-FOCUS_STATE="$HOME/.claude/terminals/.focus-state"
-FOCUS_DISPLAY_STAMP="$HOME/.claude/terminals/.focus-display.stamp"
+FOCUS_STATE="$TERMINALS_DIR/.focus-state"
+FOCUS_DISPLAY_STAMP="$TERMINALS_DIR/.focus-display.stamp"
 FOCUS_DISPLAY_COOLDOWN="${CLAUDE_LEAD_FOCUS_COOLDOWN:-8}"
 FOCUS_SHOWN=false
 
@@ -381,7 +386,7 @@ for donefile in "$RESULTS_DIR"/*.meta.json.done; do
   FILE_AGE=$(( $(date +%s) - $(get_file_mtime_epoch "$donefile") ))
   [ "$FILE_AGE" -gt 60 ] && continue
   TASK_ID=$(basename "$donefile" .meta.json.done)
-  ANNOUNCED=~/.claude/terminals/.announced-"${TASK_ID}"
+  ANNOUNCED="$TERMINALS_DIR/.announced-${TASK_ID}"
   [ -f "$ANNOUNCED" ] && continue
   META_FILE="$RESULTS_DIR/${TASK_ID}.meta.json"
   WORKER_NAME="unknown"

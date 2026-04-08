@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://claude-token-management.dev/schemas/v1/compatibility-registry.schema.json",
+  "title": "Compatibility Registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "registry_version", "issues"],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "registry_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "issue_id",
+          "title",
+          "issue_class",
+          "severity",
+          "ownership",
+          "status",
+          "impact",
+          "local_controls",
+          "detection",
+          "benchmarks",
+          "repro_commands",
+          "last_verified_at"
+        ],
+        "properties": {
+          "issue_id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9._-]*$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "issue_class": {
+            "type": "string",
+            "minLength": 1
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["low", "medium", "high", "critical"]
+          },
+          "ownership": {
+            "type": "string",
+            "enum": ["local", "upstream", "hybrid"]
+          },
+          "status": {
+            "type": "string",
+            "enum": ["active", "watch", "benchmarked", "mitigated", "blocked"]
+          },
+          "impact": {
+            "type": "string",
+            "minLength": 1
+          },
+          "local_controls": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "detection": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "benchmarks": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "repro_commands": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "last_verified_at": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "unresolved_reason": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

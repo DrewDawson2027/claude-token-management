@@ -14,6 +14,7 @@ import json
 import sys
 from pathlib import Path
 from datetime import datetime, timezone
+from runtime_paths import runtime_path
 
 MAX_RECENT_MESSAGES = 20
 MAX_USER_MSG_CHARS = 600
@@ -134,7 +135,7 @@ def main():
     lines.append("*Auto-saved before compaction. Resume from this point.*")
 
     # --- Write to session-cache ---
-    cache_dir = Path.home() / ".claude" / "session-cache"
+    cache_dir = runtime_path("session-cache")
     cache_dir.mkdir(parents=True, exist_ok=True)
 
     ts_file = now.strftime("%Y%m%d-%H%M%S")

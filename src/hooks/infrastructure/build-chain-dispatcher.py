@@ -20,8 +20,9 @@ import os
 import sys
 import time
 import uuid
+from runtime_paths import session_state_dir
 
-QUEUE_DIR = os.path.expanduser("~/.claude/hooks/session-state")
+QUEUE_DIR = str(session_state_dir())
 QUEUE_FILE = os.path.join(QUEUE_DIR, "mandatory-actions.jsonl")
 CHAINS_DIR = os.path.join(QUEUE_DIR, "chains")
 

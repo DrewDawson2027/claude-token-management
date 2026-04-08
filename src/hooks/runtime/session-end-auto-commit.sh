@@ -4,7 +4,8 @@
 # feature branches so work is never lost when a session ends mid-task.
 # Never touches main, master, or develop. Logs every auto-commit.
 
-LOG_FILE="$HOME/.claude/hooks/session-state/auto-commits.log"
+CLAUDE_RUNTIME_DIR="${CLAUDE_RUNTIME_DIR:-$HOME/.claude}"
+LOG_FILE="$CLAUDE_RUNTIME_DIR/hooks/session-state/auto-commits.log"
 mkdir -p "$(dirname "$LOG_FILE")"
 
 # Find the git repo for the current working directory

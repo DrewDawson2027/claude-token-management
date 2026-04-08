@@ -53,6 +53,7 @@ def isolated_env(tmp_path):
     """Isolated environment for hook subprocesses."""
     state_dir = tmp_path / "session-state"
     state_dir.mkdir(parents=True)
+    runtime_root = tmp_path / ".claude"
     config = {
         "schema_version": 2,
         "max_agents": 5,
@@ -65,12 +66,13 @@ def isolated_env(tmp_path):
     config_path = tmp_path / "config.json"
     config_path.write_text(json.dumps(config))
 
-    (tmp_path / ".claude" / "hooks" / "session-state").mkdir(parents=True)
-    (tmp_path / ".claude" / "logs").mkdir(parents=True)
-    (tmp_path / ".claude" / "projects").mkdir(parents=True)
+    (runtime_root / "hooks" / "session-state").mkdir(parents=True)
+    (runtime_root / "logs").mkdir(parents=True)
+    (runtime_root / "projects").mkdir(parents=True)
 
     env = os.environ.copy()
     env["HOME"] = str(tmp_path)
+    env["CLAUDE_RUNTIME_DIR"] = str(runtime_root)
     env["TOKEN_GUARD_STATE_DIR"] = str(state_dir)
     env["TOKEN_GUARD_CONFIG_PATH"] = str(config_path)
     env["PYTHONPATH"] = HOOKS_DIR + os.pathsep + env.get("PYTHONPATH", "")

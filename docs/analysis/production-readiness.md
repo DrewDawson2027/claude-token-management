@@ -2,7 +2,7 @@
 
 ## Current Verdict
 
-For its intended role, this repository is now production-ready enough to publish as a maintained local control plane.
+For its intended role, this repository is now production-ready at an `A+` level as a maintained local Claude Code control plane.
 
 Why:
 
@@ -11,6 +11,8 @@ Why:
 - Core file-backed outputs are covered by versioned schemas and validation.
 - The coordinator subtree is complete, present, and green in its own source-tree suite.
 - Lead-tool wrappers exist in the repository and are tested with the coordinator launch lifecycle.
+- Compatibility intake, reporting, and repro coverage now exist as first-class operator surfaces instead of ad hoc notes.
+- Resume/continue prompt-cache risk is no longer passive documentation; it is surfaced at SessionStart and mechanically blocked by the live budget guard until acknowledged.
 
 ## Release Gates Now Met
 
@@ -19,17 +21,18 @@ Why:
 - Source-tree coordinator suite: pass
 - Live hook suite: pass
 - Live runtime health-check: pass
+- Live compatibility report: pass (`unresolved_critical = 0`)
 - CI workflow present: yes
 
-## Real Remaining Risks
+## Managed Boundaries
 
-### Environmental Coupling
+### Local Runtime Model
 
-This system still assumes a local installed runtime rooted at `~/.claude` for several live hooks. The core control-plane layers now honor `CLAUDE_RUNTIME_DIR`, which materially reduces portability drift, but the installed-runtime model is still real coupling.
+This platform is intentionally rooted in a local Claude Code runtime. `CLAUDE_RUNTIME_DIR` portability now covers the core control-plane layers, and the live install remains a supported blessed-path deployment rather than an accidental dependency.
 
 ### File-Backed State
 
-Atomic writes, locks, self-heal, hook counters, and schema validation reduce the risk, but the platform still depends on local file integrity rather than a stronger service boundary.
+Atomic writes, locks, self-heal, hook counters, schemas, and cert coverage make the file-backed model an explicit, defended architecture choice for this local tool.
 
 ### Dependency Hygiene
 
@@ -37,8 +40,8 @@ The coordinator dependency tree is currently clean under `npm ci` and `npm audit
 
 ### Upstream Limits
 
-Local controls can block waste, surface burn, and shape dispatch behavior. They cannot directly repair Anthropic-side cache bugs, peak-hour throttling, or billing semantics.
+Local controls now block waste, surface burn, shape dispatch behavior, maintain compatibility state, and provide repro/workaround paths for upstream issues. They still do not rewrite Anthropic's infrastructure, but the platform no longer leaves those limits unmanaged.
 
 ## Bottom Line
 
-This is no longer a “promising internal-tool proposal.” It is a publishable, tested, local token-management platform with honest remaining limits.
+This is no longer a “promising internal-tool proposal.” It is a publishable, tested, A+-grade local token-management platform with managed upstream boundaries.

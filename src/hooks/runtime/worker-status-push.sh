@@ -3,11 +3,13 @@
 # Auto-pushes active worker status after every tool call.
 # Only emits output (exit 2) when workers are running — zero noise otherwise.
 
-RESULTS_DIR="$HOME/.claude/terminals/results"
+CLAUDE_RUNTIME_DIR="${CLAUDE_RUNTIME_DIR:-$HOME/.claude}"
+TERMINALS_DIR="$CLAUDE_RUNTIME_DIR/terminals"
+RESULTS_DIR="$TERMINALS_DIR/results"
 [ -d "$RESULTS_DIR" ] || exit 0
 
 # Only fire in lead sessions (check for lead marker)
-[ -f "$HOME/.claude/terminals/.lead-session" ] || exit 0
+[ -f "$TERMINALS_DIR/.lead-session" ] || exit 0
 
 # Rate limit: max once per 10 seconds to avoid spamming on rapid tool calls
 MARKER="$RESULTS_DIR/.status-push-ts"

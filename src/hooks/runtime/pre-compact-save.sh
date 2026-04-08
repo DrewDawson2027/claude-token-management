@@ -2,13 +2,14 @@
 # Pre-Compact State Save — preserves session context before context compaction
 # Triggered by PreCompact hook
 # Ensures agents can recover working state after context window is compacted
+CLAUDE_RUNTIME_DIR="${CLAUDE_RUNTIME_DIR:-$HOME/.claude}"
 INPUT=$(cat)
 
 SESSION_ID=$(echo "$INPUT" | jq -r '.session_id // "unknown"')
 TRIGGER=$(echo "$INPUT" | jq -r '.trigger // "unknown"')
 CWD=$(echo "$INPUT" | jq -r '.cwd // "unknown"')
 
-STATE_DIR="$HOME/.claude/session-cache"
+STATE_DIR="$CLAUDE_RUNTIME_DIR/session-cache"
 mkdir -p "$STATE_DIR"
 
 # Save compaction event with session context

@@ -10,21 +10,34 @@ Fail-open: never blocks session termination.
 """
 
 import json
-import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-HOME = Path.home()
-STATE_DIR = HOME / ".claude" / "hooks" / "session-state"
-SESSIONS_DIR = HOME / ".claude" / "token-analytics" / "sessions"
+THIS_DIR = Path(__file__).resolve().parent
+INFRA_DIR = THIS_DIR.parent / "infrastructure"
+for candidate in (THIS_DIR, INFRA_DIR):
+    candidate_str = str(candidate)
+    if candidate.is_dir() and candidate_str not in sys.path:
+        sys.path.insert(0, candidate_str)
 
-# Add hooks dir for imports
-HOOKS_DIR = HOME / ".claude" / "hooks"
-if str(HOOKS_DIR) not in sys.path:
-    sys.path.insert(0, str(HOOKS_DIR))
+try:
+    from runtime_paths import hooks_dir, session_state_dir, token_analytics_dir
+except Exception:
+    def hooks_dir() -> Path:
+        return Path.home() / ".claude" / "hooks"
+
+    def session_state_dir() -> Path:
+        return hooks_dir() / "session-state"
+
+    def token_analytics_dir() -> Path:
+        return Path.home() / ".claude" / "token-analytics"
+
 
 from hook_utils import locked_append
+
+STATE_DIR = session_state_dir()
+SESSIONS_DIR = token_analytics_dir() / "sessions"
 
 
 def main():

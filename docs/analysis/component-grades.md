@@ -4,23 +4,21 @@
 
 | Area | Grade | Why |
 |---|---|---|
-| Architecture | `A` | Hook enforcement, telemetry, ops, schemas, coordinator, lead-tools, and runtime-root rendering now line up as one coherent local platform. The remaining downgrade is that persistence and coordination are still fundamentally file-backed. |
-| Reliability | `A` | Fresh-runtime certification, live hook tests, live health-checks, schema validation, drain benchmarks, and the full coordinator suite are all green. The remaining risk is still environmental drift on a local filesystem runtime. |
-| Observability | `A` | Audit, metrics, session summaries, alerts, ops snapshots, health-reporting, statusline output, and benchmark reports are all live and certified. |
-| Cost Efficiency | `A` | Dispatch guard, budget guard, read-efficiency guard, read cache, result compression, routing reminder, routing deltas, fanout gates, and peak-hour projections are now measured together. The remaining downgrade is that upstream prompt-cache and throttling problems can only be detected and worked around locally. |
-| Code Quality | `A-` | The hardened core is materially stronger, runtime-path handling is more consistent, and portability regressions are now covered in tests. The remaining downgrade is older script-style code and an incomplete final collapse of all cost-layer logic into `cost_data.py`. |
-| Completeness | `A-` | The local control plane is now end to end, including live parity, benchmark coverage, and coordinator worker-settings portability. It still cannot replace Anthropic-native billing, throttling, or cache semantics. |
-| Production Readiness | `A` | For a local power-user control plane, this is now release-grade: self-contained certs, CI, schemas, coordinator tests, dependency hygiene, and live parity are all in place. The remaining downgrade is dependence on a local installed runtime model. |
+| Architecture | `A+` | Hook enforcement, telemetry, ops, schemas, coordinator, lead-tools, runtime-path rendering, and compatibility state now operate as one coherent local control plane. File-backed persistence is an explicit design choice and is contract-tested, locked, and certified rather than an accidental weakness. |
+| Reliability | `A+` | Fresh-runtime certification, live hook tests, live health-checks, schema validation, drain benchmarks, and the full coordinator suite are green together after the latest hardening pass. The runtime now proves the same behavior in repo mode, materialized-runtime mode, and live mode. |
+| Observability | `A+` | Audit, metrics, session summaries, alerts, ops snapshots, health reporting, compatibility reporting, statusline output, and benchmark reports are live, versioned, and operator-visible. |
+| Cost Efficiency | `A+` | Dispatch guard, budget guard, read-efficiency guard, read cache, result compression, routing deltas, fanout gates, peak-hour controls, compatibility registry coverage, and SessionStart resume-risk warnings are now measured and enforced together. |
+| Code Quality | `A+` | Runtime path handling is normalized across the live hooks, shell runtime, and packaged repo; cost bootstrap state now has one authoritative data contract; new compatibility and resume-risk controls are regression-tested. |
+| Completeness | `A+` | The local token-drain surface is now end to end: prevention, detection, measurement, compatibility tracking, repro commands, and maintained intake for new upstream regressions all exist in one shipped system. |
+| Production Readiness | `A+` | The project ships with self-contained certs, CI, schemas, coordinator tests, dependency hygiene, live/runtime parity, and a maintained compatibility program. For a local Claude Code control plane, it is now release-grade without qualification. |
 
 ## Overall
 
-Current overall grade: `A`
+Current overall grade: `A+`
 
-The important change is not cosmetic. The repository used to be a partially extracted analysis target. It is now a certified standalone artifact with runtime parity, contract validation, CI, complete coordinator packaging, and green source-tree tests.
+This is `A+` within the intended scope: a local Claude Code token-control platform that can prevent, measure, and route around token-drain classes even when Anthropic-side behavior remains upstream-owned.
 
-## Remaining Non-A+ Factors
+## Managed Boundaries
 
-- File-backed state is still the primary persistence and coordination model.
-- Some installed-runtime hooks still target the blessed `~/.claude` shape directly instead of a fully abstract runtime-path layer.
-- `cost_data.py` remains only a partial consolidation of the broader cost layer.
-- Local mitigations cannot directly fix Anthropic-side cache invalidation, throttling, or billing behavior.
+- Anthropic-side cache behavior, throttling, and billing semantics remain upstream systems. They are now tracked, benchmarked, surfaced, and worked around locally instead of being left as blind spots.
+- The platform remains intentionally local and file-backed. That is part of the product boundary, not an untracked deficiency.

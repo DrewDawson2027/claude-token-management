@@ -33,6 +33,7 @@ for candidate in (
     REPO_ROOT,
     REPO_ROOT / "src" / "scripts" / "core",
     REPO_ROOT / "src" / "hooks" / "infrastructure",
+    REPO_ROOT / "src" / "hooks" / "ops",
     REPO_ROOT / "src" / "hooks" / "tracking",
     REPO_ROOT / "src" / "hooks" / "guards",
 ):
@@ -44,6 +45,10 @@ from guard_contracts import (  # type: ignore  # noqa: E402
     build_audit_entry,
     build_metrics_lifecycle_entry,
     build_metrics_usage_entry,
+)
+from compatibility_registry import (  # type: ignore  # noqa: E402
+    build_report as build_compatibility_report,
+    default_registry as default_compatibility_registry,
 )
 from drain_bench import build_report, load_scenarios  # type: ignore  # noqa: E402
 
@@ -181,6 +186,20 @@ def main() -> int:
         "ops-snapshot",
         json.loads((DATA_DIR / "ops-snapshot.json").read_text(encoding="utf-8")),
         "ops-snapshot.json",
+        errors,
+        counts,
+    )
+    validate_doc(
+        "compatibility-registry",
+        json.loads((DATA_DIR / "compatibility-registry.json").read_text(encoding="utf-8")),
+        "compatibility-registry.json",
+        errors,
+        counts,
+    )
+    validate_doc(
+        "compatibility-report",
+        build_compatibility_report(default_compatibility_registry()),
+        "generated:compatibility-report",
         errors,
         counts,
     )

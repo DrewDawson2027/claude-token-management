@@ -16,6 +16,20 @@ import json
 import sys
 import os
 import datetime
+from pathlib import Path
+
+THIS_DIR = Path(__file__).resolve().parent
+INFRA_DIR = THIS_DIR.parent / "infrastructure"
+for candidate in (THIS_DIR, INFRA_DIR):
+    candidate_str = str(candidate)
+    if candidate.is_dir() and candidate_str not in sys.path:
+        sys.path.insert(0, candidate_str)
+
+try:
+    from runtime_paths import logs_dir
+except Exception:
+    def logs_dir() -> Path:
+        return Path.home() / ".claude" / "logs"
 
 
 def main():
@@ -33,8 +47,8 @@ def main():
     teammate_id = payload.get("assignee") or payload.get("teammate_id", "unknown")
     is_native = "task_title" in payload or "assignee" in payload
 
-    log_path = os.path.expanduser("~/.claude/logs/task-completed.log")
-    os.makedirs(os.path.dirname(log_path), exist_ok=True)
+    log_path = logs_dir() / "task-completed.log"
+    log_path.parent.mkdir(parents=True, exist_ok=True)
 
     issues = []
 
@@ -118,7 +132,7 @@ def main():
 
     # ── Write audit log ───────────────────────────────────────────────────────
     ts = datetime.datetime.now().isoformat()
-    with open(log_path, "a") as f:
+    with log_path.open("a", encoding="utf-8") as f:
         schema_tag = "native" if is_native else "coordinator"
         if issues:
             f.write(

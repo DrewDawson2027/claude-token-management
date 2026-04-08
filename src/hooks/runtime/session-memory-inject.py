@@ -23,8 +23,25 @@ import sys
 from pathlib import Path
 from datetime import datetime, timezone
 
+THIS_DIR = Path(__file__).resolve().parent
+INFRA_DIR = THIS_DIR.parent / "infrastructure"
+for candidate in (THIS_DIR, INFRA_DIR):
+    candidate_str = str(candidate)
+    if candidate.is_dir() and candidate_str not in sys.path:
+        sys.path.insert(0, candidate_str)
+
+try:
+    from runtime_paths import runtime_dir, runtime_path
+except Exception:
+    def runtime_dir() -> Path:
+        return Path.home() / ".claude"
+
+    def runtime_path(*parts: str) -> Path:
+        return runtime_dir().joinpath(*parts)
+
+
 HOME = Path.home()
-CACHE_DIR = HOME / ".claude" / "session-cache"
+CACHE_DIR = runtime_path("session-cache")
 PLANNING_DIR = HOME / ".planning"
 CLAUDE_MEM_DB = HOME / ".claude-mem" / "claude-mem.db"
 
@@ -200,7 +217,7 @@ def load_current_plan() -> str | None:
     candidates = [
         PLANNING_DIR / "CURRENT_PLAN.md",
         PLANNING_DIR / "current-plan.md",
-        HOME / ".claude" / ".planning" / "CURRENT_PLAN.md",
+        runtime_dir() / ".planning" / "CURRENT_PLAN.md",
     ]
     for path in candidates:
         if path.exists():

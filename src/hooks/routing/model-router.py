@@ -2,6 +2,7 @@
 import json
 import os
 import sys
+from runtime_paths import runtime_dir
 
 ALLOWED_MODELS = {"sonnet", "haiku"}
 HAIKU_REQUIRED_TYPES = {
@@ -33,7 +34,7 @@ def read_json(path):
 
 
 def resolve_configured_model():
-    claude_dir = os.path.expanduser("~/.claude")
+    claude_dir = str(runtime_dir())
     for name in ("settings.local.json", "settings.json"):
         data = read_json(os.path.join(claude_dir, name))
         if isinstance(data, dict):

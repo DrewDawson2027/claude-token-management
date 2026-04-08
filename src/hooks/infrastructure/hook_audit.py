@@ -23,6 +23,7 @@ import json
 import os
 import sys
 import time
+from pathlib import Path
 from typing import Optional
 
 # Import shared locking from hook_utils (self-contained fallback if unavailable)
@@ -39,11 +40,17 @@ except (ImportError, SyntaxError):
         except OSError:
             return False
 
+try:
+    from runtime_paths import session_state_dir
+except Exception:
+    def session_state_dir() -> Path:
+        return Path.home() / ".claude" / "hooks" / "session-state"
+
 
 AUDIT_PATH = os.path.join(
     os.environ.get(
         "TOKEN_GUARD_STATE_DIR",
-        os.path.expanduser("~/.claude/hooks/session-state"),
+        str(session_state_dir()),
     ),
     "audit.jsonl",
 )

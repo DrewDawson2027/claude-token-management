@@ -305,7 +305,12 @@ def main() -> int:
     spawn_smoke = paths["coordinator"] / "scripts" / "spawn-smoke.mjs"
     repo_native_tests = [
         REPO_ROOT / "tests" / "test_drain_bench.py",
+        REPO_ROOT / "tests" / "test_cli_compatibility.py",
+        REPO_ROOT / "tests" / "test_compatibility_registry.py",
+        REPO_ROOT / "tests" / "test_cost_layer_contract.py",
         REPO_ROOT / "tests" / "test_runtime_overrides.py",
+        REPO_ROOT / "tests" / "test_resume_compat_guard.py",
+        REPO_ROOT / "tests" / "test_session_start_compatibility.py",
         REPO_ROOT / "tests" / "test_token_guard_behavior.py",
     ]
 

@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://claude-token-management.dev/schemas/v1/compatibility-report.schema.json",
+  "title": "Compatibility Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "generated_at", "registry_version", "summary", "issues"],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "generated_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "registry_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "total_issues",
+        "by_status",
+        "by_ownership",
+        "by_severity",
+        "unresolved_critical",
+        "issues_with_benchmarks",
+        "issues_with_repro_commands",
+        "issues_with_local_controls",
+        "benchmark_coverage_pct"
+      ],
+      "properties": {
+        "total_issues": { "type": "integer", "minimum": 0 },
+        "by_status": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 } },
+        "by_ownership": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 } },
+        "by_severity": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 } },
+        "unresolved_critical": { "type": "integer", "minimum": 0 },
+        "issues_with_benchmarks": { "type": "integer", "minimum": 0 },
+        "issues_with_repro_commands": { "type": "integer", "minimum": 0 },
+        "issues_with_local_controls": { "type": "integer", "minimum": 0 },
+        "benchmark_coverage_pct": { "type": "number", "minimum": 0 }
+      }
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "issue_id",
+          "title",
+          "issue_class",
+          "severity",
+          "ownership",
+          "status",
+          "has_benchmark",
+          "has_repro",
+          "local_control_count",
+          "last_verified_at"
+        ],
+        "properties": {
+          "issue_id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9._-]*$"
+          },
+          "title": { "type": "string", "minLength": 1 },
+          "issue_class": { "type": "string", "minLength": 1 },
+          "severity": { "type": "string", "enum": ["low", "medium", "high", "critical"] },
+          "ownership": { "type": "string", "enum": ["local", "upstream", "hybrid"] },
+          "status": { "type": "string", "enum": ["active", "watch", "benchmarked", "mitigated", "blocked"] },
+          "has_benchmark": { "type": "boolean" },
+          "has_repro": { "type": "boolean" },
+          "local_control_count": { "type": "integer", "minimum": 0 },
+          "last_verified_at": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+          "unresolved_reason": { "type": "string" }
+        }
+      }
+    }
+  }
+}

@@ -2,11 +2,9 @@
 from __future__ import annotations
 
 import argparse
-from collections import deque
 import csv
 import json
 import os
-import re
 import subprocess
 import sys
 import time
@@ -15,7 +13,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, TypedDict
-from runtime_paths import runtime_dir
+from cost_base import parse_ts_dt as parse_ts, read_json, safe_id, utc_now, write_json
 
 try:
     from pricing import calculate_cost_from_usage as _pricing_calc
@@ -53,121 +51,22 @@ class SummaryResult(TypedDict):
     totals: UsageTotals
     budget: BudgetStatus
 
-
-CLAUDE = runtime_dir()
-COST_DIR = CLAUDE / "cost"
-PROJECTS_DIR = CLAUDE / "projects"
-TEAMS_DIR = CLAUDE / "teams"
-TERMINALS_DIR = CLAUDE / "terminals"
-REPORTS_DIR = CLAUDE / "reports"
-CONFIG_FILE = COST_DIR / "config.json"
-BUDGETS_FILE = COST_DIR / "budgets.json"
-CACHE_FILE = COST_DIR / "cache.json"
-USAGE_INDEX_FILE = COST_DIR / "usage-index.json"
-PRICING_CACHE_FILE = COST_DIR / "pricing-cache.json"
-STATUSLINE_CACHE_FILE = COST_DIR / "statusline-cache.json"
-SAFE_ID = re.compile(r"^[A-Za-z0-9._-]+$")
-
-
-def utc_now() -> str:
-    return (
-        datetime.now(timezone.utc)
-        .replace(microsecond=0)
-        .isoformat()
-        .replace("+00:00", "Z")
-    )
-
-
-def ensure_dirs() -> None:
-    COST_DIR.mkdir(parents=True, exist_ok=True)
-    REPORTS_DIR.mkdir(parents=True, exist_ok=True)
-
-
-def read_json(path: Path, default: Any = None) -> Any:
-    try:
-        return json.loads(path.read_text())
-    except Exception:
-        return default
-
-
-def write_json(path: Path, data: Any) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    tmp = path.with_suffix(
-        path.suffix + f".{os.getpid()}.{int(time.time() * 1000)}.tmp"
-    )
-    tmp.write_text(json.dumps(data, indent=2) + "\n")
-    tmp.replace(path)
-
-
-def safe_id(v: str, label: str) -> str:
-    if not isinstance(v, str) or not v or len(v) > 120 or not SAFE_ID.match(v):
-        raise SystemExit(f"Invalid {label}")
-    return v
-
-
-def parse_ts(ts: str | None) -> datetime | None:
-    if not ts:
-        return None
-    try:
-        return datetime.fromisoformat(ts.replace("Z", "+00:00"))
-    except Exception:
-        return None
+CLAUDE = _cost_data.CLAUDE
+COST_DIR = _cost_data.COST_DIR
+PROJECTS_DIR = _cost_data.PROJECTS_DIR
+TEAMS_DIR = _cost_data.TEAMS_DIR
+TERMINALS_DIR = _cost_data.TERMINALS_DIR
+REPORTS_DIR = _cost_data.REPORTS_DIR
+CONFIG_FILE = _cost_data.CONFIG_FILE
+BUDGETS_FILE = _cost_data.BUDGETS_FILE
+CACHE_FILE = _cost_data.CACHE_FILE
+USAGE_INDEX_FILE = _cost_data.USAGE_INDEX_FILE
+PRICING_CACHE_FILE = _cost_data.PRICING_CACHE_FILE
+STATUSLINE_CACHE_FILE = _cost_data.STATUSLINE_CACHE_FILE
 
 
 def load_or_init_files() -> None:
-    ensure_dirs()
-    if not CONFIG_FILE.exists():
-        write_json(
-            CONFIG_FILE,
-            {
-                "backend": "ccusage",
-                "offlineDefault": True,
-                "costSourceDefault": "both",
-                "statusline": {
-                    "enabled": True,
-                    "fallbackHookPrint": True,
-                    "hookCooldownSeconds": 30,
-                    "showOnlyOnChange": True,
-                },
-                "timeouts": {
-                    "ccusageSeconds": 10,
-                    "statuslineSeconds": 4,
-                },
-                "alerts_enabled": True,
-                "alert_channels": ["local", "inbox"],
-                "alert_cooldown_seconds": 1800,
-                "alert_repeat_crit_seconds": 600,
-                "ops_snapshot_cache_ttl_seconds": 60,
-                "trends_default_window_days": 7,
-            },
-        )
-    if not BUDGETS_FILE.exists():
-        write_json(
-            BUDGETS_FILE,
-            {
-                "global": {"dailyUSD": 0, "weeklyUSD": 0, "monthlyUSD": 0},
-                "teams": {},
-                "projects": {},
-                "thresholds": {"warnPct": 80, "critPct": 95},
-            },
-        )
-    if not CACHE_FILE.exists():
-        write_json(
-            CACHE_FILE, {"generatedAt": utc_now(), "source": "local", "windows": {}}
-        )
-    if not USAGE_INDEX_FILE.exists():
-        write_json(
-            USAGE_INDEX_FILE,
-            {"generatedAt": utc_now(), "fingerprint": {}, "windows": {}},
-        )
-    if not PRICING_CACHE_FILE.exists():
-        write_json(
-            PRICING_CACHE_FILE,
-            {
-                "generatedAt": utc_now(),
-                "note": "reserved for local pricing metadata mirror",
-            },
-        )
+    _cost_data.ensure_cost_files()
 
 
 @dataclass

@@ -15,8 +15,9 @@ import os
 import sys
 import threading
 import time
+from runtime_paths import session_state_dir
 
-STATE_FILE = os.path.expanduser("~/.claude/hooks/session-state/circuit-breaker.json")
+STATE_FILE = str(session_state_dir() / "circuit-breaker.json")
 MAX_FAILURES = 3
 COOLDOWN_SECONDS = 300  # 5 minutes
 _STATE_LOCK = threading.Lock()

@@ -16,8 +16,27 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
 
-# Add scripts dir for pricing imports
-SCRIPTS_DIR = Path.home() / ".claude" / "scripts"
+THIS_DIR = Path(__file__).resolve().parent
+INFRA_DIR = THIS_DIR.parent / "infrastructure"
+for candidate in (THIS_DIR, INFRA_DIR):
+    candidate_str = str(candidate)
+    if candidate.is_dir() and candidate_str not in sys.path:
+        sys.path.insert(0, candidate_str)
+
+try:
+    from runtime_paths import projects_dir, scripts_dir, session_state_dir
+except Exception:
+    def scripts_dir() -> Path:
+        return Path.home() / ".claude" / "scripts"
+
+    def projects_dir() -> Path:
+        return Path.home() / ".claude" / "projects"
+
+    def session_state_dir() -> Path:
+        return Path.home() / ".claude" / "hooks" / "session-state"
+
+
+SCRIPTS_DIR = scripts_dir()
 if str(SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPTS_DIR))
 
@@ -31,9 +50,8 @@ except ImportError:
     def normalize_model_name(m):
         return m
 
-
-PROJECTS_DIR = Path.home() / ".claude" / "projects"
-STATE_DIR = Path.home() / ".claude" / "hooks" / "session-state"
+PROJECTS_DIR = projects_dir()
+STATE_DIR = session_state_dir()
 
 
 def find_session_jsonl(session_id: str) -> Optional[Path]:

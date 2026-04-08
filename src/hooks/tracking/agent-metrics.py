@@ -11,13 +11,27 @@ import json
 import sys
 import os
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any, Dict, Tuple
+
+THIS_DIR = Path(__file__).resolve().parent
+INFRA_DIR = THIS_DIR.parent / "infrastructure"
+for candidate in (THIS_DIR, INFRA_DIR):
+    candidate_str = str(candidate)
+    if candidate.is_dir() and candidate_str not in sys.path:
+        sys.path.insert(0, candidate_str)
 
 from guard_contracts import build_metrics_usage_entry
 from guard_normalize import normalize_subagent_type, normalize_text
 from hook_utils import locked_append, read_jsonl_fault_tolerant
+try:
+    from runtime_paths import session_state_dir
+except Exception:
+    def session_state_dir() -> Path:
+        return Path.home() / ".claude" / "hooks" / "session-state"
 
-METRICS_DIR = os.path.expanduser("~/.claude/hooks/session-state")
+
+METRICS_DIR = str(session_state_dir())
 METRICS_FILE = os.path.join(METRICS_DIR, "agent-metrics.jsonl")
 
 # Sonnet 4.6 pricing (per 1K tokens)

@@ -24,7 +24,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
-from cost_base import read_json, parse_ts_dt
+from cost_base import parse_ts_dt, read_json, utc_now, write_json
 from runtime_paths import runtime_dir
 
 try:
@@ -36,10 +36,84 @@ CLAUDE = runtime_dir()
 COST_DIR = CLAUDE / "cost"
 PROJECTS_DIR = CLAUDE / "projects"
 TEAMS_DIR = CLAUDE / "teams"
+TERMINALS_DIR = CLAUDE / "terminals"
+REPORTS_DIR = CLAUDE / "reports"
+CONFIG_FILE = COST_DIR / "config.json"
+BUDGETS_FILE = COST_DIR / "budgets.json"
+CACHE_FILE = COST_DIR / "cache.json"
 USAGE_INDEX_FILE = COST_DIR / "usage-index.json"
+PRICING_CACHE_FILE = COST_DIR / "pricing-cache.json"
+STATUSLINE_CACHE_FILE = COST_DIR / "statusline-cache.json"
 
 # Alias parse_ts_dt as parse_ts for internal use (datetime return type)
 parse_ts = parse_ts_dt
+
+
+def default_cost_config() -> dict[str, Any]:
+    return {
+        "backend": "ccusage",
+        "offlineDefault": True,
+        "costSourceDefault": "both",
+        "statusline": {
+            "enabled": True,
+            "fallbackHookPrint": True,
+            "hookCooldownSeconds": 30,
+            "showOnlyOnChange": True,
+        },
+        "timeouts": {
+            "ccusageSeconds": 10,
+            "statuslineSeconds": 4,
+        },
+        "alerts_enabled": True,
+        "alert_channels": ["local", "inbox"],
+        "alert_cooldown_seconds": 1800,
+        "alert_repeat_crit_seconds": 600,
+        "ops_snapshot_cache_ttl_seconds": 60,
+        "trends_default_window_days": 7,
+    }
+
+
+def default_budgets_doc() -> dict[str, Any]:
+    return {
+        "global": {"dailyUSD": 0, "weeklyUSD": 0, "monthlyUSD": 0},
+        "teams": {},
+        "projects": {},
+        "thresholds": {"warnPct": 80, "critPct": 95},
+    }
+
+
+def default_cost_cache() -> dict[str, Any]:
+    return {"generatedAt": utc_now(), "source": "local", "windows": {}}
+
+
+def default_usage_index() -> dict[str, Any]:
+    return {"generatedAt": utc_now(), "fingerprint": {}, "windows": {}}
+
+
+def default_pricing_cache() -> dict[str, Any]:
+    return {
+        "generatedAt": utc_now(),
+        "note": "reserved for local pricing metadata mirror",
+    }
+
+
+def ensure_cost_dirs() -> None:
+    COST_DIR.mkdir(parents=True, exist_ok=True)
+    REPORTS_DIR.mkdir(parents=True, exist_ok=True)
+
+
+def ensure_cost_files() -> None:
+    ensure_cost_dirs()
+    if not CONFIG_FILE.exists():
+        write_json(CONFIG_FILE, default_cost_config())
+    if not BUDGETS_FILE.exists():
+        write_json(BUDGETS_FILE, default_budgets_doc())
+    if not CACHE_FILE.exists():
+        write_json(CACHE_FILE, default_cost_cache())
+    if not USAGE_INDEX_FILE.exists():
+        write_json(USAGE_INDEX_FILE, default_usage_index())
+    if not PRICING_CACHE_FILE.exists():
+        write_json(PRICING_CACHE_FILE, default_pricing_cache())
 
 
 @dataclass
