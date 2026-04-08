@@ -27,11 +27,9 @@ Post this first:
 ```text
 Claude Code token drain is real, and preventable.
 
-I built a local control plane that blocks repeated reads, wasteful subagents, risky resume flows, and bad routing before spend lands.
+This screenshot is the guardrail actually blocking a risky resume flow and duplicate reads before spend lands.
 
-Cert: 10/10
-Health: 42/42
-
+Repo + certs:
 https://github.com/DrewDawson2027/claude-token-management
 ```
 
@@ -61,7 +59,7 @@ If you want the longer version, use this thread instead of adding random replies
 ```text
 Claude Code token drain is real, and preventable.
 
-I built a local control plane that blocks repeated reads, wasteful subagents, risky resume flows, and bad routing before spend lands.
+This screenshot is the guardrail actually blocking a risky resume flow and duplicate reads before spend lands.
 
 Repo:
 https://github.com/DrewDawson2027/claude-token-management
