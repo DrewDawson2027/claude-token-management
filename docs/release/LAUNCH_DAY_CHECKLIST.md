@@ -6,7 +6,7 @@
 - [README.md](/Users/drewdawson/projects/token-management/README.md) still matches the current proof numbers.
 - [docs/analysis/regression-results.md](/Users/drewdawson/projects/token-management/docs/analysis/regression-results.md) is current.
 - GitHub repo description and topics are set.
-- GitHub profile README mentions this project.
+- GitHub profile is not relying on a special profile README repo for this launch.
 - X profile photo, bio, and repo link are updated.
 - `assets/social/launch-proof.png` is ready for upload.
 - Existing X header is acceptable, or you explicitly chose to replace it.
@@ -30,4 +30,4 @@
 
 - If the post gets traction, post the follow-up reply from the script.
 - If someone provides a concrete regression, turn it into a fixture or issue the same day.
-- If GitHub stars or issues move, update the profile README block to reflect that social proof.
+- If GitHub stars or issues move, update the repository README proof surface to reflect that social proof.
