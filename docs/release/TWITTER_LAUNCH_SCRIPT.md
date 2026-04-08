@@ -11,6 +11,7 @@ Why it failed:
 3. It had no open loop, no question, no conflict, and no audience participation path.
 4. It asked a brand-new account to win on credibility alone, without building a reply loop or joining an existing conversation.
 5. It stated the repo existed, but it did not make the pain feel immediate or the proof feel surprising.
+6. It still did not explain clearly enough what the thing actually is or how it helps protect a Claude plan.
 
 ## Source Basis
 
@@ -35,12 +36,13 @@ The goal is not to announce a repo.
 
 The goal is to make people instantly recognize the problem, believe the screenshot, and reply before they ever need to click anything.
 
-This means the opener has to do four things:
+This means the opener has to do five things:
 
 1. Name a failure mode people already hate.
 2. Make it sound like it came from someone who actually hit it.
-3. Tie the image to live proof.
-4. Pull replies before you ever ask for an outbound click.
+3. Make it obvious this is something you built to protect your own Claude plan.
+4. Tie the image to live proof.
+5. Pull replies before you ever ask for an outbound click.
 
 ## Opening Post Rules
 
@@ -48,6 +50,7 @@ This means the opener has to do four things:
 - Use the terminal proof image.
 - Lead with the pain or failure mode, not the project name.
 - Include one concrete surprising claim.
+- Make it clear this is what you built to stop waste on your own Claude plan.
 - End with a native CTA: question, prompt for repro, or challenge.
 - Do not sound like product marketing.
 - Do not sound like a changelog.
@@ -57,34 +60,34 @@ This means the opener has to do four things:
 Post this first with `assets/social/launch-proof.png`:
 
 ```text
-Claude will burn a 5-hour window on some unbelievably dumb stuff.
+Claude was burning way too much of my plan on unbelievably dumb stuff.
 
-Resume the wrong session. Let it reread the same files a few times. Now you’ve burned usage before the real work even starts.
+Wrong resume. Same files reread. Extra usage gone before the real work even starts.
 
-I got sick of watching that happen, so I started blocking both locally. This screenshot is one of those guards firing live.
+So I built a local guard layer for my Claude setup that blocks that waste before it lands. This screenshot is one of those guards firing live.
 
-What’s the dumbest way Claude has burned usage for you?
+What’s been burning the most usage on your plan?
 ```
 
 Why this one wins:
 
-- It starts with a concrete pain people already recognize.
-- `5-hour window` is more specific and lived-in than generic `token drain`.
-- `resume the wrong session` and `reread the same files` sound like real failures, not feature categories.
-- The question is easy to answer and invites angry replies without sounding bait-y.
+- It makes the ownership clear: this is what you built for your own plan.
+- It still starts with pain people already recognize.
+- `wrong resume` and `same files reread` sound like real failures, not feature categories.
+- The question is easy to answer and gets people talking about their own drain patterns.
 
 ## Leaner Main Post
 
 Use this if you want it tighter:
 
 ```text
-Claude will happily waste usage before it does anything useful.
+Claude will happily waste your plan before it does anything useful.
 
 Bad resume. Same files reread. Budget gone.
 
-I got tired of watching that happen, so I started blocking it locally. This screenshot is one of those guards firing live.
+I got tired of watching that happen on my own plan, so I built local guards to block it before the spend lands. This screenshot is one of those guards firing live.
 
-What’s the worst Claude usage burn you’ve hit?
+What’s the worst way it’s burned your plan?
 ```
 
 ## More Personal Main Post
@@ -92,18 +95,31 @@ What’s the worst Claude usage burn you’ve hit?
 Use this if you want it to feel more like a build-in-public post:
 
 ```text
-I finally got sick of Claude burning usage on bad resumes and rereading the same files.
+I finally got sick of Claude chewing through my plan on bad resumes and rereading the same files.
 
-So I started blocking both locally before the spend lands.
+So I built local guards that stop both before the spend lands.
 
 This screenshot is the guard firing live.
 
-What’s the most annoying way Claude has wasted usage for you?
+What’s the most annoying way it’s wasted your usage?
 ```
 
 ## First Reply
 
 Reply to your own post within 1 to 3 minutes:
+
+```text
+What it actually does:
+
+- blocks bad resumes before they eat more plan
+- stops the same files getting reread over and over
+- catches wasteful fanout and bad routing before they snowball
+- tracks the drain patterns so I can see what’s burning usage
+```
+
+## Second Reply
+
+Reply to your own first reply shortly after:
 
 ```text
 Current receipts from the runtime right now:
@@ -116,9 +132,9 @@ Current receipts from the runtime right now:
 316/316 coordinator
 ```
 
-## Second Reply
+## Third Reply
 
-Only after the first post has native engagement, or if someone explicitly asks for the repo:
+Only after the thread has native engagement, or if someone explicitly asks for the repo:
 
 ```text
 Repo is here:
@@ -128,7 +144,7 @@ github.com/DrewDawson2027/claude-token-management
 
 If the post is getting replies fast, delay this reply and answer people first.
 
-## Third Reply
+## Fourth Reply
 
 Use this if people start asking whether this “fixes Anthropic”:
 
@@ -157,6 +173,7 @@ The reason is simple:
 - Do not write `Repo + certs:` in the opening post.
 - Do not open with `I built...` unless the pain has already been established.
 - Do not make the opening post mostly nouns like `guards`, `benchmarks`, `schemas`, or `observability`.
+- Do not make people guess what the thing actually does.
 - Do not use more than one idea in each paragraph.
 - Do not make the opening post about “the architecture.”
 - Do not post the link first and hope the image carries it.
@@ -174,7 +191,7 @@ The reason is simple:
 - If a sentence sounds like a README, cut it.
 - If a sentence sounds like launch collateral, cut it.
 - If a sentence sounds engineered for cleverness, cut it.
-- The opener should sound like someone venting about a real failure they finally got tired of.
+- The opener should sound like someone venting about a real failure they finally got tired of and then explaining what they built to stop it.
 
 ## What The Previous Version Got Wrong
 
@@ -186,18 +203,19 @@ The deleted version failed on six fronts:
 4. It gave no compelling reason to reply.
 5. It sounded like launch collateral, not a real operator who got burned and built a fix.
 6. It assumed the image alone would carry the missing story.
+7. It still made people infer the mechanism instead of just telling them what it blocks.
 
 ## Grade
 
 Brutally honest grades for the copy itself:
 
 - original deleted opener: `D`
-- previous rewrite before this pass: `B+`
-- current best opener: `A`
+- previous rewrite before this pass: `C+`
+- current best opener: `A-`
 
 Why it is still not `A+`:
 
-- the copy is now strong enough to post
+- the copy now explains the thing instead of making people infer it
 - it is still unproven in-market
 - with a brand-new account, distribution is still the limiter even when the copy is materially stronger
 

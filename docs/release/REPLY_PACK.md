@@ -5,7 +5,9 @@
 ```text
 Yeah, on the local side.
 
-It stops the obvious dumb stuff before more usage gets burned: bad resumes, rereading the same files, wasteful fanout, and bad routing.
+I built it because Claude was chewing through my own plan on dumb stuff.
+
+It stops the obvious waste before more usage gets burned: bad resumes, rereading the same files, wasteful fanout, and bad routing.
 
 If you want the repo, I’ll drop it.
 ```
@@ -17,7 +19,7 @@ No.
 
 If it were just logging I wouldn’t care either.
 
-It actually blocks bad resumes, repeated reads, fanout waste, and bad routing before they pile up.
+It actually sits in front of the workflow and blocks bad resumes, repeated reads, fanout waste, and bad routing before they pile up.
 ```
 
 ## If Someone Says "Did You Fix Anthropic?"
@@ -40,4 +42,12 @@ Because it ships receipts, not vibes:
 42/42 health
 9/9 drain bench
 1,307 schema checks
+```
+
+## If Someone Says "What Is This Actually?"
+
+```text
+It’s a local guard layer I built around my Claude setup so my plan doesn’t get chewed up by dumb avoidable stuff.
+
+It blocks bad resumes, repeated reads, wasteful fanout, and bad routing before they burn more usage, then tracks the drain patterns that are left.
 ```
