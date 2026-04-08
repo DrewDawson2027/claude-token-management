@@ -190,6 +190,7 @@ npm run cert:all
 - `assets/social/readme-hero.png`
 - `assets/social/runtime-demo.png`
 - `assets/social/launch-proof.png`
+- `assets/social/github-social-preview.png`
 - `assets/social/x-header.png`
 - `docs/release/TWITTER_LAUNCH_SCRIPT.md`
 - `docs/release/GITHUB_LAUNCH_COPY.md`

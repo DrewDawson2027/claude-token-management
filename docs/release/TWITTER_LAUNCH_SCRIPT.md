@@ -159,10 +159,11 @@ Only after the thread has native engagement, or if someone explicitly asks for t
 ```text
 Repo is here:
 
-github.com/DrewDawson2027/claude-token-management
+github.com/DrewDawson2027/claude-token-management?ref=x-launch
 ```
 
 If the post is getting replies fast, delay this reply and answer people first.
+Use `?ref=x-launch` because X can hang onto an older GitHub card for the plain repo URL; the query string forces a fresh crawl while still resolving to the same repo.
 
 ## Fifth Reply
 

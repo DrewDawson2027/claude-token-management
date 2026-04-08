@@ -81,8 +81,10 @@ Only post this after the thread has native engagement, or if someone explicitly 
 ```text
 Repo is here:
 
-github.com/DrewDawson2027/claude-token-management
+github.com/DrewDawson2027/claude-token-management?ref=x-launch
 ```
+
+Use the `?ref=x-launch` variant when posting on X so a stale card cache does not keep serving the older GitHub preview image.
 
 ## Standalone Posts
 

@@ -28,5 +28,6 @@ Measured guardrails for Claude Code token drain, with certs and live-runtime pro
 
 1. Make sure the repo description matches the text above.
 2. Pin the repository on the GitHub profile.
-3. Keep the repository itself as the primary surface for launch messaging.
-4. Keep `README.md` and `docs/analysis/regression-results.md` aligned with the current certification numbers before sending traffic.
+3. Keep `assets/social/github-social-preview.png` aligned with the current repo card because GitHub uses that image for raw repo-link previews on X and other social surfaces.
+4. Keep the repository itself as the primary surface for launch messaging.
+5. Keep `README.md` and `docs/analysis/regression-results.md` aligned with the current certification numbers before sending traffic.
