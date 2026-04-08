@@ -154,6 +154,7 @@ npm run cert:all
 - `docs/release/GITHUB_LAUNCH_COPY.md`
 - `docs/release/LAUNCH_DAY_CHECKLIST.md`
 - `docs/release/REPLY_PACK.md`
+- `assets/social/launch-proof.png`
 - `assets/social/launch-card.svg`
 - `assets/social/launch-card.png`
 - `assets/social/x-header.svg`

@@ -7,14 +7,14 @@
 - [docs/analysis/regression-results.md](/Users/drewdawson/projects/token-management/docs/analysis/regression-results.md) is current.
 - GitHub repo description and topics are set.
 - GitHub profile README mentions this project.
-- X profile photo, header image, bio, and repo link are updated.
-- `assets/social/launch-card.png` is ready for upload.
-- `assets/social/x-header.png` is uploaded as the X header.
+- X profile photo, bio, and repo link are updated.
+- `assets/social/launch-proof.png` is ready for upload.
+- Existing X header is acceptable, or you explicitly chose to replace it.
 
 ## At Launch
 
 1. Post the main launch copy from [TWITTER_LAUNCH_SCRIPT.md](/Users/drewdawson/projects/token-management/docs/release/TWITTER_LAUNCH_SCRIPT.md).
-2. Attach the launch card.
+2. Attach the proof image.
 3. Reply to yourself with the proof comment within 2 minutes.
 4. Pin the launch post.
 5. Stay in the reply window for at least 90 minutes.

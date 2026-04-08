@@ -14,8 +14,8 @@ The goal is not empty impressions. The goal is to make cold traffic believe thre
 
 ## Pre-Flight
 
-- Attach `assets/social/launch-card.png` to the first post.
-- Upload `assets/social/x-header.png` as the X header image before posting.
+- Attach `assets/social/launch-proof.png` to the first post.
+- Do not overwrite a good existing X header just for launch. Change it only if you explicitly want a launch-specific profile surface.
 - Keep the profile bio direct: `Building guardrails and observability for Claude Code token usage. Public repo. Proof over hype.`
 - Link the public repo in the profile: `https://github.com/DrewDawson2027/claude-token-management`
 - If GitHub profile pins are available, pin this repo before posting.
@@ -25,11 +25,13 @@ The goal is not empty impressions. The goal is to make cold traffic believe thre
 Post this first:
 
 ```text
-Claude Code token drain is real.
+Claude Code token drain is real, and preventable.
 
-I built a local control plane that blocks wasteful subagents, repeated reads, risky resume flows, and bad model routing before spend happens.
+I built a local control plane that blocks repeated reads, wasteful subagents, risky resume flows, and bad routing before spend lands.
 
-Public repo + certs:
+Cert: 10/10
+Health: 42/42
+
 https://github.com/DrewDawson2027/claude-token-management
 ```
 
@@ -57,9 +59,9 @@ If you want the longer version, use this thread instead of adding random replies
 ### Post 1
 
 ```text
-Claude Code token drain is real.
+Claude Code token drain is real, and preventable.
 
-I built a local control plane that blocks wasteful subagents, repeated reads, risky resume flows, and bad model routing before spend happens.
+I built a local control plane that blocks repeated reads, wasteful subagents, risky resume flows, and bad routing before spend lands.
 
 Repo:
 https://github.com/DrewDawson2027/claude-token-management
