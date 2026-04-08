@@ -14,8 +14,8 @@ The goal is not empty impressions. The goal is to make cold traffic believe thre
 
 ## Pre-Flight
 
-- Attach `assets/social/launch-card.svg` to the first post.
-- Upload `assets/social/x-header.svg` as the X header image before posting.
+- Attach `assets/social/launch-card.png` to the first post.
+- Upload `assets/social/x-header.png` as the X header image before posting.
 - Keep the profile bio direct: `Building guardrails and observability for Claude Code token usage. Public repo. Proof over hype.`
 - Link the public repo in the profile: `https://github.com/DrewDawson2027/claude-token-management`
 - If GitHub profile pins are available, pin this repo before posting.

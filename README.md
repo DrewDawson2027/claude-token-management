@@ -155,8 +155,11 @@ npm run cert:all
 - `docs/release/LAUNCH_DAY_CHECKLIST.md`
 - `docs/release/REPLY_PACK.md`
 - `assets/social/launch-card.svg`
+- `assets/social/launch-card.png`
 - `assets/social/x-header.svg`
+- `assets/social/x-header.png`
 - `assets/social/runtime-demo.svg`
+- `assets/social/runtime-demo.png`
 
 ## Real Limits
 

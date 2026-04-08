@@ -8,8 +8,8 @@
 - GitHub repo description and topics are set.
 - GitHub profile README mentions this project.
 - X profile photo, header image, bio, and repo link are updated.
-- `assets/social/launch-card.svg` is exported to a PNG if the X uploader handles PNG more reliably than SVG.
-- `assets/social/x-header.svg` is uploaded as the X header.
+- `assets/social/launch-card.png` is ready for upload.
+- `assets/social/x-header.png` is uploaded as the X header.
 
 ## At Launch
 
