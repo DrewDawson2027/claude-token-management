@@ -17,7 +17,13 @@ from collections import defaultdict
 from pathlib import Path
 from statistics import median
 
-HOOKS_DIR = Path.home() / ".claude" / "hooks"
+CORE_DIR = Path(__file__).resolve().parents[1] / "core"
+if str(CORE_DIR) not in sys.path:
+    sys.path.insert(0, str(CORE_DIR))
+
+from runtime_paths import runtime_dir
+
+HOOKS_DIR = runtime_dir() / "hooks"
 if str(HOOKS_DIR) not in sys.path:
     sys.path.insert(0, str(HOOKS_DIR))
 

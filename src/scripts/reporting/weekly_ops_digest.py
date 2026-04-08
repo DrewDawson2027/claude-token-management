@@ -4,11 +4,17 @@ from __future__ import annotations
 import json
 import re
 import subprocess
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-HOME = Path.home()
-CLAUDE = HOME / ".claude"
+CORE_DIR = Path(__file__).resolve().parents[1] / "core"
+if str(CORE_DIR) not in sys.path:
+    sys.path.insert(0, str(CORE_DIR))
+
+from runtime_paths import runtime_dir
+
+CLAUDE = runtime_dir()
 TEAMS = CLAUDE / "teams"
 REPORTS = CLAUDE / "reports"
 COST_RUNTIME = CLAUDE / "scripts" / "cost_runtime.py"

@@ -10,10 +10,12 @@ import re
 import subprocess
 import sys
 import time
+import cost_data as _cost_data
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, TypedDict
+from runtime_paths import runtime_dir
 
 try:
     from pricing import calculate_cost_from_usage as _pricing_calc
@@ -52,8 +54,7 @@ class SummaryResult(TypedDict):
     budget: BudgetStatus
 
 
-HOME = Path.home()
-CLAUDE = HOME / ".claude"
+CLAUDE = runtime_dir()
 COST_DIR = CLAUDE / "cost"
 PROJECTS_DIR = CLAUDE / "projects"
 TEAMS_DIR = CLAUDE / "teams"
@@ -203,144 +204,21 @@ def _float(v: Any) -> float | None:
 
 
 def iter_usage_records(since_hint: datetime | None = None) -> list[UsageRecord]:
-    rows: list[UsageRecord] = []
-    if not PROJECTS_DIR.exists():
-        return rows
-    recent_mode = False
-    if since_hint is not None:
-        recent_mode = (datetime.now(timezone.utc) - since_hint) <= timedelta(days=8)
-    for fp in PROJECTS_DIR.rglob("*.jsonl"):
-        try:
-            if since_hint is not None:
-                try:
-                    mtime = datetime.fromtimestamp(fp.stat().st_mtime, tz=timezone.utc)
-                    if mtime + timedelta(days=1) < since_hint:
-                        continue
-                except Exception:
-                    pass
-            lines_iter = None
-            if recent_mode:
-                try:
-                    size = fp.stat().st_size
-                except Exception:
-                    size = 0
-                if size > 2_000_000:
-                    dq: deque[str] = deque(maxlen=5000)
-                    with fp.open("r", encoding="utf-8", errors="ignore") as f:
-                        for line in f:
-                            dq.append(line)
-                    lines_iter = list(dq)
-            with fp.open("r", encoding="utf-8", errors="ignore") as f:
-                source_iter = lines_iter if lines_iter is not None else f
-                for line in source_iter:
-                    line = line.strip()
-                    if not line:
-                        continue
-                    try:
-                        d = json.loads(line)
-                    except Exception:
-                        continue
-                    msg = d.get("message") or {}
-                    usage = msg.get("usage")
-                    if not isinstance(usage, dict):
-                        continue
-                    ts = parse_ts(d.get("timestamp") or d.get("createdAt"))
-                    if ts is None:
-                        # Some records store ms epoch numeric timestamp
-                        try:
-                            ts_val = d.get("timestamp")
-                            if isinstance(ts_val, (int, float)):
-                                ts = datetime.fromtimestamp(
-                                    float(ts_val)
-                                    / (1000 if ts_val > 10_000_000_000 else 1),
-                                    tz=timezone.utc,
-                                )
-                        except Exception:
-                            ts = None
-                    if ts is None:
-                        continue
-                    rows.append(
-                        UsageRecord(
-                            ts=ts,
-                            session_id=(d.get("sessionId") or "")[:8] or None,
-                            agent_id=d.get("agentId"),
-                            model=msg.get("model"),
-                            project_path=d.get("cwd"),
-                            project_name=Path(d.get("cwd") or "").name
-                            if d.get("cwd")
-                            else None,
-                            message_type=msg.get("type"),
-                            input_tokens=_int(usage.get("input_tokens")),
-                            output_tokens=_int(usage.get("output_tokens")),
-                            cache_creation_input_tokens=_int(
-                                usage.get("cache_creation_input_tokens")
-                            ),
-                            cache_read_input_tokens=_int(
-                                usage.get("cache_read_input_tokens")
-                            ),
-                            cost_usd=_float(
-                                usage.get("costUSD")
-                                or usage.get("cost_usd")
-                                or usage.get("total_cost_usd")
-                            ) or (_pricing_calc(msg.get("model", ""), usage) if _pricing_calc and msg.get("model") else None),
-                            raw=d,
-                        )
-                    )
-        except Exception:
-            continue
-    return rows
+    return _cost_data.iter_usage_records(since_hint)
 
 
 def team_membership_maps() -> tuple[
     dict[str, str], dict[str, str], dict[str, dict[str, str]]
 ]:
-    session_to_team: dict[str, str] = {}
-    session_to_member: dict[str, str] = {}
-    member_meta: dict[str, dict[str, str]] = {}
-    if not TEAMS_DIR.exists():
-        return session_to_team, session_to_member, member_meta
-    for cfg in TEAMS_DIR.glob("*/config.json"):
-        team_id = cfg.parent.name
-        data = read_json(cfg, {}) or {}
-        for m in data.get("members", []):
-            sid = (m.get("sessionId") or "")[:8]
-            mid = m.get("memberId")
-            if sid and mid:
-                session_to_team[sid] = team_id
-                session_to_member[sid] = mid
-            if mid:
-                member_meta[f"{team_id}:{mid}"] = {
-                    "role": str(m.get("role") or ""),
-                    "kind": str(m.get("kind") or ""),
-                    "sessionId": sid,
-                }
-    return session_to_team, session_to_member, member_meta
+    return _cost_data.team_membership_maps()
 
 
 def project_usage_fingerprint() -> dict[str, Any]:
-    count = 0
-    total_size = 0
-    latest_mtime = 0.0
-    if PROJECTS_DIR.exists():
-        for fp in PROJECTS_DIR.rglob("*.jsonl"):
-            try:
-                st = fp.stat()
-            except Exception:
-                continue
-            count += 1
-            total_size += int(getattr(st, "st_size", 0) or 0)
-            latest_mtime = max(latest_mtime, float(getattr(st, "st_mtime", 0.0) or 0.0))
-    return {
-        "fileCount": count,
-        "totalSize": total_size,
-        "latestMtime": round(latest_mtime, 3),
-    }
+    return _cost_data.project_usage_fingerprint()
 
 
 def load_usage_index() -> dict[str, Any]:
-    return read_json(
-        USAGE_INDEX_FILE, {"generatedAt": None, "fingerprint": {}, "windows": {}}
-    ) or {"generatedAt": None, "fingerprint": {}, "windows": {}}
+    return _cost_data.load_usage_index()
 
 
 def _summary_index_eligible(
@@ -364,43 +242,13 @@ def _summary_index_eligible(
 
 
 def in_window(ts: datetime, since: datetime | None, until: datetime | None) -> bool:
-    if since and ts < since:
-        return False
-    if until and ts > until:
-        return False
-    return True
+    return _cost_data.in_window(ts, since, until)
 
 
 def parse_window(
     window: str, since: str | None, until: str | None
 ) -> tuple[datetime | None, datetime | None]:
-    now = datetime.now(timezone.utc)
-    if since or until:
-        sdt = (
-            parse_ts(since + "T00:00:00Z")
-            if since and len(since) == 10
-            else parse_ts(since)
-        )
-        udt = (
-            parse_ts(until + "T23:59:59Z")
-            if until and len(until) == 10
-            else parse_ts(until)
-        )
-        return sdt, udt
-    if window == "today":
-        start = datetime(now.year, now.month, now.day, tzinfo=timezone.utc)
-        return start, None
-    if window == "week":
-        start = datetime(now.year, now.month, now.day, tzinfo=timezone.utc) - timedelta(
-            days=6
-        )
-        return start, None
-    if window == "month":
-        start = datetime(now.year, now.month, 1, tzinfo=timezone.utc)
-        return start, None
-    if window == "active_block":
-        return now - timedelta(hours=5), None
-    return None, None
+    return _cost_data.parse_window(window, since, until)
 
 
 def aggregate_local(
@@ -542,25 +390,8 @@ def aggregate_local(
 
 
 def run_ccusage(args: list[str], timeout_sec: int = 10) -> tuple[bool, str, Any | None]:
-    cmd = ["ccusage", *args]
-    try:
-        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout_sec)
-        out = (proc.stdout or "").strip()
-        if proc.returncode != 0:
-            return (
-                False,
-                (proc.stderr or out or f"ccusage exited {proc.returncode}").strip(),
-                None,
-            )
-        parsed = None
-        if "--json" in args and out:
-            try:
-                parsed = json.loads(out)
-            except Exception:
-                parsed = None
-        return True, out, parsed
-    except Exception as e:
-        return False, str(e), None
+    ok, text, parsed = _cost_data.run_ccusage(args, timeout_sec=timeout_sec)
+    return ok, text, parsed
 
 
 def _find_numeric_fields(obj: Any, acc: dict[str, list[float]], path: str = "") -> None:
@@ -578,26 +409,7 @@ def _find_numeric_fields(obj: Any, acc: dict[str, list[float]], path: str = "") 
 
 
 def extract_ccusage_summary(parsed: Any) -> dict[str, Any]:
-    acc: dict[str, list[float]] = {}
-    _find_numeric_fields(parsed, acc)
-
-    def pick(*names: str) -> float | None:
-        for n in names:
-            if n in acc and acc[n]:
-                vals = acc[n]
-                return max(vals) if len(vals) > 1 else vals[0]
-        return None
-
-    return {
-        "totalUSD": pick("totalCostUsd", "costUSD", "costUsd", "totalUsd"),
-        "inputTokens": pick("inputTokens", "input_tokens", "totalInputTokens"),
-        "outputTokens": pick("outputTokens", "output_tokens", "totalOutputTokens"),
-        "cacheCreationTokens": pick(
-            "cacheCreationInputTokens", "cache_creation_input_tokens"
-        ),
-        "cacheReadTokens": pick("cacheReadInputTokens", "cache_read_input_tokens"),
-        "raw": parsed,
-    }
+    return _cost_data.extract_ccusage_summary(parsed)
 
 
 def budgets() -> dict[str, Any]:
@@ -1548,7 +1360,7 @@ def cmd_cost_trends(args: argparse.Namespace) -> int:
     period = getattr(args, "period", "week") or "week"
     fmt = getattr(args, "format", "md") or "md"
     window_days = 30 if period == "month" else 7
-    hooks_dir = Path.home() / ".claude" / "hooks"
+    hooks_dir = CLAUDE / "hooks"
     if str(hooks_dir) not in sys.path:
         sys.path.insert(0, str(hooks_dir))
     try:
@@ -1731,7 +1543,7 @@ def _maybe_emit_proactive_alerts(cmd_name: str) -> None:
         "hook-statusline",
     }:
         return
-    hooks_alerts = Path.home() / ".claude" / "hooks" / "ops_alerts.py"
+    hooks_alerts = CLAUDE / "hooks" / "ops_alerts.py"
     if not hooks_alerts.exists():
         return
     try:

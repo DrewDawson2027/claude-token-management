@@ -6,8 +6,9 @@ set -euo pipefail
 
 TASK_ID="${1:?Usage: get_result.sh <task_id> [tail_lines]}"
 TAIL_LINES="${2:-100}"
+CLAUDE_RUNTIME_DIR="${CLAUDE_RUNTIME_DIR:-$HOME/.claude}"
 
-CLI="$HOME/.claude/mcp-coordinator/scripts/worker-cli.mjs"
+CLI="$CLAUDE_RUNTIME_DIR/mcp-coordinator/scripts/worker-cli.mjs"
 if [ ! -f "$CLI" ]; then
   echo "Coordinator worker CLI not found: $CLI" >&2
   exit 1

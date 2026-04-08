@@ -6,10 +6,11 @@ FROM="${1:?Usage: send_message.sh <from> <to> <content> [priority]}"
 TO="${2:?Missing target session ID}"
 CONTENT="${3:?Missing message content}"
 PRIORITY="${4:-normal}"
+CLAUDE_RUNTIME_DIR="${CLAUDE_RUNTIME_DIR:-$HOME/.claude}"
 
-INBOX_DIR="$HOME/.claude/terminals/inbox"
+INBOX_DIR="$CLAUDE_RUNTIME_DIR/terminals/inbox"
 INBOX_FILE="$INBOX_DIR/${TO}.jsonl"
-SESSION_FILE="$HOME/.claude/terminals/session-${TO}.json"
+SESSION_FILE="$CLAUDE_RUNTIME_DIR/terminals/session-${TO}.json"
 
 mkdir -p "$INBOX_DIR"
 

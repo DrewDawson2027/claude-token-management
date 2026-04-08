@@ -8,10 +8,18 @@ import json
 import glob
 from pathlib import Path
 from datetime import datetime
+import sys
+
+CORE_DIR = Path(__file__).resolve().parents[1] / "core"
+if str(CORE_DIR) not in sys.path:
+    sys.path.insert(0, str(CORE_DIR))
+
+from runtime_paths import runtime_dir
 
 # Paths
-STATE_DIR = Path.home() / ".claude" / "hooks" / "session-state"
-COST_DIR = Path.home() / ".claude" / "cost"
+CLAUDE_DIR = runtime_dir()
+STATE_DIR = CLAUDE_DIR / "hooks" / "session-state"
+COST_DIR = CLAUDE_DIR / "cost"
 
 # Model pricing (per million tokens)
 MODEL_PRICES = {

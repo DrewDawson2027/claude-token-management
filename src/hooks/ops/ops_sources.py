@@ -11,8 +11,15 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
-HOME = Path.home()
-CLAUDE_DIR = HOME / ".claude"
+
+def _runtime_dir() -> Path:
+    raw = os.environ.get("CLAUDE_RUNTIME_DIR", "").strip()
+    if raw:
+        return Path(os.path.expanduser(raw))
+    return Path.home() / ".claude"
+
+
+CLAUDE_DIR = _runtime_dir()
 HOOKS_DIR = CLAUDE_DIR / "hooks"
 STATE_DIR = HOOKS_DIR / "session-state"
 SCRIPTS_DIR = CLAUDE_DIR / "scripts"

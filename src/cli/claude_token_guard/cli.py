@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """CLI for Claude Token Guard: hooks + cost + ops unified entrypoint."""
 
+from __future__ import annotations
+
 import argparse
 import datetime
 import hashlib
@@ -18,12 +20,21 @@ except ModuleNotFoundError:
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     from claude_token_guard import __version__
 
-HOOKS_DIR = os.path.expanduser("~/.claude/hooks")
-SETTINGS_PATH = os.path.expanduser("~/.claude/settings.json")
-VERSION_FILE = os.path.join(HOOKS_DIR, ".version")
-MANIFEST_FILE = os.path.join(HOOKS_DIR, ".manifest.json")
-COST_RUNTIME_PATH = os.path.expanduser("~/.claude/scripts/cost_runtime.py")
-OBSERVABILITY_PATH = os.path.expanduser("~/.claude/scripts/observability.py")
+
+def _runtime_dir() -> Path:
+    raw = os.environ.get("CLAUDE_RUNTIME_DIR", "").strip()
+    if raw:
+        return Path(os.path.expanduser(raw))
+    return Path.home() / ".claude"
+
+
+RUNTIME_DIR = _runtime_dir()
+HOOKS_DIR = str(RUNTIME_DIR / "hooks")
+SETTINGS_PATH = str(RUNTIME_DIR / "settings.json")
+VERSION_FILE = str(Path(HOOKS_DIR) / ".version")
+MANIFEST_FILE = str(Path(HOOKS_DIR) / ".manifest.json")
+COST_RUNTIME_PATH = str(RUNTIME_DIR / "scripts" / "cost_runtime.py")
+OBSERVABILITY_PATH = str(RUNTIME_DIR / "scripts" / "observability.py")
 
 PACKAGE_DIR = Path(__file__).resolve().parent
 
@@ -115,6 +126,10 @@ def _resolve_fixture_path(name: str) -> str | None:
         if candidate.is_file():
             return str(candidate)
     return None
+
+
+def _render_runtime_path(*parts: str) -> str:
+    return str(RUNTIME_DIR.joinpath(*parts))
 
 
 def _run_python(script_path, argv, check=False, capture=False, timeout=60):
@@ -486,11 +501,9 @@ def _cmd_hooks(argv):
         raise SystemExit(0)
     if sub == "verify":
         if "--full" in argv[1:]:
-            runner = os.path.expanduser(
-                "~/Projects/claude-lead-system/scripts/run_token_system_regression.py"
-            )
-            if os.path.isfile(runner):
-                cp = _run_python(runner, [], capture=True, timeout=600)
+            runner = PROJECT_ROOT / "tests" / "run_token_system_regression.py"
+            if runner.is_file():
+                cp = _run_python(str(runner), [], capture=True, timeout=600)
                 if cp.stdout:
                     sys.stdout.write(cp.stdout)
                 if cp.stderr:
@@ -610,7 +623,7 @@ def _build_manifest():
 
 
 def cmd_install():
-    """Copy hooks to ~/.claude/hooks/ and patch settings.json."""
+    """Copy hooks to the active runtime hooks directory and patch settings.json."""
     force = "--force" in sys.argv
 
     # Check if already up to date
@@ -661,12 +674,12 @@ def cmd_install():
     for f in installed:
         print(f"  + {f}")
     print(f"\nState directory: {state_dir}")
-    print("Settings patched: ~/.claude/settings.json")
+    print(f"Settings patched: {SETTINGS_PATH}")
     print("\nToken Guard is active. Restart Claude Code to apply.")
 
 
 def _patch_settings():
-    """Add hook entries to ~/.claude/settings.json."""
+    """Add hook entries to the active runtime settings.json."""
     settings = {}
     if os.path.isfile(SETTINGS_PATH):
         try:
@@ -987,19 +1000,11 @@ def cmd_drift():
         sys.exit(1)
 
 
-def cmd_benchmark():
-    """Run latency benchmarks against hook scripts."""
+def _run_latency_benchmarks() -> dict[str, object]:
     import statistics
     import tempfile
     import time as _time
 
-    # Load benchmark inputs
-    fixtures_path = os.path.join(
-        PROJECT_ROOT,
-        "tests",
-        "fixtures",
-        "benchmark_inputs.json",
-    )
     resolved_fixtures = _resolve_fixture_path("benchmark_inputs.json")
     if resolved_fixtures and os.path.isfile(resolved_fixtures):
         with open(resolved_fixtures, "r") as f:
@@ -1028,12 +1033,7 @@ def cmd_benchmark():
 
     iterations = 20  # Enough for stable percentiles without being slow
     all_latencies = []
-
-    print(f"\n{'=' * 50}")
-    print("  CLAUDE TOKEN GUARD BENCHMARK")
-    print(f"{'=' * 50}")
-    print(f"Iterations per input: {iterations}")
-    print()
+    cases = []
 
     for bench in benchmarks:
         name = bench["name"]
@@ -1047,7 +1047,13 @@ def cmd_benchmark():
             script = tg_path
 
         if not os.path.isfile(script):
-            print(f"  SKIP  {name} — script not found: {script}")
+            cases.append(
+                {
+                    "name": name,
+                    "status": "skip",
+                    "reason": f"script not found: {script}",
+                }
+            )
             continue
 
         latencies = []
@@ -1101,24 +1107,143 @@ def cmd_benchmark():
         latencies.sort()
         all_latencies.extend(latencies)
         p50 = statistics.median(latencies)
-        p95 = latencies[int(len(latencies) * 0.95)]
-        p99 = latencies[int(len(latencies) * 0.99)]
-
-        print(f"  {name}:")
-        print(
-            f"    min={latencies[0]:.0f}ms  p50={p50:.0f}ms  p95={p95:.0f}ms  "
-            f"p99={p99:.0f}ms  max={latencies[-1]:.0f}ms"
+        p95 = latencies[min(len(latencies) - 1, int(len(latencies) * 0.95))]
+        p99 = latencies[min(len(latencies) - 1, int(len(latencies) * 0.99))]
+        cases.append(
+            {
+                "name": name,
+                "status": "pass",
+                "iterations": iterations,
+                "min_ms": round(latencies[0], 2),
+                "p50_ms": round(p50, 2),
+                "p95_ms": round(p95, 2),
+                "p99_ms": round(p99, 2),
+                "max_ms": round(latencies[-1], 2),
+            }
         )
 
-    # Overall summary
+    overall_p95 = None
+    budget = 500
+    status = "skip"
     if all_latencies:
         all_latencies.sort()
-        overall_p95 = all_latencies[int(len(all_latencies) * 0.95)]
-        budget = 500  # ms — subprocess overhead budget
-        status = "PASS" if overall_p95 <= budget else "OVER BUDGET"
-        print(f"\n  Overall p95: {overall_p95:.0f}ms (budget: {budget}ms) — {status}")
+        overall_p95 = all_latencies[min(len(all_latencies) - 1, int(len(all_latencies) * 0.95))]
+        status = "pass" if overall_p95 <= budget else "fail"
+    return {
+        "suite": "latency",
+        "summary": {
+            "status": status,
+            "budget_ms": budget,
+            "overall_p95_ms": round(overall_p95, 2) if overall_p95 is not None else None,
+            "total_cases": len(cases),
+        },
+        "cases": cases,
+    }
 
-    print(f"{'=' * 50}\n")
+
+def _render_benchmark_markdown(report: dict[str, object]) -> str:
+    lines = [
+        "# Benchmark Report",
+        "",
+        f"- Runtime: `{RUNTIME_DIR}`",
+        "",
+    ]
+    for suite in report.get("suites", []):
+        lines.append(f"## {suite['suite']}")
+        lines.append("")
+        summary = suite.get("summary", {})
+        if "status" in summary:
+            lines.append(f"- Status: `{summary['status']}`")
+        if "overall_p95_ms" in summary:
+            lines.append(
+                f"- Overall p95: `{summary['overall_p95_ms']}` ms (budget `{summary['budget_ms']}` ms)"
+            )
+        if {"total", "passed", "failed"}.issubset(summary.keys()):
+            lines.append(
+                f"- Cases: `{summary['passed']}` passed / `{summary['failed']}` failed / `{summary['total']}` total"
+            )
+        elif "total_cases" in summary:
+            lines.append(f"- Cases: `{summary['total_cases']}` total")
+        lines.append("")
+        for case in suite.get("cases", []):
+            case_name = case.get("case_id") or case.get("name")
+            if "p95_ms" in case:
+                lines.append(
+                    f"- `{case_name}`: `{case['status']}` p95={case.get('p95_ms')}ms"
+                )
+            else:
+                lines.append(
+                    f"- `{case_name}`: `{case['status']}` ({case.get('classification', 'n/a')})"
+                )
+        lines.append("")
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def cmd_benchmark():
+    """Run latency and token-drain benchmark suites."""
+    ap = argparse.ArgumentParser(prog="claude-token-guard benchmark")
+    ap.add_argument("--suite", choices=["latency", "drain", "all"], default="all")
+    ap.add_argument("--json", action="store_true")
+    ap.add_argument("--markdown", action="store_true")
+    ap.add_argument("--fixture")
+    ap.add_argument("--out")
+    args = ap.parse_args(sys.argv[2:])
+
+    suites = []
+    if args.suite in {"latency", "all"}:
+        suites.append(_run_latency_benchmarks())
+    if args.suite in {"drain", "all"}:
+        import drain_bench
+
+        fixture = args.fixture or _resolve_fixture_path("token-drain-scenarios.json")
+        drain_report = drain_bench.build_report(drain_bench.load_scenarios(fixture))
+        suites.extend(drain_report.get("suites", []))
+
+    summary = {
+        "total": sum(
+            suite.get("summary", {}).get("total", suite.get("summary", {}).get("total_cases", 0))
+            for suite in suites
+        ),
+        "passed": sum(
+            suite.get("summary", {}).get("passed", 0)
+            + (
+                suite.get("summary", {}).get("total_cases", 0)
+                if suite.get("suite") == "latency"
+                and suite.get("summary", {}).get("status") == "pass"
+                else 0
+            )
+            for suite in suites
+        ),
+        "failed": sum(
+            suite.get("summary", {}).get("failed", 0)
+            + (
+                suite.get("summary", {}).get("total_cases", 0)
+                if suite.get("suite") == "latency"
+                and suite.get("summary", {}).get("status") == "fail"
+                else 0
+            )
+            for suite in suites
+        ),
+    }
+    report = {
+        "schema_version": 1,
+        "generated_at": datetime.datetime.now(datetime.timezone.utc).strftime(
+            "%Y-%m-%dT%H:%M:%SZ"
+        ),
+        "runtime_dir": str(RUNTIME_DIR),
+        "summary": summary,
+        "suites": suites,
+    }
+    rendered = (
+        _render_benchmark_markdown(report)
+        if args.markdown and not args.json
+        else json.dumps(report, indent=2) + "\n"
+    )
+    if args.out:
+        Path(args.out).write_text(rendered, encoding="utf-8")
+    sys.stdout.write(rendered)
+    if summary["failed"] > 0:
+        sys.exit(1)
 
 
 def cmd_version():
@@ -1143,12 +1268,12 @@ def main():
         print(
             "  hooks      Canonical hook commands (report, usage, health, verify, drift)"
         )
-        print("  install    Copy hooks to ~/.claude/hooks/ and patch settings")
+        print(f"  install    Copy hooks to {_render_runtime_path('hooks')} and patch settings")
         print("  uninstall  Remove hooks and unpatch settings")
         print("  status     Check installed vs package version")
         print("  verify     Post-install verification (checksums + smoke tests)")
         print("  drift      Compare installed files against manifest")
-        print("  benchmark  Run latency benchmarks against hook scripts")
+        print("  benchmark  Run latency and token-drain benchmark suites")
         print("  report     Show token usage analytics")
         print("  health     Run self-heal diagnostics")
         print("  version    Show version")
@@ -1172,9 +1297,9 @@ def main():
 
     if cmd in commands:
         if cmd == "verify" and "--full" in sys.argv[2:]:
-            runner = os.path.expanduser("~/Projects/claude-lead-system/scripts/run_token_system_regression.py")
-            if os.path.isfile(runner):
-                cp = _run_python(runner, [], capture=True, timeout=600)
+            runner = PROJECT_ROOT / "tests" / "run_token_system_regression.py"
+            if runner.is_file():
+                cp = _run_python(str(runner), [], capture=True, timeout=600)
                 if cp.stdout:
                     sys.stdout.write(cp.stdout)
                 if cp.stderr:

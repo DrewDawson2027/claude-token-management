@@ -19,7 +19,13 @@ from collections import Counter, defaultdict
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-CLAUDE_DIR = Path.home() / ".claude"
+CORE_DIR = Path(__file__).resolve().parents[1] / "core"
+if str(CORE_DIR) not in sys.path:
+    sys.path.insert(0, str(CORE_DIR))
+
+from runtime_paths import runtime_dir
+
+CLAUDE_DIR = runtime_dir()
 HOOKS_STATE = CLAUDE_DIR / "hooks" / "session-state"
 TERMINALS = CLAUDE_DIR / "terminals"
 COST_DIR = CLAUDE_DIR / "cost"

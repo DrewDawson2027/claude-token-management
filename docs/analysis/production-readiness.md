@@ -25,7 +25,7 @@ Why:
 
 ### Environmental Coupling
 
-This system still assumes a local installed runtime rooted at `~/.claude`. That is acceptable for its current product shape, but it is still coupling.
+This system still assumes a local installed runtime rooted at `~/.claude` for several live hooks. The core control-plane layers now honor `CLAUDE_RUNTIME_DIR`, which materially reduces portability drift, but the installed-runtime model is still real coupling.
 
 ### File-Backed State
 
@@ -33,7 +33,7 @@ Atomic writes, locks, self-heal, hook counters, and schema validation reduce the
 
 ### Dependency Hygiene
 
-The coordinator suite is green, but `npm ci` currently reports upstream dependency vulnerabilities. That is a maintenance issue, not a correctness failure, but it is real.
+The coordinator dependency tree is currently clean under `npm ci` and `npm audit`. That lowers release risk materially, but dependency hygiene is still an ongoing maintenance obligation rather than a one-time solved problem.
 
 ### Upstream Limits
 

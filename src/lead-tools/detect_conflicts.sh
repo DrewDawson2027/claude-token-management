@@ -3,13 +3,15 @@
 # Usage: detect_conflicts.sh [my_session_id]
 
 MY_SESSION="${1:-none}"
-TERMINALS_DIR="$HOME/.claude/terminals"
+CLAUDE_RUNTIME_DIR="${CLAUDE_RUNTIME_DIR:-$HOME/.claude}"
+TERMINALS_DIR="$CLAUDE_RUNTIME_DIR/terminals"
 
-python3 << 'PYEOF'
+CLAUDE_RUNTIME_DIR="$CLAUDE_RUNTIME_DIR" python3 - "$MY_SESSION" << 'PYEOF'
 import json, os, sys
 from pathlib import Path
 
-terminals_dir = Path.home() / ".claude" / "terminals"
+terminals_dir = Path(os.environ.get("CLAUDE_RUNTIME_DIR", "")).expanduser() if os.environ.get("CLAUDE_RUNTIME_DIR") else Path.home() / ".claude"
+terminals_dir = terminals_dir / "terminals"
 my_session = sys.argv[1] if len(sys.argv) > 1 else "none"
 
 # Read all session files

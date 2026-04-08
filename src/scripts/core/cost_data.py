@@ -25,14 +25,14 @@ from pathlib import Path
 from typing import Any
 
 from cost_base import read_json, parse_ts_dt
+from runtime_paths import runtime_dir
 
 try:
     from pricing import calculate_cost_from_usage as _pricing_calc
 except ImportError:
     _pricing_calc = None  # pricing module not available; cost_usd stays None
 
-HOME = Path.home()
-CLAUDE = HOME / ".claude"
+CLAUDE = runtime_dir()
 COST_DIR = CLAUDE / "cost"
 PROJECTS_DIR = CLAUDE / "projects"
 TEAMS_DIR = CLAUDE / "teams"
@@ -315,7 +315,7 @@ def parse_window(
         return start, None
     if window == "week":
         start = datetime(now.year, now.month, now.day, tzinfo=timezone.utc) - timedelta(
-            days=7
+            days=6
         )
         return start, None
     if window == "month":
@@ -364,12 +364,15 @@ def _find_numeric_fields(obj: Any, acc: dict[str, list[float]], path: str = "") 
     """Recursively collect numeric fields from ccusage JSON output for summary extraction."""
     if isinstance(obj, dict):
         for k, v in obj.items():
-            _find_numeric_fields(v, acc, f"{path}.{k}" if path else k)
+            next_path = f"{path}.{k}" if path else k
+            if isinstance(v, (int, float)):
+                acc.setdefault(k, []).append(float(v))
+                acc.setdefault(next_path, []).append(float(v))
+            else:
+                _find_numeric_fields(v, acc, next_path)
     elif isinstance(obj, list):
         for i, v in enumerate(obj):
             _find_numeric_fields(v, acc, f"{path}[{i}]")
-    elif isinstance(obj, (int, float)):
-        acc.setdefault(path, []).append(float(obj))
 
 
 def extract_ccusage_summary(parsed: Any) -> dict[str, Any]:
@@ -377,27 +380,26 @@ def extract_ccusage_summary(parsed: Any) -> dict[str, Any]:
     Extract totalUSD from ccusage JSON output. Handles both structured
     (daily --json) and generic outputs by scanning numeric fields.
     """
-    if isinstance(parsed, dict):
-        # Common direct fields
-        for key in ("totalCost", "total_cost", "totalUSD", "total_usd", "cost"):
-            if key in parsed and isinstance(parsed[key], (int, float)):
-                return {"totalUSD": float(parsed[key]), "raw": parsed}
-        # Nested totals
-        totals = parsed.get("totals") or parsed.get("summary") or {}
-        if isinstance(totals, dict):
-            for key in ("totalCost", "total_cost", "totalUSD", "cost"):
-                if key in totals and isinstance(totals[key], (int, float)):
-                    return {"totalUSD": float(totals[key]), "raw": parsed}
-    # Fallback: scan all numeric fields and sum "cost"-named ones
     acc: dict[str, list[float]] = {}
     _find_numeric_fields(parsed, acc)
-    cost_fields = {
-        k: v for k, v in acc.items() if "cost" in k.lower() or "usd" in k.lower()
+
+    def pick(*names: str) -> float | None:
+        for name in names:
+            if name in acc and acc[name]:
+                vals = acc[name]
+                return max(vals) if len(vals) > 1 else vals[0]
+        return None
+
+    return {
+        "totalUSD": pick("totalCostUsd", "costUSD", "costUsd", "totalUSD", "totalUsd"),
+        "inputTokens": pick("inputTokens", "input_tokens", "totalInputTokens"),
+        "outputTokens": pick("outputTokens", "output_tokens", "totalOutputTokens"),
+        "cacheCreationTokens": pick(
+            "cacheCreationInputTokens", "cache_creation_input_tokens"
+        ),
+        "cacheReadTokens": pick("cacheReadInputTokens", "cache_read_input_tokens"),
+        "raw": parsed,
     }
-    if cost_fields:
-        total = sum(sum(v) for v in cost_fields.values())
-        return {"totalUSD": round(total, 6), "raw": parsed}
-    return {"totalUSD": None, "raw": parsed}
 
 
 def _burn_rate_projection(

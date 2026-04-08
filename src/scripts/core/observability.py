@@ -10,9 +10,9 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+from runtime_paths import runtime_dir
 
-HOME = Path.home()
-CLAUDE = HOME / ".claude"
+CLAUDE = runtime_dir()
 TEAMS_DIR = CLAUDE / "teams"
 REPORTS = CLAUDE / "reports"
 GOV = CLAUDE / "governance"

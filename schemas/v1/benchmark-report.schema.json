@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://claude-token-management/schemas/v1/benchmark-report.schema.json",
+  "title": "Benchmark Report",
+  "type": "object",
+  "required": ["schema_version", "generated_at", "runtime_dir", "summary", "suites"],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "generated_at": {
+      "type": "string"
+    },
+    "runtime_dir": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "object",
+      "required": ["total", "passed", "failed"],
+      "properties": {
+        "total": {"type": "integer", "minimum": 0},
+        "passed": {"type": "integer", "minimum": 0},
+        "failed": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "suites": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["suite", "cases", "summary"],
+        "properties": {
+          "suite": {"type": "string"},
+          "cases": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "suite",
+                "case_id",
+                "title",
+                "status",
+                "classification",
+                "expected",
+                "metrics"
+              ],
+              "properties": {
+                "suite": {"type": "string"},
+                "case_id": {"type": "string"},
+                "title": {"type": "string"},
+                "status": {"type": "string", "enum": ["pass", "fail"]},
+                "classification": {"type": "string"},
+                "expected": {},
+                "metrics": {"type": "object"}
+              },
+              "additionalProperties": true
+            }
+          },
+          "summary": {
+            "type": "object",
+            "required": ["total", "passed", "failed"],
+            "properties": {
+              "total": {"type": "integer", "minimum": 0},
+              "passed": {"type": "integer", "minimum": 0},
+              "failed": {"type": "integer", "minimum": 0}
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

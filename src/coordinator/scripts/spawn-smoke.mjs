@@ -1,6 +1,12 @@
 #!/usr/bin/env node
 
-import { existsSync, mkdtempSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import {
+  existsSync,
+  mkdtempSync,
+  mkdirSync,
+  readFileSync,
+  writeFileSync,
+} from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 
@@ -17,9 +23,14 @@ function fail(message) {
 
 try {
   const home = mkdtempSync(join(tmpdir(), "coord-spawn-smoke-"));
+  const claudeDir = join(home, ".claude");
   const workDir = join(home, "work");
   const fakeBin = join(home, "fake-claude.sh");
+  const resultsDir = join(claudeDir, "terminals", "results");
   mkdirSync(workDir, { recursive: true });
+  mkdirSync(resultsDir, { recursive: true });
+  mkdirSync(join(claudeDir, "terminals", "inbox"), { recursive: true });
+  mkdirSync(join(claudeDir, "session-cache"), { recursive: true });
 
   writeFileSync(
     fakeBin,
@@ -37,6 +48,7 @@ try {
   );
 
   process.env.HOME = home;
+  process.env.CLAUDE_RUNTIME_DIR = claudeDir;
   process.env.COORDINATOR_TEST_MODE = "1";
   process.env.COORDINATOR_PLATFORM = "darwin";
   process.env.COORDINATOR_CLAUDE_BIN = fakeBin;
@@ -57,7 +69,7 @@ try {
     fail("spawn smoke failed: spawn response missing effective backend");
   }
 
-  const metaFile = join(home, ".claude", "terminals", "results", "W_SMOKE.meta.json");
+  const metaFile = join(resultsDir, "W_SMOKE.meta.json");
   const doneFile = `${metaFile}.done`;
   for (let i = 0; i < 50; i += 1) {
     if (existsSync(doneFile)) break;

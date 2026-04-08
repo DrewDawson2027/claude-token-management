@@ -640,13 +640,22 @@ def check_type_switching(
 ) -> Tuple[bool, str]:
     """Detect if new spawn resembles a previously blocked spawn with different type."""
     subagent_type_key = normalize_text(subagent_type, 80).lower()
+    normalized_description = normalize_text(description, 512).lower()
     for attempt in state.get("blocked_attempts", []):
         raw_attempt_type = str(attempt.get("type", "")).strip()
         attempt_type = normalize_text(raw_attempt_type, 80).lower()
+        attempt_description = normalize_text(attempt.get("description", ""), 512).lower()
+        if (
+            normalized_description
+            and normalized_description == attempt_description
+            and attempt_type
+            and attempt_type != subagent_type_key
+        ):
+            return True, raw_attempt_type or attempt_type
         similarity = difflib.SequenceMatcher(
             None,
-            description.lower(),
-            normalize_text(attempt.get("description", ""), 512).lower(),
+            normalized_description,
+            attempt_description,
         ).ratio()
         if similarity > 0.6 and attempt_type and attempt_type != subagent_type_key:
             return True, raw_attempt_type or attempt_type

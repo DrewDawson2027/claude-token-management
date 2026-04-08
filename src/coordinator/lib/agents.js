@@ -330,7 +330,7 @@ function agentPathToDisplay(agentPath, projectRoot) {
   const userAgentsRoot = join(cfg().CLAUDE_DIR, "agents");
   const normalizedAgentPath = resolve(agentPath);
   if (normalizedAgentPath.startsWith(resolve(userAgentsRoot))) {
-    return `~/.claude/agents/${basename(normalizedAgentPath)}`;
+    return `${cfg().CLAUDE_DIR}/agents/${basename(normalizedAgentPath)}`;
   }
   const rel = relative(projectRoot, normalizedAgentPath);
   if (rel && !rel.startsWith("..")) return rel;

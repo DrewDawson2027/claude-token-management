@@ -26,7 +26,7 @@ export const SAFE_AGENT_RE = /^[A-Za-z0-9._:-]{1,64}$/;
  */
 export function cfg() {
   const home = process.env.HOME || homedir();
-  const claudeDir = join(home, ".claude");
+  const claudeDir = process.env.CLAUDE_RUNTIME_DIR || join(home, ".claude");
   const terminalsDir = join(claudeDir, "terminals");
   return {
     CLAUDE_DIR: claudeDir,

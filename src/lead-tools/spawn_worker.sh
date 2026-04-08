@@ -9,8 +9,9 @@ PROMPT="${2:?Missing prompt}"
 MODEL="${3:-sonnet}"
 TASK_ID="${4:-W$(date +%s)}"
 LAYOUT="${5:-split}"
+CLAUDE_RUNTIME_DIR="${CLAUDE_RUNTIME_DIR:-$HOME/.claude}"
 
-CLI="$HOME/.claude/mcp-coordinator/scripts/worker-cli.mjs"
+CLI="$CLAUDE_RUNTIME_DIR/mcp-coordinator/scripts/worker-cli.mjs"
 if [ ! -f "$CLI" ]; then
   echo "Coordinator worker CLI not found: $CLI" >&2
   exit 1

@@ -28,9 +28,15 @@ from typing import Any
 SCRIPTS_DIR = Path(__file__).resolve().parent
 if str(SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPTS_DIR))
+CORE_DIR = Path(__file__).resolve().parents[1] / "core"
+if str(CORE_DIR) not in sys.path:
+    sys.path.insert(0, str(CORE_DIR))
 
 # Add hooks dir for hook_utils
-HOOKS_DIR = Path.home() / ".claude" / "hooks"
+from runtime_paths import runtime_dir
+
+CLAUDE_DIR = runtime_dir()
+HOOKS_DIR = CLAUDE_DIR / "hooks"
 if str(HOOKS_DIR) not in sys.path:
     sys.path.insert(0, str(HOOKS_DIR))
 
@@ -44,8 +50,6 @@ except ImportError:
     def normalize_model_name(m):
         return m
 
-HOME = Path.home()
-CLAUDE_DIR = HOME / ".claude"
 ANALYTICS_DIR = CLAUDE_DIR / "token-analytics"
 DAILY_DIR = ANALYTICS_DIR / "daily"
 WEEKLY_DIR = ANALYTICS_DIR / "weekly"

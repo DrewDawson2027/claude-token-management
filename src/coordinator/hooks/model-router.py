@@ -26,7 +26,9 @@ def read_json(path):
 
 
 def resolve_configured_model():
-    claude_dir = os.path.expanduser("~/.claude")
+    claude_dir = os.path.expanduser(
+        os.environ.get("CLAUDE_RUNTIME_DIR", "~/.claude")
+    )
     for name in ("settings.local.json", "settings.json"):
         data = read_json(os.path.join(claude_dir, name))
         if isinstance(data, dict):

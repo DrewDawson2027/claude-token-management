@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # Open all active project workspaces in cmux.
 # Run this from inside cmux to get a full project dashboard.
-# Usage: bash ~/.claude/mcp-coordinator/scripts/cmux-projects.sh
+# Usage: CLAUDE_RUNTIME_DIR=... bash "$CLAUDE_RUNTIME_DIR/mcp-coordinator/scripts/cmux-projects.sh"
 set -euo pipefail
+CLAUDE_RUNTIME_DIR="${CLAUDE_RUNTIME_DIR:-$HOME/.claude}"
 
 if [[ -z "${CMUX_WORKSPACE_ID:-}" && -z "${CMUX_SURFACE_ID:-}" ]]; then
   echo "Error: not running inside cmux. Open cmux first, then run this script." >&2
@@ -28,12 +29,12 @@ open_project() {
 }
 
 # Claude infrastructure
-open_project "mcp-coordinator"  "$HOME/.claude/mcp-coordinator"
+open_project "mcp-coordinator"  "$CLAUDE_RUNTIME_DIR/mcp-coordinator"
 open_project "lean-ralph"       "$HOME/Desktop/Claude Code/lean-ralph"
 
 # Active projects
-open_project "trust-engine"     "$HOME/.claude/worktrees/slot-1"
-open_project "lead-system"      "$HOME/.claude/worktrees/slot-2"
+open_project "trust-engine"     "$CLAUDE_RUNTIME_DIR/worktrees/slot-1"
+open_project "lead-system"      "$CLAUDE_RUNTIME_DIR/worktrees/slot-2"
 open_project "claude-mem"       "$HOME/projects/claude-mem"
 open_project "n8n"              "$HOME/projects/n8n-server"
 open_project "pi-mono"          "$HOME/projects/pi-mono"

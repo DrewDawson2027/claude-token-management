@@ -31,14 +31,21 @@ from pathlib import Path
 from typing import Dict, List, Tuple, Optional
 import argparse
 
+CORE_DIR = Path(__file__).resolve().parents[1] / "core"
+if str(CORE_DIR) not in sys.path:
+    sys.path.insert(0, str(CORE_DIR))
+
+from runtime_paths import runtime_dir
+
 # ============================================================================
 # CONFIGURATION
 # ============================================================================
 
-STATE_DIR = Path.home() / ".claude" / "hooks" / "session-state"
-COST_DIR = Path.home() / ".claude" / "cost"
-REPORTS_DIR = Path.home() / ".claude" / "reports"
-TOKEN_GUARD_CONFIG = Path.home() / ".claude" / "hooks" / "token-guard-config.json"
+CLAUDE_DIR = runtime_dir()
+STATE_DIR = CLAUDE_DIR / "hooks" / "session-state"
+COST_DIR = CLAUDE_DIR / "cost"
+REPORTS_DIR = CLAUDE_DIR / "reports"
+TOKEN_GUARD_CONFIG = CLAUDE_DIR / "hooks" / "token-guard-config.json"
 
 # Grading thresholds (world-class standards)
 GRADE_THRESHOLDS = {

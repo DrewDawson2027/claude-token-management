@@ -5,11 +5,12 @@ Claude Token Management is a self-contained local control plane for Claude Code 
 ## Current Status
 
 - Live `~/.claude` runtime and repository sources were re-converged on 2026-04-07.
-- Fresh-runtime certification passes: `8/8` checks green.
-- Schema validation passes: `1,304` documents validated, `0` errors.
-- Source-tree coordinator suite passes: `315/315`.
+- Fresh-runtime certification passes: `10/10` checks green.
+- Schema validation passes: `1,305` documents validated, `0` errors.
+- Source-tree coordinator suite passes: `316/316`.
 - Live hook suite passes: `481 passed, 37 skipped`.
 - Live runtime health-check passes: `42 passed, 0 failed, 0 warnings`.
+- Live drain benchmark passes: `9/9`.
 
 ## What It Does
 
@@ -81,5 +82,5 @@ npm run cert:all
 
 - This is still a local, file-backed control plane. It is hardened, but it is not a native Anthropic billing or rate-limit service.
 - Upstream prompt-cache regressions, peak-hour throttling, and subscription policy changes can be detected and mitigated locally, not fixed at the source.
-- Some scripts still assume `~/.claude` as the installed runtime target. New work should continue pushing path resolution toward cleaner repo/runtime separation.
-- Coordinator dependencies currently report `6` upstream `npm audit` findings after install. The coordinator test surface is green, but dependency hygiene is still an active maintenance concern.
+- Some runtime hooks still target the installed `~/.claude` shape directly, even though the core/control-plane layers now honor `CLAUDE_RUNTIME_DIR`.
+- The coordinator dependency tree is currently clean, but ongoing dependency hygiene remains an active maintenance concern.

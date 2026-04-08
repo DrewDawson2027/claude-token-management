@@ -3,10 +3,9 @@ from __future__ import annotations
 import json
 import shutil
 import subprocess
-from pathlib import Path
+from runtime_paths import runtime_dir
 
-HOME = Path.home()
-CLAUDE = HOME / ".claude"
+CLAUDE = runtime_dir()
 PROJECTS = CLAUDE / "projects"
 COST_RUNTIME = CLAUDE / "scripts" / "cost_runtime.py"
 

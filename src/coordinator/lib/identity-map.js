@@ -10,8 +10,8 @@ import {
   writeFileSync,
   renameSync,
 } from "fs";
-import { homedir } from "os";
 import { dirname, join } from "path";
+import { cfg } from "./constants.js";
 
 const MAP_VERSION = 1;
 const DEFAULT_MAX_RECORDS = 2000;
@@ -139,8 +139,7 @@ function writeMapAtomic(filePath, map) {
 }
 
 export function identityMapFilePath() {
-  const home = process.env.HOME || homedir();
-  return join(home, ".claude", "lead-sidecar", "state", "identity-map.json");
+  return join(cfg().CLAUDE_DIR, "lead-sidecar", "state", "identity-map.json");
 }
 
 export function readIdentityMap({ filePath = identityMapFilePath() } = {}) {

@@ -259,8 +259,20 @@ def materialize_runtime() -> tuple[Path, dict[str, Path]]:
 def build_env(home: Path, hooks: Path, scripts: Path) -> dict[str, str]:
     env = os.environ.copy()
     env["HOME"] = str(home)
+    env["CLAUDE_RUNTIME_DIR"] = str(home / ".claude")
     env["PYTHONPATH"] = os.pathsep.join(
-        [str(hooks), str(scripts), env.get("PYTHONPATH", "")]
+        [
+            str(REPO_ROOT / "src" / "cli"),
+            str(REPO_ROOT / "src" / "scripts" / "core"),
+            str(REPO_ROOT / "src" / "hooks" / "ops"),
+            str(REPO_ROOT / "src" / "hooks" / "infrastructure"),
+            str(REPO_ROOT / "src" / "hooks" / "tracking"),
+            str(REPO_ROOT / "src" / "hooks" / "guards"),
+            str(REPO_ROOT / "src" / "hooks" / "routing"),
+            str(hooks),
+            str(scripts),
+            env.get("PYTHONPATH", ""),
+        ]
     ).rstrip(os.pathsep)
     path_entries: list[str] = []
     for candidate in (node_bin(), npm_bin(), "/opt/homebrew/bin"):
@@ -288,8 +300,14 @@ def main() -> int:
     health = paths["hooks"] / "health-check.sh"
     cost_runtime = paths["scripts"] / "cost_runtime.py"
     observability = paths["scripts"] / "observability.py"
+    drain_bench = REPO_ROOT / "src" / "scripts" / "core" / "drain_bench.py"
     coordinator = paths["coordinator"] / "index.js"
     spawn_smoke = paths["coordinator"] / "scripts" / "spawn-smoke.mjs"
+    repo_native_tests = [
+        REPO_ROOT / "tests" / "test_drain_bench.py",
+        REPO_ROOT / "tests" / "test_runtime_overrides.py",
+        REPO_ROOT / "tests" / "test_token_guard_behavior.py",
+    ]
 
     if hooks_tests.exists() and py_for_pytest:
         checks.append(
@@ -319,6 +337,32 @@ def main() -> int:
                 env=env,
                 cwd=REPO_ROOT,
                 timeout=300,
+            )
+        )
+    if py_for_pytest and all(test.exists() for test in repo_native_tests):
+        checks.append(
+            run(
+                "repo_native_pytests",
+                [py_for_pytest, "-m", "pytest", *[str(test) for test in repo_native_tests], "-q"],
+                env=env,
+                cwd=REPO_ROOT,
+                timeout=300,
+            )
+        )
+    if drain_bench.exists():
+        checks.append(
+            run(
+                "drain_bench",
+                [
+                    sys.executable,
+                    str(drain_bench),
+                    "--fixture",
+                    str(REPO_ROOT / "tests" / "fixtures" / "token-drain-scenarios.json"),
+                    "--json",
+                ],
+                env=env,
+                cwd=REPO_ROOT,
+                timeout=120,
             )
         )
 

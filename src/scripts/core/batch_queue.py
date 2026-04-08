@@ -17,8 +17,9 @@ import json
 import os
 import sys
 from datetime import datetime, timezone
+from runtime_paths import runtime_path
 
-QUEUE_FILE = os.path.expanduser("~/.claude/cost/batch-queue.json")
+QUEUE_FILE = str(runtime_path("cost", "batch-queue.json"))
 
 
 def load_queue() -> list:

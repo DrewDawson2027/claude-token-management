@@ -14,6 +14,7 @@ import { spawn, spawnSync, execFileSync } from "child_process";
 import { fileURLToPath } from "url";
 import { cfg } from "../constants.js";
 import { shellQuote } from "../helpers.js";
+import { writeFileSecure } from "../security.js";
 
 const AUTOCLAIM_SCRIPT = fileURLToPath(
   new URL("../../scripts/claim-next-task.mjs", import.meta.url),
@@ -867,8 +868,34 @@ export function isSafeTTYPath(pathValue) {
   return /^\/dev\/(?:ttys?\d+|pts\/\d+)$/.test(tty);
 }
 
+function resolveWorkerSettingsFile() {
+  const { CLAUDE_DIR, SETTINGS_FILE, WORKER_SETTINGS_FILE } = cfg();
+  if (!existsSync(WORKER_SETTINGS_FILE)) {
+    return existsSync(SETTINGS_FILE) ? SETTINGS_FILE : "";
+  }
+  try {
+    const raw = readFileSync(WORKER_SETTINGS_FILE, "utf-8");
+    const coordinatorIndex = `${CLAUDE_DIR}/mcp-coordinator/index.js`;
+    const rendered = raw
+      .replaceAll("__CLAUDE_COORDINATOR_INDEX__", coordinatorIndex)
+      .replaceAll("__CLAUDE_RUNTIME_DIR__", CLAUDE_DIR)
+      .replace(/\/[^\s"']*\/\.claude\/mcp-coordinator\/index\.js/g, coordinatorIndex);
+    if (rendered === raw) {
+      return WORKER_SETTINGS_FILE;
+    }
+    const runtimeSettingsFile = WORKER_SETTINGS_FILE.replace(
+      /\.json$/i,
+      ".runtime.json",
+    );
+    writeFileSecure(runtimeSettingsFile, rendered);
+    return runtimeSettingsFile;
+  } catch {
+    return existsSync(SETTINGS_FILE) ? SETTINGS_FILE : "";
+  }
+}
+
 export function buildInteractiveWorkerScript(opts) {
-  const { PLATFORM, SETTINGS_FILE, WORKER_SETTINGS_FILE, CLAUDE_BIN } = cfg();
+  const { PLATFORM, CLAUDE_BIN, CLAUDE_DIR } = cfg();
   const { taskId, workDir, pidFile, metaFile, model, agent, promptFile } = opts;
   const workerName = opts.workerName || "";
   const maxTurns = opts.maxTurns || "";
@@ -904,10 +931,8 @@ export function buildInteractiveWorkerScript(opts) {
   const qModel = shellQuote(model);
   const qClaudeBin = shellQuote(CLAUDE_BIN);
   const agentArgs = agent ? `--agent ${shellQuote(agent)}` : "";
-  const workerSettingsFile = existsSync(WORKER_SETTINGS_FILE)
-    ? WORKER_SETTINGS_FILE
-    : SETTINGS_FILE;
-  const settingsArgs = existsSync(workerSettingsFile)
+  const workerSettingsFile = resolveWorkerSettingsFile();
+  const settingsArgs = workerSettingsFile && existsSync(workerSettingsFile)
     ? `--settings ${shellQuote(workerSettingsFile)}`
     : "";
 
@@ -938,6 +963,7 @@ export function buildInteractiveWorkerScript(opts) {
       contextSummary,
       isolate: opts.isolate,
     }),
+    `export CLAUDE_RUNTIME_DIR=${shellQuote(CLAUDE_DIR)}`,
     ...buildParentSessionEnvExports(parentSessionId),
     `export CLAUDE_WORKER_TASK_ID=${shellQuote(taskId)}`,
     workerName ? `export CLAUDE_WORKER_NAME=${shellQuote(workerName)}` : "",
@@ -978,7 +1004,7 @@ export function buildInteractiveWorkerScript(opts) {
   // and surfaced by check-inbox.sh on the next tool call.
   if (leadSessionId) {
     completionCmds.push(
-      `printf '{"ts":"%s","from":"coordinator","priority":"normal","content":"[COMPLETED] ${workerDisplay}"}\\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$HOME/.claude/terminals/inbox/$CLAUDE_LEAD_SESSION_ID.jsonl" 2>/dev/null || true`,
+      `printf '{"ts":"%s","from":"coordinator","priority":"normal","content":"[COMPLETED] ${workerDisplay}"}\\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$CLAUDE_RUNTIME_DIR/terminals/inbox/$CLAUDE_LEAD_SESSION_ID.jsonl" 2>/dev/null || true`,
       // After writing to inbox, fire a targeted tmux status-bar notification to the
       // lead's specific pane. Uses CLAUDE_LEAD_PANE_ID (exported above) as the -t target
       // so the badge appears in the lead's window, not the worker's pane.
@@ -1027,11 +1053,11 @@ export function buildInteractiveWorkerScript(opts) {
       `(IDLE_SENT=false`,
       `while kill -0 $$ 2>/dev/null`,
       `do sleep 1`,
-      `SF="$HOME/.claude/terminals/session-${sid8}.json"`,
+      `SF="$CLAUDE_RUNTIME_DIR/terminals/session-${sid8}.json"`,
       `[ ! -f "$SF" ] && continue`,
       `AGE=$(( $(date +%s) - $(stat -f %m "$SF" 2>/dev/null || stat -c %Y "$SF" 2>/dev/null || echo $(date +%s)) ))`,
       `if [ "$AGE" -gt 30 ] && [ "$IDLE_SENT" = false ]`,
-      `then printf '{"ts":"%s","from":"idle-detector","priority":"normal","content":"[IDLE] ${workerDisplay} — no activity for '\''\${AGE}'\''s"}\\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$HOME/.claude/terminals/inbox/$CLAUDE_LEAD_SESSION_ID.jsonl" 2>/dev/null || true`,
+      `then printf '{"ts":"%s","from":"idle-detector","priority":"normal","content":"[IDLE] ${workerDisplay} — no activity for '\''\${AGE}'\''s"}\\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$CLAUDE_RUNTIME_DIR/terminals/inbox/$CLAUDE_LEAD_SESSION_ID.jsonl" 2>/dev/null || true`,
       `IDLE_SENT=true`,
       `elif [ "$AGE" -le 30 ]`,
       `then IDLE_SENT=false`,
@@ -1066,7 +1092,7 @@ export function buildInteractiveWorkerScript(opts) {
  * @returns {string} Shell script string
  */
 export function buildResumeWorkerScript(opts) {
-  const { CLAUDE_BIN, SETTINGS_FILE, WORKER_SETTINGS_FILE } = cfg();
+  const { CLAUDE_BIN, CLAUDE_DIR } = cfg();
   const { sessionId, workDir, pidFile, metaFile, taskId } = opts;
   const leadSessionId = opts.leadSessionId || "";
   const leadPaneId = opts.leadPaneId || "";
@@ -1079,10 +1105,8 @@ export function buildResumeWorkerScript(opts) {
   const qMetaDone = shellQuote(`${metaFile}.done`);
   const qClaudeBin = shellQuote(CLAUDE_BIN);
   const qSessionId = shellQuote(sessionId);
-  const workerSettingsFile = existsSync(WORKER_SETTINGS_FILE)
-    ? WORKER_SETTINGS_FILE
-    : SETTINGS_FILE;
-  const settingsArgs = existsSync(workerSettingsFile)
+  const workerSettingsFile = resolveWorkerSettingsFile();
+  const settingsArgs = workerSettingsFile && existsSync(workerSettingsFile)
     ? `--settings ${shellQuote(workerSettingsFile)}`
     : "";
   const parentSessionSetup = buildParentSessionSetup(qClaudeBin);
@@ -1114,6 +1138,7 @@ export function buildResumeWorkerScript(opts) {
       contextSummary: opts.contextSummary,
       isolate: opts.isolate,
     }),
+    `export CLAUDE_RUNTIME_DIR=${shellQuote(CLAUDE_DIR)}`,
     ...buildParentSessionEnvExports(opts.parentSessionId),
     `export CLAUDE_WORKER_TASK_ID=${shellQuote(taskId)}`,
     workerName ? `export CLAUDE_WORKER_NAME=${shellQuote(workerName)}` : "",
@@ -1134,7 +1159,7 @@ export function buildResumeWorkerScript(opts) {
   // terminal, causing Claude to treat it as a user message. Inbox-only delivery below.
   if (leadSessionId) {
     trapParts.push(
-      `printf '{"ts":"%s","from":"coordinator","priority":"normal","content":"[COMPLETED] ${workerName} (resumed)"}\\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$HOME/.claude/terminals/inbox/$CLAUDE_LEAD_SESSION_ID.jsonl" 2>/dev/null || true`,
+      `printf '{"ts":"%s","from":"coordinator","priority":"normal","content":"[COMPLETED] ${workerName} (resumed)"}\\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$CLAUDE_RUNTIME_DIR/terminals/inbox/$CLAUDE_LEAD_SESSION_ID.jsonl" 2>/dev/null || true`,
       `[ -n "$TMUX" ] && [ -n "$CLAUDE_LEAD_PANE_ID" ] && tmux display-message -t "$CLAUDE_LEAD_PANE_ID" -d 4000 "[${workerName} (resumed)] message waiting — check inbox" 2>/dev/null || true`,
     );
   }
@@ -1152,11 +1177,11 @@ export function buildResumeWorkerScript(opts) {
       `(IDLE_SENT=false`,
       `while kill -0 $$ 2>/dev/null`,
       `do sleep 1`,
-      `SF="$HOME/.claude/terminals/session-${sid8}.json"`,
+      `SF="$CLAUDE_RUNTIME_DIR/terminals/session-${sid8}.json"`,
       `[ ! -f "$SF" ] && continue`,
       `AGE=$(( $(date +%s) - $(stat -f %m "$SF" 2>/dev/null || stat -c %Y "$SF" 2>/dev/null || echo $(date +%s)) ))`,
       `if [ "$AGE" -gt 30 ] && [ "$IDLE_SENT" = false ]`,
-      `then printf '{"ts":"%s","from":"idle-detector","priority":"normal","content":"[IDLE] ${workerName} (resumed) — no activity for '\''\${AGE}'\''s"}\\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$HOME/.claude/terminals/inbox/$CLAUDE_LEAD_SESSION_ID.jsonl" 2>/dev/null || true`,
+      `then printf '{"ts":"%s","from":"idle-detector","priority":"normal","content":"[IDLE] ${workerName} (resumed) — no activity for '\''\${AGE}'\''s"}\\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$CLAUDE_RUNTIME_DIR/terminals/inbox/$CLAUDE_LEAD_SESSION_ID.jsonl" 2>/dev/null || true`,
       `IDLE_SENT=true`,
       `elif [ "$AGE" -le 30 ]`,
       `then IDLE_SENT=false`,
@@ -1327,7 +1352,7 @@ export function buildCodexInteractiveWorkerScript(opts) {
  * @returns {string} Shell script string
  */
 export function buildWorkerScript(opts) {
-  const { PLATFORM, SETTINGS_FILE, WORKER_SETTINGS_FILE, CLAUDE_BIN } = cfg();
+  const { PLATFORM, CLAUDE_BIN, CLAUDE_DIR } = cfg();
   const {
     taskId,
     workDir,
@@ -1359,10 +1384,8 @@ export function buildWorkerScript(opts) {
     const qModel = shellQuote(model);
     const qClaudeBin = shellQuote(CLAUDE_BIN);
     const agentArgs = agent ? `--agent ${shellQuote(agent)}` : "";
-    const workerSettingsFile = existsSync(WORKER_SETTINGS_FILE)
-      ? WORKER_SETTINGS_FILE
-      : SETTINGS_FILE;
-    const settingsArgs = existsSync(workerSettingsFile)
+    const workerSettingsFile = resolveWorkerSettingsFile();
+    const settingsArgs = workerSettingsFile && existsSync(workerSettingsFile)
       ? `--settings ${shellQuote(workerSettingsFile)}`
       : "";
     const qTaskId = shellQuote(taskId);
@@ -1424,6 +1447,7 @@ export function buildWorkerScript(opts) {
     const leadPaneId = opts.leadPaneId || "";
     const workerDisplay = opts.workerName || taskId;
     const leadExports = [
+      `export CLAUDE_RUNTIME_DIR=${shellQuote(CLAUDE_DIR)}`,
       leadSessionId
         ? `export CLAUDE_LEAD_SESSION_ID=${shellQuote(leadSessionId)}`
         : "",
@@ -1444,7 +1468,7 @@ export function buildWorkerScript(opts) {
     // Runs after forwarder exits regardless of exit code (forwarder owns .done + PID).
     const completionCmds = [
       leadSessionId
-        ? `printf '{"ts":"%s","from":"coordinator","priority":"normal","content":"[COMPLETED] ${workerDisplay}"}\\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$HOME/.claude/terminals/inbox/$CLAUDE_LEAD_SESSION_ID.jsonl" 2>/dev/null || true`
+        ? `printf '{"ts":"%s","from":"coordinator","priority":"normal","content":"[COMPLETED] ${workerDisplay}"}\\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$CLAUDE_RUNTIME_DIR/terminals/inbox/$CLAUDE_LEAD_SESSION_ID.jsonl" 2>/dev/null || true`
         : "",
       leadPaneId
         ? `[ -n "$TMUX" ] && [ -n "$CLAUDE_LEAD_PANE_ID" ] && tmux display-message -t "$CLAUDE_LEAD_PANE_ID" -d 4000 "[${workerDisplay}] message waiting — check inbox" 2>/dev/null || true`

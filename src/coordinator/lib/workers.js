@@ -973,8 +973,9 @@ export function handleSpawnWorker(args) {
       context: contextBuild.stats,
     };
     writeFileSecure(metaFile, JSON.stringify(meta, null, 2));
+    const runtimeDir = cfg().CLAUDE_DIR;
     const contextSuffix =
-      "\n\nWhen done, write key findings to ~/.claude/session-cache/coder-context.md.";
+      `\n\nWhen done, write key findings to ${runtimeDir}/session-cache/coder-context.md.`;
     const promptFile = join(RESULTS_DIR, `${taskId}.prompt`);
     let fullPrompt = contextPreamble + prompt + contextSuffix;
     if (mode === "interactive") {
@@ -990,7 +991,7 @@ export function handleSpawnWorker(args) {
         `- To communicate with anyone on your team, you MUST use messaging tools.`,
         notify_session_id
           ? `- Message the lead: \`coord_send_message from="${workerName || taskId}" to="${notify_session_id}" content="..." summary="<5-10 word preview>"\``
-          : `- No lead session — write findings to ~/.claude/session-cache/coder-context.md`,
+          : `- No lead session — write findings to ${runtimeDir}/session-cache/coder-context.md`,
         `- Messages from the lead appear as "--- INCOMING MESSAGES FROM COORDINATOR ---" before your tool calls`,
         `- If you receive instructions from the lead, prioritize them immediately`,
         `- If told to stop, pivot, or change direction — do so without question`,
@@ -1006,7 +1007,7 @@ export function handleSpawnWorker(args) {
         `When your task is complete:`,
         notify_session_id
           ? `1. Notify lead: \`coord_send_message from="${taskId}" to="${notify_session_id}" content="[COMPLETED] ${taskId} — <summary>"\``
-          : `1. Write key findings to ~/.claude/session-cache/coder-context.md`,
+          : `1. Write key findings to ${runtimeDir}/session-cache/coder-context.md`,
         ``,
         `### Delegation`,
         notify_session_id
@@ -1036,7 +1037,7 @@ export function handleSpawnWorker(args) {
           `### PLAN-FIRST MODE (MANDATORY)`,
           `Before making ANY file edits:`,
           `1. Analyze the codebase and draft a plan`,
-          `2. Write your plan to ~/.claude/terminals/results/${taskId}.plan.md`,
+          `2. Write your plan to ${runtimeDir}/terminals/results/${taskId}.plan.md`,
           `3. Notify lead: \`coord_send_message from="${taskId}" to="${notify_session_id || "lead"}" content="[PLAN READY] ${taskId}"\``,
           `4. WAIT for lead approval — check inbox for "[APPROVED]" or "[REVISION]"`,
           `5. If revision requested, update plan and re-submit`,
@@ -2255,7 +2256,7 @@ export function handleSpawnTerminal(args) {
 
 /**
  * Handle coord_worker_report — workers write progress; lead reads on demand.
- * Reports stored at ~/.claude/terminals/reports/{task_id}.jsonl
+ * Reports stored at runtime/terminals/reports/{task_id}.jsonl
  * @param {object} args - { task_id, action, status, summary, files_changed, blockers }
  * @returns {object} MCP text response
  */

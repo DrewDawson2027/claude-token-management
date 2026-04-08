@@ -13,8 +13,15 @@ import os
 import sys
 from collections import defaultdict
 from datetime import datetime, timezone, timedelta
+from pathlib import Path
 
-METRICS_FILE = os.path.expanduser("~/.claude/hooks/session-state/agent-metrics.jsonl")
+CORE_DIR = Path(__file__).resolve().parents[1] / "core"
+if str(CORE_DIR) not in sys.path:
+    sys.path.insert(0, str(CORE_DIR))
+
+from runtime_paths import runtime_dir
+
+METRICS_FILE = runtime_dir() / "hooks" / "session-state" / "agent-metrics.jsonl"
 
 
 def load_metrics(window_days=1):

@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "scenarios": {
+    "prompt_cache": [
+      {
+        "id": "resume-regression",
+        "mode": "resume",
+        "baseline": {
+          "input_tokens": 120000,
+          "cache_read_tokens": 720000
+        },
+        "candidate": {
+          "input_tokens": 248000,
+          "cache_read_tokens": 18000
+        },
+        "expected": "regression"
+      },
+      {
+        "id": "continue-healthy",
+        "mode": "continue",
+        "baseline": {
+          "input_tokens": 120000,
+          "cache_read_tokens": 720000
+        },
+        "candidate": {
+          "input_tokens": 126000,
+          "cache_read_tokens": 690000
+        },
+        "expected": "healthy"
+      }
+    ],
+    "peak_hour": [
+      {
+        "id": "peak-burn-critical",
+        "hourly_usd": [0.6, 0.8, 1.1, 4.8, 5.2, 5.0],
+        "budget_usd": 45.0,
+        "expected": "critical"
+      },
+      {
+        "id": "steady-ok",
+        "hourly_usd": [0.7, 0.9, 0.8, 0.9, 0.7, 0.8],
+        "budget_usd": 45.0,
+        "expected": "ok"
+      }
+    ],
+    "line_number_overhead": [
+      {
+        "id": "python-file-overhead",
+        "text": "def alpha():\n    return 1\n\n\ndef beta(value):\n    if value:\n        return value * 2\n    return 0\n",
+        "min_overhead_pct": 12.0
+      }
+    ],
+    "read_batching": [
+      {
+        "id": "three-file-batch",
+        "read_char_counts": [4800, 6200, 9100],
+        "per_read_overhead_chars": 180,
+        "expected_min_savings_pct": 1.5
+      }
+    ],
+    "routing": [
+      {
+        "id": "haiku-cheaper-than-sonnet",
+        "usage": {
+          "input_tokens": 180000,
+          "output_tokens": 32000,
+          "cache_read_tokens": 40000,
+          "cache_creation_tokens": 22000
+        },
+        "expensive_model": "claude-sonnet-4-5",
+        "efficient_model": "claude-haiku-4-5",
+        "expected_min_savings_pct": 55.0
+      }
+    ],
+    "fanout": [
+      {
+        "id": "fanout-over-budget",
+        "workers": 6,
+        "avg_input_tokens": 22000,
+        "max_agents": 4,
+        "budget_tokens": 100000,
+        "expected_block": true
+      },
+      {
+        "id": "fanout-within-budget",
+        "workers": 3,
+        "avg_input_tokens": 18000,
+        "max_agents": 4,
+        "budget_tokens": 100000,
+        "expected_block": false
+      }
+    ]
+  }
+}
