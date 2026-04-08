@@ -1,146 +1,167 @@
 # X Launch Script
 
-## Launch Window
+## Brutal Read
 
-Use this on Wednesday, April 8, 2026 in Pacific time.
+The earlier launch copy was weak.
+
+Why it failed:
+
+1. It read like a release note, not a post people would stop for in-feed.
+2. It used a raw outbound GitHub link in the opening post, which creates immediate friction and gives cold viewers an easy reason to leave instead of engage natively.
+3. It had no open loop, no question, no conflict, and no audience participation path.
+4. It asked a brand-new account to win on credibility alone, without building a reply loop or joining an existing conversation.
+5. It stated the repo existed, but it did not make the pain feel immediate or the proof feel surprising.
+
+## Source Basis
+
+This script is now aligned to the actual sources that matter here:
+
+- X Business says organic copy should be concise, conversational, and paired with media, and that reply/community management matters.
+- X Business also says posts should connect to topics people actually care about and should start relevant conversations.
+- X Help states replies are ranked for relevance and meaningful contribution, which means conversation quality matters.
+
+What those sources do **not** prove:
+
+- They do not give a formal public statement that raw links are algorithmically penalized.
+
+So the correct position is:
+
+- There is no official X source here proving a hard link penalty.
+- For a brand-new account, putting a GitHub link in the opening post is still a bad launch choice because it increases friction and reduces the chance that the first action is a native reply, quote, save, or repost.
 
 ## Launch Goal
 
-The goal is not empty impressions. The goal is to make cold traffic believe three things fast:
+The goal is not “announce the repo.”
 
-1. The problem is real.
-2. The repo actually works.
-3. The builder is showing receipts instead of hype.
+The goal is to make the first post do four things:
 
-## Pre-Flight
+1. Trigger recognition in people already angry about Claude token burn.
+2. Show proof that the screenshot is real and current.
+3. Pull native replies before any outbound click.
+4. Earn permission to drop the repo link in a reply, not force the click immediately.
 
-- Attach `assets/social/launch-proof.png` to the first post.
-- Do not overwrite a good existing X header just for launch. Change it only if you explicitly want a launch-specific profile surface.
-- Keep the profile bio direct: `Building guardrails and observability for Claude Code token usage. Public repo. Proof over hype.`
-- Link the public repo in the profile: `https://github.com/DrewDawson2027/claude-token-management`
-- If GitHub profile pins are available, pin this repo before posting.
+## Opening Post Rules
 
-## Main Post
+- No raw GitHub link in the opening post.
+- Use the terminal proof image.
+- Lead with the pain or failure mode, not the project name.
+- Include one concrete surprising claim.
+- End with a native CTA: question, prompt for repro, or challenge.
+- Do not sound like product marketing.
+- Do not sound like a changelog.
 
-Post this first:
+## Recommended Main Post
+
+Post this first with `assets/social/launch-proof.png`:
 
 ```text
-Claude Code token drain is real, and preventable.
+Claude can burn a stupid amount of usage before useful work even starts.
 
-This screenshot is the guardrail actually blocking a risky resume flow and duplicate reads before spend lands.
+I got tired of watching resumed sessions and duplicate reads waste tokens, so I built local guards that block both before spend lands.
 
-Repo + certs:
-https://github.com/DrewDawson2027/claude-token-management
+This screenshot is an actual guard firing from the repo running today.
+
+If Claude is draining your usage, reply with the exact flow that's doing it.
 ```
 
-## Immediate Reply
+Why this version is stronger:
 
-Reply to your own post within 2 minutes:
+- It starts with pain, not branding.
+- It makes the builder sound involved, not corporate.
+- It uses the screenshot as proof, not as decoration.
+- It ends with a native reply CTA instead of an outbound click CTA.
+
+## Alternate Main Post
+
+Use this if you want a sharper, more confrontational tone:
 
 ```text
-Current proof:
+One of the dumbest Claude failure modes is burning tokens on work that should have been blocked before the session even moved.
+
+I built local guards for that.
+
+This screenshot is a risky resume flow and a duplicate read getting blocked before spend lands.
+
+What exact Claude flow is wasting the most usage for you right now?
+```
+
+## First Reply
+
+Reply to your own post within 1 to 3 minutes:
+
+```text
+Current proof from the live/runtime surface:
 
 - fresh runtime cert: 10/10
 - live hooks: 481 passed
-- health: 42/42
-- drain benchmark: 9/9
-- schemas: 1,307 docs, 0 errors
-- coordinator: 316/316
-
-Local control plane, not a fake Anthropic billing fix.
-```
-
-## Thread Version
-
-If you want the longer version, use this thread instead of adding random replies later.
-
-### Post 1
-
-```text
-Claude Code token drain is real, and preventable.
-
-This screenshot is the guardrail actually blocking a risky resume flow and duplicate reads before spend lands.
-
-Repo:
-https://github.com/DrewDawson2027/claude-token-management
-```
-
-### Post 2
-
-```text
-What it does:
-
-- dispatch guard before spend
-- duplicate/burst read control
-- budget enforcement
-- compatibility tracking for known drain issues
-- live ops snapshots and status reporting
-```
-
-### Post 3
-
-```text
-Proof, not vibes:
-
-- fresh-runtime cert: 10/10
-- live hooks: 481 passed
 - health-check: 42/42
 - drain bench: 9/9
-- schemas: 1,307 docs validated, 0 errors
+- schemas: 1,307 docs / 0 errors
 - coordinator: 316/316
 ```
 
-### Post 4
+## Second Reply
+
+Only after the first post has native engagement, or if someone explicitly asks for the repo:
 
 ```text
-The point is not "I fixed Anthropic."
+Repo is here:
 
-The point is that a lot of token burn is locally preventable if you treat usage like an engineering problem instead of a mystery bill.
+github.com/DrewDawson2027/claude-token-management
 ```
 
-### Post 5
+If the post is getting replies fast, delay this reply a bit and answer people first.
+
+## Third Reply
+
+Use this if people start asking whether this “fixes Anthropic”:
 
 ```text
-If you have a Claude Code workflow that still burns usage badly, reply with the exact flow.
+It does not control Anthropic upstream behavior.
 
-I want real repro cases, not vague complaints. I'll benchmark the strongest ones next.
+It blocks the local waste, measures the rest, and makes the ugly failure modes visible instead of mysterious.
 ```
 
-## Follow-Up Reply
+## Reply Targets Before Posting
 
-Post this 60 to 90 minutes later if the post gets any traction:
+Do this before the launch post goes up:
 
-```text
-The repo includes the hard numbers and the ugly parts too:
+1. Find 5 to 10 current posts from real people complaining about Claude token burn, resume weirdness, or runaway usage.
+2. Reply from your account with short, useful, non-spammy observations.
+3. Do not mention your repo in those replies unless someone asks.
+4. Then publish the main post.
 
-- what it can block locally
-- what it can only warn on
-- what still belongs to upstream Claude behavior
+The reason is simple:
 
-That honesty matters more than pretending every token problem is solved.
-```
+- A new account without conversation history looks like a drive-by promo account.
+- A new account that is already in the conversation has a better chance of getting profile visits and reply velocity.
 
-## Claims To Keep
+## Bad Patterns To Avoid
 
-- `blocks`
-- `measures`
-- `benchmarks`
-- `warns`
-- `routes around`
-- `certifies`
+- Do not write `Repo + certs:` in the opening post.
+- Do not open with `I built...` unless the pain has already been established.
+- Do not make the opening post mostly nouns like `guards, benchmarks, schemas, observability`.
+- Do not use more than one idea in each paragraph.
+- Do not make the opening post about “the architecture.”
+- Do not post the link first and hope the image carries it.
 
-## Claims To Avoid
+## What The Previous Version Got Wrong
 
-- `fixes Claude`
-- `fixes Anthropic billing`
-- `guarantees savings for everyone`
-- `solves every upstream issue`
-- `viral open source breakthrough`
+The deleted version failed on six fronts:
 
-## Execution Notes
+1. It led with a claim that was true but too broad: `Claude Code token drain is real, and preventable.`
+2. It named categories of protection instead of dramatizing one failure mode.
+3. It pushed the GitHub link too early.
+4. It gave no compelling reason to reply.
+5. It sounded like launch collateral, not a real operator who got burned and built a fix.
+6. It assumed the image alone would supply the missing story.
 
-- Do not post ten times in a row from a brand-new account. One main post, one proof reply, and one later follow-up is enough.
-- Do not hide the repo link in the fourth post of a long thread. Put it in the first post.
-- Do not lead with architecture jargon. Lead with the cost problem and the receipts.
-- If people ask for proof, link them straight to `README.md`, `docs/analysis/regression-results.md`, and `docs/analysis/component-grades.md`.
-- Use `docs/release/REPLY_PACK.md` for fast objection handling instead of improvising under pressure.
+## Source Notes
+
+Official X sources used for this correction:
+
+- X Business, `Organic best practices`: concise, conversational copy; media helps posts stand out; community management matters.
+- X Business, `Build your presence on X`: complete the profile, use media, post about what your audience cares about, start relevant conversations, and monitor/reply to mentions.
+- X Help, `How to post X replies and mentions`: replies are ranked for relevance and meaningful contribution.
+
+The launch strategy above combines those official points with first-principles distribution logic for a brand-new account.
