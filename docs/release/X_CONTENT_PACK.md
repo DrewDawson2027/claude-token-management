@@ -16,56 +16,38 @@ Use `assets/social/launch-proof.png` with this thread.
 ### Post 1
 
 ```text
-The session that broke me wasn't even hard work.
+Claude was chewing through my plan on dumb waste before the real task even started.
 
-Claude resumed the wrong thing, reread the same files, and chewed through my plan before it got to the part I actually needed.
+Wrong resume. Same files reread. Too many workers. Cheap work on the wrong model.
 
-That was the point where I got sick of just "using it better" and built around it.
+So I built local guards around Claude Code that block those paths before more usage lands. This screenshot is two of them firing live.
+
+What’s been burning the most usage on your plan?
 ```
 
 ### Post 2
 
 ```text
-A lot of Claude usage waste is mechanical.
+What it actually blocks:
 
-Wrong resume pulls in the wrong baggage.
-Repeated reads keep stuffing the same files back through the workflow.
-Extra fanout makes multiple paths pay the same overhead.
-
-By the time you notice it, part of your plan is already gone.
+- risky resume/continue sessions before heavy work
+- the 3rd read of the same file
+- wasteful fanout and duplicate spawn patterns
+- lookup/review work on the wrong model tier
 ```
 
 ### Post 3
 
 ```text
-That’s why "just set a budget" never felt like enough to me.
+What it tracks after that:
 
-A budget warning after the waste already happened is just a receipt.
-
-I wanted something that pushes back before more of my plan gets burned.
+- allow / warn / block audit trail
+- cost and burn-rate views
+- alerts and ops snapshots
+- compatibility intake for upstream Claude regressions
 ```
 
 ### Post 4
-
-```text
-So I built a local guard layer around my Claude setup.
-
-It blocks bad resumes.
-It stops the same files getting reread over and over.
-It catches wasteful fanout and bad routing before they snowball.
-```
-
-### Post 5
-
-```text
-The point wasn’t to make Claude look smarter.
-
-The point was to stop the dumb, avoidable spend that happens around the real work.
-
-If a session is about to chew through usage for no good reason, I want it blocked or flagged before more plan disappears.
-```
-
-### Post 6
 
 ```text
 Current receipts from the runtime:
@@ -80,7 +62,7 @@ Current receipts from the runtime:
 I didn’t measure a clean before/after percentage, so I’m not going to invent one.
 ```
 
-### Post 7
+### Post 5
 
 ```text
 It doesn’t give me control over Anthropic upstream.
@@ -90,6 +72,16 @@ If cache behavior or throttling goes weird on their side, I can’t patch that f
 What I can do is stop the local waste I actually see burning my plan.
 
 What’s the worst usage-burn pattern Claude keeps hitting you with?
+```
+
+### Repo Link Reply
+
+Only post this after the thread has native engagement, or if someone explicitly asks for the repo.
+
+```text
+Repo is here:
+
+github.com/DrewDawson2027/claude-token-management
 ```
 
 ## Standalone Posts
@@ -498,4 +490,4 @@ Why it is not `A+` yet:
 
 - The writing is strong, but real A+ X content gets sharpened by live replies and real audience friction.
 - Some of these posts will hit harder than others in practice.
-- The structure is right now. The final edge comes from posting, seeing what people actually latch onto, and cutting what feels too finished.
+- The structure is much tighter now, but the final edge still comes from live market feedback and cutting anything that still feels over-explained.
